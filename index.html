@@ -1,158 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KMPL Season 05 - Player Registration</title>
+const SHEET_NAME = "Sheet1";
+const FOLDER_NAME = "KMPL Season 05 – Player Photos";
 
-<style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-body{background:#f2f4f7;padding:20px}
-.container{max-width:600px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.12)}
-.header{background:linear-gradient(135deg,#064e3b,#16a34a);color:#fff;text-align:center;padding:30px 20px}
-.header h1{font-size:30px;margin-bottom:8px}
-.header h2{font-size:17px;font-weight:normal}
-.header p{margin-top:12px;font-size:15px}
-.form{padding:25px}
-label{display:block;font-weight:bold;margin:18px 0 7px}
-input,select{width:100%;padding:13px;border:1px solid #ccc;border-radius:9px;font-size:15px}
-input:focus,select:focus{border-color:#16a34a;outline:none}
-.photo-box{border:2px dashed #16a34a;padding:18px;text-align:center;border-radius:10px}
-button{width:100%;margin-top:25px;padding:15px;border:0;border-radius:10px;background:#16a34a;color:#fff;font-size:17px;font-weight:bold}
-button:disabled{background:#999}
-.note{text-align:center;color:#777;font-size:13px;margin-top:15px}
-.footer{text-align:center;padding:18px;background:#f8fafc;color:#555;font-size:13px}
-#message{text-align:center;margin-top:15px;font-weight:bold}
-</style>
-</head>
+function doPost(e) {
+  try {
+    const sheet = SpreadsheetApp
+      .getActiveSpreadsheet()
+      .getSheetByName(SHEET_NAME);
 
-<body>
+    const data = JSON.parse(e.postData.contents);
 
-<div class="container">
+    // Registration number
+    const lastRow = sheet.getLastRow();
+    const registrationNumber =
+      "KMPL" + String(Math.max(1, lastRow)).padStart(3, "0");
 
-<div class="header">
-<h1>🏏 KMPL</h1>
-<h2>KIZHAKAN MEGALA PREMIER LEAGUE</h2>
-<p>SEASON 05 – PLAYER REGISTRATION</p>
-</div>
+    // Photo upload
+    let photoUrl = "";
 
-<form class="form" id="registrationForm">
+    if (data.photo && data.photoData) {
+      const folder = getOrCreateFolder(FOLDER_NAME);
 
-<label>Player Name *</label>
-<input type="text" id="name" required placeholder="Enter your full name">
+      const bytes = Utilities.base64Decode(data.photoData);
+      const blob = Utilities.newBlob(
+        bytes,
+        data.photoType || "image/jpeg",
+        data.photo
+      );
 
-<label>Mobile Number *</label>
-<input type="tel" id="mobile" maxlength="10" required placeholder="Enter mobile number">
+      const file = folder.createFile(blob);
+      photoUrl = file.getUrl();
+    }
 
-<label>Place *</label>
-<input type="text" id="place" required placeholder="Enter your place">
+    sheet.appendRow([
+      new Date(),
+      registrationNumber,
+      data.name || "",
+      data.mobile || "",
+      data.place || "",
+      data.role || "",
+      data.batting || "",
+      data.bowling || "",
+      data.team || "",
+      photoUrl
+    ]);
 
-<label>Playing Role *</label>
-<select id="role" required>
-<option value="">Select Playing Role</option>
-<option>Batsman</option>
-<option>Bowler</option>
-<option>All-Rounder</option>
-<option>Wicket Keeper</option>
-</select>
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        success: true,
+        registrationNumber: registrationNumber,
+        photoUrl: photoUrl
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
 
-<label>Batting Style</label>
-<select id="batting">
-<option value="">Select Batting Style</option>
-<option>Right Hand Batsman</option>
-<option>Left Hand Batsman</option>
-</select>
+  } catch (error) {
 
-<label>Bowling Style</label>
-<select id="bowling">
-<option value="">Select Bowling Style</option>
-<option>Right Arm Fast</option>
-<option>Left Arm Fast</option>
-<option>Right Arm Medium</option>
-<option>Left Arm Medium</option>
-<option>Right Arm Spin</option>
-<option>Left Arm Spin</option>
-<option>Do Not Bowl</option>
-</select>
-
-<label>Previous Team</label>
-<input type="text" id="team" placeholder="Enter previous team">
-
-<label>Player Photo *</label>
-<div class="photo-box">
-<input type="file" id="photo" accept="image/*" required>
-</div>
-
-<button type="submit" id="submitBtn">SUBMIT REGISTRATION</button>
-
-<div id="message"></div>
-
-<div class="note">
-* Please enter correct information before submitting.
-</div>
-
-</form>
-
-<div class="footer">
-© KMPL – Kizhakan Megala Premier League
-</div>
-
-</div>
-
-<script>
-
-const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbzL5cYFtCQVrxrdxXREE34U53JOFLE_xd4dQHOw-h0QKs4eTRoTTNguzzC79YomfFQ/exec";
-
-document.getElementById("registrationForm").addEventListener("submit", async function(e){
-
-e.preventDefault();
-
-const button = document.getElementById("submitBtn");
-const message = document.getElementById("message");
-
-button.disabled = true;
-button.innerText = "SUBMITTING...";
-
-const data = {
-name: document.getElementById("name").value,
-mobile: document.getElementById("mobile").value,
-place: document.getElementById("place").value,
-role: document.getElementById("role").value,
-batting: document.getElementById("batting").value,
-bowling: document.getElementById("bowling").value,
-team: document.getElementById("team").value
-};
-
-try {
-
-await fetch(SCRIPT_URL,{
-method:"POST",
-mode:"no-cors",
-headers:{
-"Content-Type":"text/plain;charset=utf-8"
-},
-body:JSON.stringify(data)
-});
-
-message.style.color="green";
-message.innerText="✅ Registration submitted successfully!";
-
-document.getElementById("registrationForm").reset();
-
-} catch(error){
-
-message.style.color="red";
-message.innerText="❌ Submission failed. Please try again.";
-
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        success: false,
+        error: error.toString()
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
 }
 
-button.disabled=false;
-button.innerText="SUBMIT REGISTRATION";
+function getOrCreateFolder(folderName) {
 
-});
+  const folders = DriveApp.getFoldersByName(folderName);
 
-</script>
+  if (folders.hasNext()) {
+    return folders.next();
+  }
 
-</body>
-</html>
+  return DriveApp.createFolder(folderName);
+}
+
+function doGet() {
+  return ContentService
+    .createTextOutput("KMPL Season 05 Registration API is working.");
+}
