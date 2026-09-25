@@ -1,937 +1,706 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KMPL Season 05 - Admin Panel</title>
 
 <style>
-
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-font-family:Arial,sans-serif;
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f3f4f6;
+  color:#111827;
 }
 
-body{
-background:#f2f4f7;
-padding:15px;
+.header{
+  background:#111827;
+  color:white;
+  padding:20px;
+  text-align:center;
 }
 
 .container{
-max-width:1200px;
-margin:auto;
+  max-width:1200px;
+  margin:20px auto;
+  padding:0 15px;
 }
 
-.login-box,
-.admin-box{
-background:#fff;
-border-radius:18px;
-padding:25px;
-box-shadow:0 8px 30px rgba(0,0,0,.12);
+.login,.dashboard{
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 3px 12px rgba(0,0,0,.08);
 }
 
-.login-box{
-max-width:450px;
-margin:60px auto;
-text-align:center;
-}
-
-.login-box h1,
-.admin-box h1{
-color:#064e3b;
-margin-bottom:8px;
-}
-
-.subtitle{
-color:#666;
-margin-bottom:25px;
-}
-
-input,
-select{
-width:100%;
-padding:13px;
-border:1px solid #ccc;
-border-radius:9px;
-font-size:15px;
-}
-
-.login-box input{
-margin-bottom:15px;
+input,button{
+  padding:11px 14px;
+  border-radius:7px;
+  border:1px solid #d1d5db;
+  font-size:14px;
 }
 
 button{
-border:0;
-border-radius:9px;
-padding:12px 16px;
-background:#16a34a;
-color:#fff;
-font-size:14px;
-font-weight:bold;
-cursor:pointer;
+  cursor:pointer;
+  border:none;
 }
 
-button:hover{
-opacity:.9;
+.login button{
+  background:#111827;
+  color:white;
 }
 
-.logout{
-background:#dc2626;
-float:right;
+.stats{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:12px;
+  margin-bottom:20px;
 }
 
-.dashboard{
-display:grid;
-grid-template-columns:repeat(5,1fr);
-gap:12px;
-margin:20px 0;
+.stat{
+  background:white;
+  padding:18px;
+  border-radius:10px;
+  text-align:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
 }
 
-.card{
-background:#ecfdf5;
-padding:18px;
-border-radius:12px;
-text-align:center;
+.stat strong{
+  display:block;
+  font-size:26px;
+  margin-top:5px;
 }
 
-.card-title{
-font-size:13px;
-color:#666;
+.toolbar{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:15px;
 }
 
-.card-number{
-font-size:28px;
-font-weight:bold;
-color:#064e3b;
-margin-top:6px;
+.toolbar input{
+  flex:1;
+  min-width:220px;
 }
 
-.controls{
-display:flex;
-gap:10px;
-margin:20px 0;
-flex-wrap:wrap;
-}
-
-.search{
-flex:1;
-min-width:250px;
-}
-
-.download{
-background:#2563eb;
-}
-
-.print{
-background:#7c3aed;
-}
-
-.refresh{
-background:#16a34a;
-}
+.refresh{background:#2563eb;color:white}
+.csv{background:#059669;color:white}
+.print{background:#7c3aed;color:white}
 
 .table-wrap{
-overflow-x:auto;
+  overflow-x:auto;
 }
 
 table{
-width:100%;
-border-collapse:collapse;
-background:#fff;
+  width:100%;
+  border-collapse:collapse;
+  min-width:950px;
 }
 
-th,
-td{
-padding:11px;
-border-bottom:1px solid #ddd;
-text-align:left;
-white-space:nowrap;
+th,td{
+  padding:11px;
+  border-bottom:1px solid #e5e7eb;
+  text-align:left;
+  font-size:13px;
 }
 
 th{
-background:#064e3b;
-color:#fff;
+  background:#f9fafb;
 }
 
 .photo{
-width:55px;
-height:55px;
-object-fit:cover;
-border-radius:8px;
+  width:55px;
+  height:55px;
+  object-fit:cover;
+  border-radius:8px;
 }
 
-.view-btn{
-background:#2563eb;
-padding:7px 10px;
-font-size:12px;
+.edit{
+  background:#f59e0b;
+  color:white;
+  margin-right:5px;
 }
 
-.empty{
-text-align:center;
-padding:30px;
-color:#777;
+.delete{
+  background:#dc2626;
+  color:white;
 }
 
-.error{
-color:#dc2626;
-margin-top:10px;
-font-weight:bold;
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  align-items:center;
+  justify-content:center;
+  padding:15px;
 }
 
-@media(max-width:800px){
-
-.dashboard{
-grid-template-columns:repeat(2,1fr);
+.modal-box{
+  background:white;
+  width:100%;
+  max-width:500px;
+  padding:22px;
+  border-radius:12px;
 }
 
-.controls{
-flex-direction:column;
+.modal-box h2{
+  margin-top:0;
 }
 
-.search{
-width:100%;
+.form-group{
+  margin-bottom:12px;
 }
 
+.form-group label{
+  display:block;
+  font-size:13px;
+  margin-bottom:5px;
+  font-weight:bold;
 }
 
-@media print{
-
-body{
-background:#fff;
-padding:0;
+.form-group input,
+.form-group select{
+  width:100%;
+  box-sizing:border-box;
+  padding:10px;
 }
 
-.login-box,
-.controls,
-.logout,
-.dashboard,
-.subtitle{
-display:none !important;
+.save{
+  background:#059669;
+  color:white;
 }
 
-.admin-box{
-box-shadow:none;
-padding:0;
+.cancel{
+  background:#6b7280;
+  color:white;
 }
 
-table{
-font-size:10px;
+.actions{
+  display:flex;
+  gap:8px;
+  margin-top:15px;
 }
 
-th,
-td{
-padding:5px;
+#app{
+  display:none;
 }
 
+@media(max-width:700px){
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
 }
-
 </style>
-
 </head>
-
 
 <body>
 
-
-<!-- LOGIN -->
-
-<div class="login-box" id="loginBox">
-
-<h1>🏏 KMPL</h1>
-
-<div class="subtitle">
-Season 05 Admin Panel
+<div class="header">
+  <h1>KMPL Season 05</h1>
+  <p>Admin Panel</p>
 </div>
 
-<input
-type="password"
-id="password"
-placeholder="Enter Admin Password"
->
+<div class="container">
 
-<button onclick="login()">
-LOGIN
-</button>
-
-<div
-class="error"
-id="loginError">
+<div class="login" id="loginBox">
+  <h2>Admin Login</h2>
+  <input type="password" id="password" placeholder="Enter Password">
+  <button onclick="login()">LOGIN</button>
+  <p id="loginMsg"></p>
 </div>
 
+<div id="app">
+
+<div class="stats">
+  <div class="stat">Total<strong id="total">0</strong></div>
+  <div class="stat">Batsman<strong id="batsman">0</strong></div>
+  <div class="stat">Bowler<strong id="bowler">0</strong></div>
+  <div class="stat">All-Rounder<strong id="allrounder">0</strong></div>
+  <div class="stat">Wicket Keeper<strong id="keeper">0</strong></div>
 </div>
-
-
-
-<!-- ADMIN PANEL -->
-
-<div
-class="container"
-id="adminPanel"
-style="display:none;">
-
-
-<div class="admin-box">
-
-
-<button
-class="logout"
-onclick="logout()">
-LOGOUT
-</button>
-
-
-<h1>
-🏏 KMPL Season 05
-</h1>
-
-<div class="subtitle">
-Player Registration Dashboard
-</div>
-
-
-
-<!-- DASHBOARD -->
 
 <div class="dashboard">
 
+<div class="toolbar">
+  <input
+    type="text"
+    id="search"
+    placeholder="Search name, registration number, mobile, place..."
+    oninput="filterPlayers()">
 
-<div class="card">
-
-<div class="card-title">
-TOTAL PLAYERS
+  <button class="refresh" onclick="loadPlayers()">REFRESH</button>
+  <button class="csv" onclick="downloadCSV()">DOWNLOAD CSV</button>
+  <button class="print" onclick="window.print()">PRINT</button>
 </div>
-
-<div
-class="card-number"
-id="totalPlayers">
-0
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="card-title">
-BATSMAN
-</div>
-
-<div
-class="card-number"
-id="batsmanCount">
-0
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="card-title">
-BOWLER
-</div>
-
-<div
-class="card-number"
-id="bowlerCount">
-0
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="card-title">
-ALL-ROUNDER
-</div>
-
-<div
-class="card-number"
-id="allRounderCount">
-0
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="card-title">
-WICKET KEEPER
-</div>
-
-<div
-class="card-number"
-id="keeperCount">
-0
-</div>
-
-</div>
-
-
-</div>
-
-
-
-<!-- CONTROLS -->
-
-<div class="controls">
-
-
-<input
-class="search"
-type="text"
-id="search"
-placeholder="🔎 Search name, registration no, mobile, place..."
-onkeyup="filterPlayers()"
->
-
-
-<button
-class="refresh"
-onclick="loadPlayers()">
-🔄 REFRESH
-</button>
-
-
-<button
-class="download"
-onclick="downloadCSV()">
-📥 DOWNLOAD CSV
-</button>
-
-
-<button
-class="print"
-onclick="window.print()">
-🖨️ PRINT
-</button>
-
-
-</div>
-
-
-
-<!-- TABLE -->
 
 <div class="table-wrap">
-
-<table>
-
+<table id="playerTable">
 <thead>
-
 <tr>
-
 <th>Photo</th>
-
 <th>Reg. No</th>
-
-<th>Player Name</th>
-
+<th>Name</th>
 <th>Mobile</th>
-
 <th>Place</th>
-
 <th>Role</th>
-
 <th>Batting</th>
-
 <th>Bowling</th>
-
 <th>Previous Team</th>
-
-<th>Photo</th>
-
+<th>Action</th>
 </tr>
-
 </thead>
 
-
-<tbody id="playerTable">
-
-<tr>
-
-<td
-colspan="10"
-class="empty">
-
-Loading...
-
-</td>
-
-</tr>
-
-</tbody>
-
+<tbody id="playerBody"></tbody>
 </table>
-
-</div>
-
-
 </div>
 
 </div>
+</div>
+</div>
 
+<!-- EDIT MODAL -->
 
+<div class="modal" id="editModal">
+<div class="modal-box">
+
+<h2>Edit Player</h2>
+
+<input type="hidden" id="editReg">
+
+<div class="form-group">
+<label>Player Name</label>
+<input id="editName">
+</div>
+
+<div class="form-group">
+<label>Mobile Number</label>
+<input id="editMobile">
+</div>
+
+<div class="form-group">
+<label>Place</label>
+<input id="editPlace">
+</div>
+
+<div class="form-group">
+<label>Playing Role</label>
+<select id="editRole">
+<option value="">Select Role</option>
+<option>Batsman</option>
+<option>Bowler</option>
+<option>All-Rounder</option>
+<option>Wicket Keeper</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Batting Style</label>
+<input id="editBatting">
+</div>
+
+<div class="form-group">
+<label>Bowling Style</label>
+<input id="editBowling">
+</div>
+
+<div class="form-group">
+<label>Previous Team</label>
+<input id="editTeam">
+</div>
+
+<div class="actions">
+<button class="save" onclick="saveEdit()">SAVE CHANGES</button>
+<button class="cancel" onclick="closeModal()">CANCEL</button>
+</div>
+
+</div>
+</div>
 
 <script>
 
-
-const SCRIPT_URL =
+const API_URL =
 "https://script.google.com/macros/s/AKfycbx4_dUYrVPQEQjjWThl0q2vxYTt1SntdunMQbkN7LSV3t3JwiPhJgYTVkJQMJiI8PduSA/exec";
 
-
-const ADMIN_PASSWORD =
-"KMPL@2026";
-
+const ADMIN_PASSWORD = "KMPL@2026";
 
 let players = [];
 
-let displayedPlayers = [];
-
-
-// --------------------------------
-// LOGIN
-// --------------------------------
-
 function login(){
 
-const password =
-document.getElementById("password").value;
+  const password =
+    document.getElementById("password").value;
 
-const error =
-document.getElementById("loginError");
+  if(password !== ADMIN_PASSWORD){
+    document.getElementById("loginMsg").innerText =
+      "Wrong password";
+    return;
+  }
 
+  document.getElementById("loginBox").style.display="none";
+  document.getElementById("app").style.display="block";
 
-if(password === ADMIN_PASSWORD){
-
-document.getElementById("loginBox")
-.style.display = "none";
-
-document.getElementById("adminPanel")
-.style.display = "block";
-
-loadPlayers();
-
-}else{
-
-error.innerText =
-"❌ Incorrect password";
-
+  loadPlayers();
 }
-
-}
-
-
-// --------------------------------
-// LOGOUT
-// --------------------------------
-
-function logout(){
-
-document.getElementById("adminPanel")
-.style.display = "none";
-
-document.getElementById("loginBox")
-.style.display = "block";
-
-document.getElementById("password").value = "";
-
-}
-
-
-// --------------------------------
-// LOAD PLAYERS
-// --------------------------------
 
 async function loadPlayers(){
 
-const table =
-document.getElementById("playerTable");
+  try{
 
-table.innerHTML =
-'<tr><td colspan="10" class="empty">Loading...</td></tr>';
+    const response =
+      await fetch(API_URL + "?password=" +
+      encodeURIComponent(ADMIN_PASSWORD));
 
+    const data = await response.json();
 
-try{
+    if(!data.success){
+      alert("Unable to load players");
+      return;
+    }
 
-const response =
-await fetch(
-SCRIPT_URL +
-"?password=" +
-encodeURIComponent(ADMIN_PASSWORD)
-);
+    players = data.players || [];
 
+    updateStats();
+    displayPlayers(players);
 
-const data =
-await response.json();
+  }catch(error){
 
+    alert("Error loading players");
 
-if(!data.success){
-
-throw new Error(
-data.error || "Unable to load data"
-);
-
+  }
 }
 
+function updateStats(){
 
-players =
-data.players || [];
+  document.getElementById("total").innerText =
+    players.length;
 
-displayedPlayers =
-players.slice();
+  document.getElementById("batsman").innerText =
+    players.filter(p =>
+      String(p.role).toLowerCase().includes("batsman")
+    ).length;
 
+  document.getElementById("bowler").innerText =
+    players.filter(p =>
+      String(p.role).toLowerCase() === "bowler"
+    ).length;
 
-updateDashboard();
+  document.getElementById("allrounder").innerText =
+    players.filter(p =>
+      String(p.role).toLowerCase().includes("all")
+    ).length;
 
-displayPlayers(displayedPlayers);
-
-
-}catch(error){
-
-table.innerHTML =
-'<tr><td colspan="10" class="empty">❌ Failed to load players</td></tr>';
-
+  document.getElementById("keeper").innerText =
+    players.filter(p =>
+      String(p.role).toLowerCase().includes("keeper")
+    ).length;
 }
-
-}
-
-
-// --------------------------------
-// DASHBOARD COUNTS
-// --------------------------------
-
-function updateDashboard(){
-
-document.getElementById("totalPlayers")
-.innerText = players.length;
-
-
-document.getElementById("batsmanCount")
-.innerText =
-players.filter(p =>
-p.role === "Batsman"
-).length;
-
-
-document.getElementById("bowlerCount")
-.innerText =
-players.filter(p =>
-p.role === "Bowler"
-).length;
-
-
-document.getElementById("allRounderCount")
-.innerText =
-players.filter(p =>
-p.role === "All-Rounder"
-).length;
-
-
-document.getElementById("keeperCount")
-.innerText =
-players.filter(p =>
-p.role === "Wicket Keeper"
-).length;
-
-}
-
-
-// --------------------------------
-// DISPLAY PLAYERS
-// --------------------------------
 
 function displayPlayers(list){
 
-const table =
-document.getElementById("playerTable");
+  const body =
+    document.getElementById("playerBody");
 
+  body.innerHTML="";
 
-if(list.length === 0){
+  list.forEach(player => {
 
-table.innerHTML =
-'<tr><td colspan="10" class="empty">No registrations found</td></tr>';
+    const tr = document.createElement("tr");
 
-return;
+    tr.innerHTML = `
+      <td>
+        ${
+          player.photo
+          ? `<a href="${player.photo}" target="_blank">
+               <img class="photo" src="${player.photo}">
+             </a>`
+          : "No Photo"
+        }
+      </td>
 
+      <td>${escapeHTML(player.registrationNumber)}</td>
+      <td>${escapeHTML(player.name)}</td>
+      <td>${escapeHTML(player.mobile)}</td>
+      <td>${escapeHTML(player.place)}</td>
+      <td>${escapeHTML(player.role)}</td>
+      <td>${escapeHTML(player.batting)}</td>
+      <td>${escapeHTML(player.bowling)}</td>
+      <td>${escapeHTML(player.team)}</td>
+
+      <td>
+        <button class="edit"
+          onclick="openEdit('${escapeJS(player.registrationNumber)}')">
+          ✏️ EDIT
+        </button>
+
+        <button class="delete"
+          onclick="deletePlayer('${escapeJS(player.registrationNumber)}')">
+          🗑️ DELETE
+        </button>
+      </td>
+    `;
+
+    body.appendChild(tr);
+  });
 }
-
-
-table.innerHTML = "";
-
-
-list.forEach(function(player){
-
-
-const row =
-document.createElement("tr");
-
-
-let photoHTML = "No Photo";
-
-if(player.photo){
-
-photoHTML =
-'<img src="' +
-escapeHTML(player.photo) +
-'" class="photo">';
-
-}
-
-
-let viewHTML = "-";
-
-if(player.photo){
-
-viewHTML =
-'<a href="' +
-escapeHTML(player.photo) +
-'" target="_blank">' +
-'<button class="view-btn">VIEW</button>' +
-'</a>';
-
-}
-
-
-row.innerHTML = `
-
-<td>${photoHTML}</td>
-
-<td>
-<strong>
-${escapeHTML(player.registrationNumber)}
-</strong>
-</td>
-
-<td>
-${escapeHTML(player.name)}
-</td>
-
-<td>
-${escapeHTML(player.mobile)}
-</td>
-
-<td>
-${escapeHTML(player.place)}
-</td>
-
-<td>
-${escapeHTML(player.role)}
-</td>
-
-<td>
-${escapeHTML(player.batting)}
-</td>
-
-<td>
-${escapeHTML(player.bowling)}
-</td>
-
-<td>
-${escapeHTML(player.team)}
-</td>
-
-<td>
-${viewHTML}
-</td>
-
-`;
-
-
-table.appendChild(row);
-
-});
-
-}
-
-
-// --------------------------------
-// SEARCH
-// --------------------------------
 
 function filterPlayers(){
 
-const search =
-document.getElementById("search")
-.value
-.toLowerCase()
-.trim();
+  const q =
+    document.getElementById("search")
+    .value
+    .toLowerCase();
 
+  const filtered =
+    players.filter(p => {
 
-if(!search){
+      return Object.values(p)
+        .join(" ")
+        .toLowerCase()
+        .includes(q);
 
-displayedPlayers =
-players.slice();
+    });
 
-displayPlayers(displayedPlayers);
-
-return;
-
+  displayPlayers(filtered);
 }
 
+function openEdit(reg){
 
-displayedPlayers =
-players.filter(function(player){
+  const player =
+    players.find(p =>
+      String(p.registrationNumber) === String(reg)
+    );
 
-return (
+  if(!player){
+    alert("Player not found");
+    return;
+  }
 
-String(player.registrationNumber)
-.toLowerCase()
-.includes(search)
+  document.getElementById("editReg").value =
+    player.registrationNumber;
 
-||
+  document.getElementById("editName").value =
+    player.name || "";
 
-String(player.name)
-.toLowerCase()
-.includes(search)
+  document.getElementById("editMobile").value =
+    player.mobile || "";
 
-||
+  document.getElementById("editPlace").value =
+    player.place || "";
 
-String(player.mobile)
-.toLowerCase()
-.includes(search)
+  document.getElementById("editRole").value =
+    player.role || "";
 
-||
+  document.getElementById("editBatting").value =
+    player.batting || "";
 
-String(player.place)
-.toLowerCase()
-.includes(search)
+  document.getElementById("editBowling").value =
+    player.bowling || "";
 
-||
+  document.getElementById("editTeam").value =
+    player.team || "";
 
-String(player.role)
-.toLowerCase()
-.includes(search)
-
-);
-
-});
-
-
-displayPlayers(displayedPlayers);
-
+  document.getElementById("editModal").style.display =
+    "flex";
 }
 
+function closeModal(){
 
-// --------------------------------
-// CSV DOWNLOAD
-// --------------------------------
+  document.getElementById("editModal").style.display =
+    "none";
+}
+
+async function saveEdit(){
+
+  const data = {
+
+    registrationNumber:
+      document.getElementById("editReg").value,
+
+    name:
+      document.getElementById("editName").value,
+
+    mobile:
+      document.getElementById("editMobile").value,
+
+    place:
+      document.getElementById("editPlace").value,
+
+    role:
+      document.getElementById("editRole").value,
+
+    batting:
+      document.getElementById("editBatting").value,
+
+    bowling:
+      document.getElementById("editBowling").value,
+
+    team:
+      document.getElementById("editTeam").value
+  };
+
+  try{
+
+    const response =
+      await fetch(API_URL,{
+        method:"POST",
+        body:JSON.stringify({
+          action:"update",
+          ...data
+        })
+      });
+
+    const result =
+      await response.json();
+
+    if(result.success){
+
+      alert("Player updated successfully");
+
+      closeModal();
+      loadPlayers();
+
+    }else{
+
+      alert(result.error || "Update failed");
+
+    }
+
+  }catch(error){
+
+    alert("Update error");
+
+  }
+}
+
+async function deletePlayer(reg){
+
+  const player =
+    players.find(p =>
+      String(p.registrationNumber) === String(reg)
+    );
+
+  if(!player) return;
+
+  const confirmDelete =
+    confirm(
+      "Delete " + player.name +
+      " (" + player.registrationNumber + ")?"
+    );
+
+  if(!confirmDelete) return;
+
+  try{
+
+    const response =
+      await fetch(API_URL,{
+        method:"POST",
+        body:JSON.stringify({
+          action:"delete",
+          registrationNumber:reg
+        })
+      });
+
+    const result =
+      await response.json();
+
+    if(result.success){
+
+      alert("Player deleted successfully");
+      loadPlayers();
+
+    }else{
+
+      alert(result.error || "Delete failed");
+
+    }
+
+  }catch(error){
+
+    alert("Delete error");
+
+  }
+}
 
 function downloadCSV(){
 
-if(players.length === 0){
+  if(!players.length){
+    alert("No players available");
+    return;
+  }
 
-alert("No player data available.");
+  const headers = [
+    "Registration Number",
+    "Name",
+    "Mobile",
+    "Place",
+    "Role",
+    "Batting",
+    "Bowling",
+    "Previous Team",
+    "Photo"
+  ];
 
-return;
+  const rows =
+    players.map(p => [
+      p.registrationNumber,
+      p.name,
+      p.mobile,
+      p.place,
+      p.role,
+      p.batting,
+      p.bowling,
+      p.team,
+      p.photo
+    ]);
 
+  const csv = [
+    headers,
+    ...rows
+  ]
+  .map(row =>
+    row.map(value =>
+      `"${String(value || "").replace(/"/g,'""')}"`
+    ).join(",")
+  )
+  .join("\n");
+
+  const blob =
+    new Blob([csv],{
+      type:"text/csv;charset=utf-8;"
+    });
+
+  const url =
+    URL.createObjectURL(blob);
+
+  const a =
+    document.createElement("a");
+
+  a.href=url;
+  a.download="KMPL_Season_05_Players.csv";
+  a.click();
+
+  URL.revokeObjectURL(url);
 }
-
-
-let csv = "";
-
-
-csv +=
-"Registration Number,Player Name,Mobile,Place,Playing Role,Batting Style,Bowling Style,Previous Team,Photo\n";
-
-
-players.forEach(function(player){
-
-csv += [
-
-csvEscape(player.registrationNumber),
-
-csvEscape(player.name),
-
-csvEscape(player.mobile),
-
-csvEscape(player.place),
-
-csvEscape(player.role),
-
-csvEscape(player.batting),
-
-csvEscape(player.bowling),
-
-csvEscape(player.team),
-
-csvEscape(player.photo)
-
-].join(",") + "\n";
-
-});
-
-
-const blob =
-new Blob(
-[csv],
-{
-type:"text/csv;charset=utf-8;"
-}
-);
-
-
-const url =
-URL.createObjectURL(blob);
-
-
-const link =
-document.createElement("a");
-
-link.href = url;
-
-link.download =
-"KMPL_Season_05_Player_List.csv";
-
-link.click();
-
-
-URL.revokeObjectURL(url);
-
-}
-
-
-// --------------------------------
-// CSV ESCAPE
-// --------------------------------
-
-function csvEscape(value){
-
-return '"' +
-String(value || "")
-.replace(/"/g,'""') +
-'"';
-
-}
-
-
-// --------------------------------
-// HTML SECURITY
-// --------------------------------
 
 function escapeHTML(value){
 
-return String(value || "")
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
+  return String(value || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
 
+function escapeJS(value){
+
+  return String(value || "")
+    .replace(/\\/g,"\\\\")
+    .replace(/'/g,"\\'");
 }
 
 </script>
 
-
 </body>
-
 </html>
