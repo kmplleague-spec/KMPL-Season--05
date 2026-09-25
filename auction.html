@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KMPL Season 05 - Auction</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#0b1020;
+  color:white;
+}
+
+.header{
+  text-align:center;
+  padding:20px 10px;
+  background:#111827;
+}
+
+.header h1{
+  margin:0;
+  font-size:32px;
+}
+
+.header p{
+  margin:7px 0 0;
+  font-size:16px;
+}
+
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:25px 15px;
+}
+
+.auction-card{
+  background:#151c30;
+  border-radius:20px;
+  padding:25px;
+  box-shadow:0 10px 35px rgba(0,0,0,.4);
+}
+
+.photo-box{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.photo-box img{
+  width:280px;
+  height:330px;
+  object-fit:cover;
+  border-radius:16px;
+  border:4px solid white;
+  background:#222;
+}
+
+.no-photo{
+  width:280px;
+  height:330px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:16px;
+  background:#252b3d;
+  font-size:20px;
+}
+
+.reg{
+  text-align:center;
+  font-size:18px;
+  margin-top:15px;
+}
+
+.name{
+  text-align:center;
+  font-size:38px;
+  font-weight:bold;
+  margin:8px 0;
+}
+
+.details{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin-top:25px;
+}
+
+.detail{
+  background:#20283c;
+  padding:15px;
+  border-radius:10px;
+}
+
+.detail span{
+  display:block;
+  font-size:12px;
+  opacity:.7;
+  margin-bottom:5px;
+}
+
+.detail strong{
+  font-size:17px;
+}
+
+.base-price{
+  text-align:center;
+  margin:25px 0;
+  padding:18px;
+  background:#20283c;
+  border-radius:12px;
+}
+
+.base-price span{
+  display:block;
+  font-size:14px;
+  opacity:.8;
+}
+
+.base-price strong{
+  display:block;
+  font-size:34px;
+  margin-top:5px;
+}
+
+.controls{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:20px;
+}
+
+button{
+  border:0;
+  padding:13px 22px;
+  border-radius:9px;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.previous{
+  background:#374151;
+  color:white;
+}
+
+.next{
+  background:#2563eb;
+  color:white;
+}
+
+.fullscreen{
+  background:#059669;
+  color:white;
+}
+
+.counter{
+  text-align:center;
+  margin-top:20px;
+  font-size:16px;
+  opacity:.8;
+}
+
+.loading{
+  text-align:center;
+  padding:50px;
+  font-size:20px;
+}
+
+@media(max-width:600px){
+
+  .header h1{
+    font-size:25px;
+  }
+
+  .name{
+    font-size:28px;
+  }
+
+  .photo-box img,
+  .no-photo{
+    width:220px;
+    height:270px;
+  }
+
+  .details{
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h1>KMPL SEASON 05</h1>
+  <p>PLAYER AUCTION</p>
+</div>
+
+<div class="container">
+
+<div id="loading" class="loading">
+  Loading Players...
+</div>
+
+<div class="auction-card" id="auctionCard" style="display:none;">
+
+  <div class="photo-box" id="photoBox"></div>
+
+  <div class="reg" id="reg"></div>
+
+  <div class="name" id="name"></div>
+
+  <div class="details">
+
+    <div class="detail">
+      <span>PLACE</span>
+      <strong id="place"></strong>
+    </div>
+
+    <div class="detail">
+      <span>PLAYING ROLE</span>
+      <strong id="role"></strong>
+    </div>
+
+    <div class="detail">
+      <span>BATTING STYLE</span>
+      <strong id="batting"></strong>
+    </div>
+
+    <div class="detail">
+      <span>BOWLING STYLE</span>
+      <strong id="bowling"></strong>
+    </div>
+
+    <div class="detail">
+      <span>PREVIOUS TEAM</span>
+      <strong id="team"></strong>
+    </div>
+
+  </div>
+
+  <div class="base-price">
+    <span>BASE PRICE</span>
+    <strong>₹1,000</strong>
+  </div>
+
+  <div class="controls">
+
+    <button class="previous"
+      onclick="previousPlayer()">
+      ◀ PREVIOUS
+    </button>
+
+    <button class="next"
+      onclick="nextPlayer()">
+      NEXT PLAYER ▶
+    </button>
+
+    <button class="fullscreen"
+      onclick="fullScreen()">
+      ⛶ FULL SCREEN
+    </button>
+
+  </div>
+
+  <div class="counter" id="counter"></div>
+
+</div>
+
+</div>
+
+<script>
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbx4_dUYrVPQEQjjWThl0q2vxYTt1SntdunMQbkN7LSV3t3JwiPhJgYTVkJQMJiI8PduSA/exec";
+
+const ADMIN_PASSWORD = "KMPL@2026";
+
+let players = [];
+let currentIndex = 0;
+
+async function loadPlayers(){
+
+  try{
+
+    const response =
+      await fetch(
+        API_URL +
+        "?password=" +
+        encodeURIComponent(ADMIN_PASSWORD)
+      );
+
+    const data =
+      await response.json();
+
+    if(!data.success){
+
+      document.getElementById("loading")
+        .innerText =
+        "Unable to load players.";
+
+      return;
+    }
+
+    players =
+      data.players || [];
+
+    if(players.length === 0){
+
+      document.getElementById("loading")
+        .innerText =
+        "No players registered yet.";
+
+      return;
+    }
+
+    document.getElementById("loading")
+      .style.display="none";
+
+    document.getElementById("auctionCard")
+      .style.display="block";
+
+    showPlayer();
+
+  }catch(error){
+
+    document.getElementById("loading")
+      .innerText =
+      "Error loading players.";
+
+  }
+}
+
+function showPlayer(){
+
+  const player =
+    players[currentIndex];
+
+  if(!player) return;
+
+  const photoBox =
+    document.getElementById("photoBox");
+
+  if(player.photo){
+
+    photoBox.innerHTML =
+      `<img src="${player.photo}"
+       alt="Player Photo">`;
+
+  }else{
+
+    photoBox.innerHTML =
+      `<div class="no-photo">
+        No Photo
+       </div>`;
+  }
+
+  document.getElementById("reg")
+    .innerText =
+    player.registrationNumber || "";
+
+  document.getElementById("name")
+    .innerText =
+    player.name || "";
+
+  document.getElementById("place")
+    .innerText =
+    player.place || "-";
+
+  document.getElementById("role")
+    .innerText =
+    player.role || "-";
+
+  document.getElementById("batting")
+    .innerText =
+    player.batting || "-";
+
+  document.getElementById("bowling")
+    .innerText =
+    player.bowling || "-";
+
+  document.getElementById("team")
+    .innerText =
+    player.team || "-";
+
+  document.getElementById("counter")
+    .innerText =
+    "Player " +
+    (currentIndex + 1) +
+    " of " +
+    players.length;
+}
+
+function nextPlayer(){
+
+  if(currentIndex <
+     players.length - 1){
+
+    currentIndex++;
+    showPlayer();
+
+  }else{
+
+    alert("This is the last player.");
+  }
+}
+
+function previousPlayer(){
+
+  if(currentIndex > 0){
+
+    currentIndex--;
+    showPlayer();
+
+  }else{
+
+    alert("This is the first player.");
+  }
+}
+
+function fullScreen(){
+
+  if(document.documentElement.requestFullscreen){
+
+    document.documentElement.requestFullscreen();
+
+  }else{
+
+    alert("Fullscreen is not supported.");
+  }
+}
+
+loadPlayers();
+
+</script>
+
+</body>
+</html>
