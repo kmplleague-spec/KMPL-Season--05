@@ -21,11 +21,11 @@ font-family:Arial,sans-serif;
 
 body{
 background:#f2f4f7;
-padding:20px;
+padding:15px;
 }
 
 .container{
-max-width:1100px;
+max-width:1200px;
 margin:auto;
 }
 
@@ -43,7 +43,8 @@ margin:60px auto;
 text-align:center;
 }
 
-h1{
+.login-box h1,
+.admin-box h1{
 color:#064e3b;
 margin-bottom:8px;
 }
@@ -53,24 +54,32 @@ color:#666;
 margin-bottom:25px;
 }
 
-input{
+input,
+select{
 width:100%;
-padding:14px;
+padding:13px;
 border:1px solid #ccc;
 border-radius:9px;
-font-size:16px;
+font-size:15px;
+}
+
+.login-box input{
 margin-bottom:15px;
 }
 
 button{
 border:0;
 border-radius:9px;
-padding:13px 18px;
+padding:12px 16px;
 background:#16a34a;
 color:#fff;
-font-size:15px;
+font-size:14px;
 font-weight:bold;
 cursor:pointer;
+}
+
+button:hover{
+opacity:.9;
 }
 
 .logout{
@@ -78,45 +87,54 @@ background:#dc2626;
 float:right;
 }
 
-.refresh{
-margin-bottom:20px;
+.dashboard{
+display:grid;
+grid-template-columns:repeat(5,1fr);
+gap:12px;
+margin:20px 0;
 }
 
-.error{
-color:#dc2626;
-margin-top:10px;
+.card{
+background:#ecfdf5;
+padding:18px;
+border-radius:12px;
+text-align:center;
+}
+
+.card-title{
+font-size:13px;
+color:#666;
+}
+
+.card-number{
+font-size:28px;
 font-weight:bold;
+color:#064e3b;
+margin-top:6px;
 }
 
-.stats{
+.controls{
 display:flex;
-gap:15px;
+gap:10px;
 margin:20px 0;
 flex-wrap:wrap;
 }
 
-.stat{
-background:#ecfdf5;
-padding:20px;
-border-radius:12px;
-flex:1;
-min-width:180px;
-}
-
-.stat-title{
-font-size:14px;
-color:#666;
-}
-
-.stat-number{
-font-size:30px;
-font-weight:bold;
-color:#064e3b;
-margin-top:5px;
-}
-
 .search{
-margin:20px 0;
+flex:1;
+min-width:250px;
+}
+
+.download{
+background:#2563eb;
+}
+
+.print{
+background:#7c3aed;
+}
+
+.refresh{
+background:#16a34a;
 }
 
 .table-wrap{
@@ -131,7 +149,7 @@ background:#fff;
 
 th,
 td{
-padding:12px;
+padding:11px;
 border-bottom:1px solid #ddd;
 text-align:left;
 white-space:nowrap;
@@ -151,8 +169,8 @@ border-radius:8px;
 
 .view-btn{
 background:#2563eb;
-padding:8px 12px;
-font-size:13px;
+padding:7px 10px;
+font-size:12px;
 }
 
 .empty{
@@ -161,8 +179,57 @@ padding:30px;
 color:#777;
 }
 
-#adminPanel{
-display:none;
+.error{
+color:#dc2626;
+margin-top:10px;
+font-weight:bold;
+}
+
+@media(max-width:800px){
+
+.dashboard{
+grid-template-columns:repeat(2,1fr);
+}
+
+.controls{
+flex-direction:column;
+}
+
+.search{
+width:100%;
+}
+
+}
+
+@media print{
+
+body{
+background:#fff;
+padding:0;
+}
+
+.login-box,
+.controls,
+.logout,
+.dashboard,
+.subtitle{
+display:none !important;
+}
+
+.admin-box{
+box-shadow:none;
+padding:0;
+}
+
+table{
+font-size:10px;
+}
+
+th,
+td{
+padding:5px;
+}
+
 }
 
 </style>
@@ -193,15 +260,21 @@ placeholder="Enter Admin Password"
 LOGIN
 </button>
 
-<div class="error" id="loginError"></div>
+<div
+class="error"
+id="loginError">
+</div>
 
 </div>
 
 
+
 <!-- ADMIN PANEL -->
 
-<div class="container"
-id="adminPanel">
+<div
+class="container"
+id="adminPanel"
+style="display:none;">
 
 
 <div class="admin-box">
@@ -219,27 +292,107 @@ LOGOUT
 </h1>
 
 <div class="subtitle">
-Player Registration Admin Panel
+Player Registration Dashboard
 </div>
 
 
-<div class="stats">
 
-<div class="stat">
+<!-- DASHBOARD -->
 
-<div class="stat-title">
-Total Registered Players
+<div class="dashboard">
+
+
+<div class="card">
+
+<div class="card-title">
+TOTAL PLAYERS
 </div>
 
 <div
-class="stat-number"
+class="card-number"
 id="totalPlayers">
 0
 </div>
 
 </div>
 
+
+<div class="card">
+
+<div class="card-title">
+BATSMAN
 </div>
+
+<div
+class="card-number"
+id="batsmanCount">
+0
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-title">
+BOWLER
+</div>
+
+<div
+class="card-number"
+id="bowlerCount">
+0
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-title">
+ALL-ROUNDER
+</div>
+
+<div
+class="card-number"
+id="allRounderCount">
+0
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-title">
+WICKET KEEPER
+</div>
+
+<div
+class="card-number"
+id="keeperCount">
+0
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<!-- CONTROLS -->
+
+<div class="controls">
+
+
+<input
+class="search"
+type="text"
+id="search"
+placeholder="🔎 Search name, registration no, mobile, place..."
+onkeyup="filterPlayers()"
+>
 
 
 <button
@@ -249,14 +402,25 @@ onclick="loadPlayers()">
 </button>
 
 
-<input
-class="search"
-type="text"
-id="search"
-placeholder="🔎 Search by name, registration number, mobile or place..."
-onkeyup="filterPlayers()"
->
+<button
+class="download"
+onclick="downloadCSV()">
+📥 DOWNLOAD CSV
+</button>
 
+
+<button
+class="print"
+onclick="window.print()">
+🖨️ PRINT
+</button>
+
+
+</div>
+
+
+
+<!-- TABLE -->
 
 <div class="table-wrap">
 
@@ -298,7 +462,9 @@ onkeyup="filterPlayers()"
 <td
 colspan="10"
 class="empty">
+
 Loading...
+
 </td>
 
 </tr>
@@ -315,6 +481,7 @@ Loading...
 </div>
 
 
+
 <script>
 
 
@@ -327,6 +494,8 @@ const ADMIN_PASSWORD =
 
 
 let players = [];
+
+let displayedPlayers = [];
 
 
 // --------------------------------
@@ -394,7 +563,6 @@ table.innerHTML =
 
 try{
 
-
 const response =
 await fetch(
 SCRIPT_URL +
@@ -416,15 +584,16 @@ data.error || "Unable to load data"
 }
 
 
-players = data.players || [];
+players =
+data.players || [];
+
+displayedPlayers =
+players.slice();
 
 
-document.getElementById("totalPlayers")
-.innerText =
-players.length;
+updateDashboard();
 
-
-displayPlayers(players);
+displayPlayers(displayedPlayers);
 
 
 }catch(error){
@@ -433,6 +602,46 @@ table.innerHTML =
 '<tr><td colspan="10" class="empty">❌ Failed to load players</td></tr>';
 
 }
+
+}
+
+
+// --------------------------------
+// DASHBOARD COUNTS
+// --------------------------------
+
+function updateDashboard(){
+
+document.getElementById("totalPlayers")
+.innerText = players.length;
+
+
+document.getElementById("batsmanCount")
+.innerText =
+players.filter(p =>
+p.role === "Batsman"
+).length;
+
+
+document.getElementById("bowlerCount")
+.innerText =
+players.filter(p =>
+p.role === "Bowler"
+).length;
+
+
+document.getElementById("allRounderCount")
+.innerText =
+players.filter(p =>
+p.role === "All-Rounder"
+).length;
+
+
+document.getElementById("keeperCount")
+.innerText =
+players.filter(p =>
+p.role === "Wicket Keeper"
+).length;
 
 }
 
@@ -467,36 +676,28 @@ const row =
 document.createElement("tr");
 
 
-let photoHTML = "";
+let photoHTML = "No Photo";
 
 if(player.photo){
 
 photoHTML =
 '<img src="' +
-player.photo +
+escapeHTML(player.photo) +
 '" class="photo">';
-
-}else{
-
-photoHTML = "No Photo";
 
 }
 
 
-let viewHTML = "";
+let viewHTML = "-";
 
 if(player.photo){
 
 viewHTML =
 '<a href="' +
-player.photo +
+escapeHTML(player.photo) +
 '" target="_blank">' +
 '<button class="view-btn">VIEW</button>' +
 '</a>';
-
-}else{
-
-viewHTML = "-";
 
 }
 
@@ -568,14 +769,17 @@ document.getElementById("search")
 
 if(!search){
 
-displayPlayers(players);
+displayedPlayers =
+players.slice();
+
+displayPlayers(displayedPlayers);
 
 return;
 
 }
 
 
-const filtered =
+displayedPlayers =
 players.filter(function(player){
 
 return (
@@ -613,13 +817,105 @@ String(player.role)
 });
 
 
-displayPlayers(filtered);
+displayPlayers(displayedPlayers);
 
 }
 
 
 // --------------------------------
-// SECURITY
+// CSV DOWNLOAD
+// --------------------------------
+
+function downloadCSV(){
+
+if(players.length === 0){
+
+alert("No player data available.");
+
+return;
+
+}
+
+
+let csv = "";
+
+
+csv +=
+"Registration Number,Player Name,Mobile,Place,Playing Role,Batting Style,Bowling Style,Previous Team,Photo\n";
+
+
+players.forEach(function(player){
+
+csv += [
+
+csvEscape(player.registrationNumber),
+
+csvEscape(player.name),
+
+csvEscape(player.mobile),
+
+csvEscape(player.place),
+
+csvEscape(player.role),
+
+csvEscape(player.batting),
+
+csvEscape(player.bowling),
+
+csvEscape(player.team),
+
+csvEscape(player.photo)
+
+].join(",") + "\n";
+
+});
+
+
+const blob =
+new Blob(
+[csv],
+{
+type:"text/csv;charset=utf-8;"
+}
+);
+
+
+const url =
+URL.createObjectURL(blob);
+
+
+const link =
+document.createElement("a");
+
+link.href = url;
+
+link.download =
+"KMPL_Season_05_Player_List.csv";
+
+link.click();
+
+
+URL.revokeObjectURL(url);
+
+}
+
+
+// --------------------------------
+// CSV ESCAPE
+// --------------------------------
+
+function csvEscape(value){
+
+return '"' +
+String(value || "")
+.replace(/"/g,'""') +
+'"';
+
+}
+
+
+// --------------------------------
+// HTML SECURITY
 // --------------------------------
 
 function escapeHTML(value){
