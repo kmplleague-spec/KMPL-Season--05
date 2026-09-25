@@ -100,6 +100,26 @@ button:disabled{
 background:#999;
 }
 
+.whatsapp{
+background:#25D366;
+display:none;
+}
+
+.success-box{
+display:none;
+margin-top:20px;
+padding:20px;
+background:#ecfdf5;
+border-radius:12px;
+text-align:center;
+}
+
+.reg-number{
+font-size:25px;
+font-weight:bold;
+margin-top:8px;
+}
+
 .note{
 text-align:center;
 color:#777;
@@ -128,6 +148,7 @@ font-weight:bold;
 <body>
 
 <div class="container">
+
 
 <div class="header">
 
@@ -261,6 +282,26 @@ SUBMIT REGISTRATION
 <div id="message"></div>
 
 
+<div class="success-box" id="successBox">
+
+<div>🎉 Registration Successful!</div>
+
+<div class="reg-number" id="regNumber"></div>
+
+<div id="playerName"></div>
+
+
+<button
+type="button"
+class="whatsapp"
+id="whatsappBtn"
+>
+📱 CONFIRM ON WHATSAPP
+</button>
+
+</div>
+
+
 <div class="note">
 
 * Please enter correct information before submitting.
@@ -288,7 +329,7 @@ const SCRIPT_URL =
 
 
 // --------------------------------
-// Compress Player Photo
+// Compress Image
 // --------------------------------
 
 function compressImage(file){
@@ -303,12 +344,12 @@ const img = new Image();
 
 img.onload = function(){
 
-const canvas = document.createElement("canvas");
+const canvas =
+document.createElement("canvas");
 
 const maxSize = 1200;
 
 let width = img.width;
-
 let height = img.height;
 
 
@@ -316,7 +357,8 @@ if(width > height){
 
 if(width > maxSize){
 
-height = height * maxSize / width;
+height =
+height * maxSize / width;
 
 width = maxSize;
 
@@ -326,7 +368,8 @@ width = maxSize;
 
 if(height > maxSize){
 
-width = width * maxSize / height;
+width =
+width * maxSize / height;
 
 height = maxSize;
 
@@ -336,11 +379,11 @@ height = maxSize;
 
 
 canvas.width = width;
-
 canvas.height = height;
 
 
-const ctx = canvas.getContext("2d");
+const ctx =
+canvas.getContext("2d");
 
 ctx.drawImage(
 img,
@@ -380,7 +423,7 @@ reader.readAsDataURL(file);
 
 
 // --------------------------------
-// Registration Submit
+// Submit Registration
 // --------------------------------
 
 document
@@ -396,6 +439,9 @@ document.getElementById("submitBtn");
 const message =
 document.getElementById("message");
 
+const successBox =
+document.getElementById("successBox");
+
 
 button.disabled = true;
 
@@ -403,6 +449,7 @@ button.innerText = "SUBMITTING...";
 
 message.innerText = "";
 
+successBox.style.display = "none";
 
 
 try{
@@ -414,18 +461,16 @@ document.getElementById("photo").files[0];
 
 if(!photoFile){
 
-throw new Error("Please select a player photo.");
+throw new Error(
+"Please select a player photo."
+);
 
 }
 
 
-// Compress photo
-
 const compressedPhoto =
 await compressImage(photoFile);
 
-
-// Convert photo to Base64
 
 const reader =
 new FileReader();
@@ -476,6 +521,7 @@ photoType:
 try{
 
 
+const response =
 await fetch(
 
 SCRIPT_URL,
@@ -483,8 +529,6 @@ SCRIPT_URL,
 {
 
 method:"POST",
-
-mode:"no-cors",
 
 headers:{
 
@@ -501,10 +545,81 @@ JSON.stringify(data)
 );
 
 
-message.style.color="green";
+const result =
+await response.json();
+
+
+if(!result.success){
+
+throw new Error(
+result.error ||
+"Registration failed"
+);
+
+}
+
+
+// --------------------------------
+// Show Registration Number
+// --------------------------------
+
+message.style.color = "green";
 
 message.innerText =
-"✅ Registration submitted successfully!";
+"✅ Registration completed successfully!";
+
+
+document.getElementById("regNumber").innerText =
+"Registration No: " +
+result.registrationNumber;
+
+
+document.getElementById("playerName").innerText =
+"Player: " + result.name;
+
+
+successBox.style.display = "block";
+
+
+// --------------------------------
+// WhatsApp Button
+// --------------------------------
+
+const whatsappBtn =
+document.getElementById("whatsappBtn");
+
+whatsappBtn.style.display = "block";
+
+
+whatsappBtn.onclick = function(){
+
+const phone =
+result.mobile.replace(/\D/g,"");
+
+
+const messageText =
+"🏏 KMPL SEASON 05\n\n" +
+"Registration Successful! 🎉\n\n" +
+"Player Name: " +
+result.name +
+"\nRegistration No: " +
+result.registrationNumber +
+"\n\nThank you for registering with KMPL.";
+
+
+const whatsappUrl =
+"https://wa.me/91" +
+phone +
+"?text=" +
+encodeURIComponent(messageText);
+
+
+window.open(
+whatsappUrl,
+"_blank"
+);
+
+};
 
 
 document
@@ -514,13 +629,12 @@ document
 
 }catch(error){
 
-message.style.color="red";
+message.style.color = "red";
 
 message.innerText =
-"❌ Submission failed. Please try again.";
+"❌ " + error.message;
 
 }
-
 
 button.disabled = false;
 
@@ -536,18 +650,15 @@ reader.readAsDataURL(compressedPhoto);
 
 }catch(error){
 
-
-message.style.color="red";
+message.style.color = "red";
 
 message.innerText =
 "❌ " + error.message;
-
 
 button.disabled = false;
 
 button.innerText =
 "SUBMIT REGISTRATION";
-
 
 }
 
