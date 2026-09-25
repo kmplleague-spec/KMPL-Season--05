@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>KMPL Season 05 - Admin Panel</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f2f4f7;
+padding:20px;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+}
+
+.login-box,
+.admin-box{
+background:#fff;
+border-radius:18px;
+padding:25px;
+box-shadow:0 8px 30px rgba(0,0,0,.12);
+}
+
+.login-box{
+max-width:450px;
+margin:60px auto;
+text-align:center;
+}
+
+h1{
+color:#064e3b;
+margin-bottom:8px;
+}
+
+.subtitle{
+color:#666;
+margin-bottom:25px;
+}
+
+input{
+width:100%;
+padding:14px;
+border:1px solid #ccc;
+border-radius:9px;
+font-size:16px;
+margin-bottom:15px;
+}
+
+button{
+border:0;
+border-radius:9px;
+padding:13px 18px;
+background:#16a34a;
+color:#fff;
+font-size:15px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.logout{
+background:#dc2626;
+float:right;
+}
+
+.refresh{
+margin-bottom:20px;
+}
+
+.error{
+color:#dc2626;
+margin-top:10px;
+font-weight:bold;
+}
+
+.stats{
+display:flex;
+gap:15px;
+margin:20px 0;
+flex-wrap:wrap;
+}
+
+.stat{
+background:#ecfdf5;
+padding:20px;
+border-radius:12px;
+flex:1;
+min-width:180px;
+}
+
+.stat-title{
+font-size:14px;
+color:#666;
+}
+
+.stat-number{
+font-size:30px;
+font-weight:bold;
+color:#064e3b;
+margin-top:5px;
+}
+
+.search{
+margin:20px 0;
+}
+
+.table-wrap{
+overflow-x:auto;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+background:#fff;
+}
+
+th,
+td{
+padding:12px;
+border-bottom:1px solid #ddd;
+text-align:left;
+white-space:nowrap;
+}
+
+th{
+background:#064e3b;
+color:#fff;
+}
+
+.photo{
+width:55px;
+height:55px;
+object-fit:cover;
+border-radius:8px;
+}
+
+.view-btn{
+background:#2563eb;
+padding:8px 12px;
+font-size:13px;
+}
+
+.empty{
+text-align:center;
+padding:30px;
+color:#777;
+}
+
+#adminPanel{
+display:none;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- LOGIN -->
+
+<div class="login-box" id="loginBox">
+
+<h1>🏏 KMPL</h1>
+
+<div class="subtitle">
+Season 05 Admin Panel
+</div>
+
+<input
+type="password"
+id="password"
+placeholder="Enter Admin Password"
+>
+
+<button onclick="login()">
+LOGIN
+</button>
+
+<div class="error" id="loginError"></div>
+
+</div>
+
+
+<!-- ADMIN PANEL -->
+
+<div class="container"
+id="adminPanel">
+
+
+<div class="admin-box">
+
+
+<button
+class="logout"
+onclick="logout()">
+LOGOUT
+</button>
+
+
+<h1>
+🏏 KMPL Season 05
+</h1>
+
+<div class="subtitle">
+Player Registration Admin Panel
+</div>
+
+
+<div class="stats">
+
+<div class="stat">
+
+<div class="stat-title">
+Total Registered Players
+</div>
+
+<div
+class="stat-number"
+id="totalPlayers">
+0
+</div>
+
+</div>
+
+</div>
+
+
+<button
+class="refresh"
+onclick="loadPlayers()">
+🔄 REFRESH
+</button>
+
+
+<input
+class="search"
+type="text"
+id="search"
+placeholder="🔎 Search by name, registration number, mobile or place..."
+onkeyup="filterPlayers()"
+>
+
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Photo</th>
+
+<th>Reg. No</th>
+
+<th>Player Name</th>
+
+<th>Mobile</th>
+
+<th>Place</th>
+
+<th>Role</th>
+
+<th>Batting</th>
+
+<th>Bowling</th>
+
+<th>Previous Team</th>
+
+<th>Photo</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="playerTable">
+
+<tr>
+
+<td
+colspan="10"
+class="empty">
+Loading...
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<script>
+
+
+const SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbx4_dUYrVPQEQjjWThl0q2vxYTt1SntdunMQbkN7LSV3t3JwiPhJgYTVkJQMJiI8PduSA/exec";
+
+
+const ADMIN_PASSWORD =
+"KMPL@2026";
+
+
+let players = [];
+
+
+// --------------------------------
+// LOGIN
+// --------------------------------
+
+function login(){
+
+const password =
+document.getElementById("password").value;
+
+const error =
+document.getElementById("loginError");
+
+
+if(password === ADMIN_PASSWORD){
+
+document.getElementById("loginBox")
+.style.display = "none";
+
+document.getElementById("adminPanel")
+.style.display = "block";
+
+loadPlayers();
+
+}else{
+
+error.innerText =
+"❌ Incorrect password";
+
+}
+
+}
+
+
+// --------------------------------
+// LOGOUT
+// --------------------------------
+
+function logout(){
+
+document.getElementById("adminPanel")
+.style.display = "none";
+
+document.getElementById("loginBox")
+.style.display = "block";
+
+document.getElementById("password").value = "";
+
+}
+
+
+// --------------------------------
+// LOAD PLAYERS
+// --------------------------------
+
+async function loadPlayers(){
+
+const table =
+document.getElementById("playerTable");
+
+table.innerHTML =
+'<tr><td colspan="10" class="empty">Loading...</td></tr>';
+
+
+try{
+
+
+const response =
+await fetch(
+SCRIPT_URL +
+"?password=" +
+encodeURIComponent(ADMIN_PASSWORD)
+);
+
+
+const data =
+await response.json();
+
+
+if(!data.success){
+
+throw new Error(
+data.error || "Unable to load data"
+);
+
+}
+
+
+players = data.players || [];
+
+
+document.getElementById("totalPlayers")
+.innerText =
+players.length;
+
+
+displayPlayers(players);
+
+
+}catch(error){
+
+table.innerHTML =
+'<tr><td colspan="10" class="empty">❌ Failed to load players</td></tr>';
+
+}
+
+}
+
+
+// --------------------------------
+// DISPLAY PLAYERS
+// --------------------------------
+
+function displayPlayers(list){
+
+const table =
+document.getElementById("playerTable");
+
+
+if(list.length === 0){
+
+table.innerHTML =
+'<tr><td colspan="10" class="empty">No registrations found</td></tr>';
+
+return;
+
+}
+
+
+table.innerHTML = "";
+
+
+list.forEach(function(player){
+
+
+const row =
+document.createElement("tr");
+
+
+let photoHTML = "";
+
+if(player.photo){
+
+photoHTML =
+'<img src="' +
+player.photo +
+'" class="photo">';
+
+}else{
+
+photoHTML = "No Photo";
+
+}
+
+
+let viewHTML = "";
+
+if(player.photo){
+
+viewHTML =
+'<a href="' +
+player.photo +
+'" target="_blank">' +
+'<button class="view-btn">VIEW</button>' +
+'</a>';
+
+}else{
+
+viewHTML = "-";
+
+}
+
+
+row.innerHTML = `
+
+<td>${photoHTML}</td>
+
+<td>
+<strong>
+${escapeHTML(player.registrationNumber)}
+</strong>
+</td>
+
+<td>
+${escapeHTML(player.name)}
+</td>
+
+<td>
+${escapeHTML(player.mobile)}
+</td>
+
+<td>
+${escapeHTML(player.place)}
+</td>
+
+<td>
+${escapeHTML(player.role)}
+</td>
+
+<td>
+${escapeHTML(player.batting)}
+</td>
+
+<td>
+${escapeHTML(player.bowling)}
+</td>
+
+<td>
+${escapeHTML(player.team)}
+</td>
+
+<td>
+${viewHTML}
+</td>
+
+`;
+
+
+table.appendChild(row);
+
+});
+
+}
+
+
+// --------------------------------
+// SEARCH
+// --------------------------------
+
+function filterPlayers(){
+
+const search =
+document.getElementById("search")
+.value
+.toLowerCase()
+.trim();
+
+
+if(!search){
+
+displayPlayers(players);
+
+return;
+
+}
+
+
+const filtered =
+players.filter(function(player){
+
+return (
+
+String(player.registrationNumber)
+.toLowerCase()
+.includes(search)
+
+||
+
+String(player.name)
+.toLowerCase()
+.includes(search)
+
+||
+
+String(player.mobile)
+.toLowerCase()
+.includes(search)
+
+||
+
+String(player.place)
+.toLowerCase()
+.includes(search)
+
+||
+
+String(player.role)
+.toLowerCase()
+.includes(search)
+
+);
+
+});
+
+
+displayPlayers(filtered);
+
+}
+
+
+// --------------------------------
+// SECURITY
+// --------------------------------
+
+function escapeHTML(value){
+
+return String(value || "")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+</script>
+
+
+</body>
+
+</html>
