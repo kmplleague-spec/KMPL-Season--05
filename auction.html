@@ -1,6 +1,7 @@
-<!DOCTYPE html><html lang="en"><head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>KMPL Season 05 Auction</title><style>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>KMPL Season 05 Auction</title><style>
 
 *{
   box-sizing:border-box;
@@ -156,6 +157,15 @@ button{
   min-width:140px;
 }
 
+.sync-btn{
+  background:#f39c12;
+  color:#000;
+  width:100%;
+  max-width:500px;
+  font-size:18px;
+  padding:17px;
+}
+
 .fullscreen{
   background:#444;
   color:white;
@@ -176,6 +186,31 @@ button{
   text-align:center;
   padding:50px;
   font-size:20px;
+}
+
+.empty{
+  text-align:center;
+  padding:40px 20px;
+  color:#aaa;
+  font-size:18px;
+}
+
+.round-box{
+  background:#181818;
+  border-radius:15px;
+  padding:15px;
+  margin-bottom:15px;
+  text-align:center;
+}
+
+.round-title{
+  font-size:18px;
+  font-weight:bold;
+}
+
+.round-count{
+  color:#aaa;
+  margin-top:5px;
 }
 
 .modal{
@@ -218,6 +253,48 @@ button{
   color:white;
 }
 
+.unsold-list{
+  display:none;
+  background:#1c1c1c;
+  border-radius:18px;
+  padding:20px;
+  margin-top:20px;
+}
+
+.unsold-list h2{
+  text-align:center;
+  margin-top:0;
+}
+
+.unsold-item{
+  background:#292929;
+  border-radius:10px;
+  padding:12px;
+  margin:8px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.unsold-item button{
+  background:#f39c12;
+  color:#000;
+  margin:0;
+  padding:10px 15px;
+}
+
+.finish-box{
+  text-align:center;
+  padding:30px 15px;
+  background:#1c1c1c;
+  border-radius:18px;
+}
+
+.finish-box h2{
+  margin-top:0;
+}
+
 @media(max-width:600px){
 
   .container{
@@ -249,158 +326,309 @@ button{
     margin:5px 0;
   }
 
+  .unsold-item{
+    display:block;
+    text-align:center;
+  }
+
+  .unsold-item button{
+    width:100%;
+    margin-top:8px;
+  }
+
 }
 
-</style></head><body><div class="header">
-  <h1>KMPL SEASON 05</h1>
-  <p>PLAYER AUCTION</p>
-</div><div class="container">  <div id="loading" class="loading">
+</style></head><body><div class="header">  <h1>KMPL SEASON 05</h1>  <p>PLAYER AUCTION</p></div><div class="container">  <!-- ROUND STATUS -->  <div id="roundBox" class="round-box"><div id="roundTitle" class="round-title">
+  FIRST AUCTION ROUND
+</div>
+
+<div id="roundCount" class="round-count">
+  Loading players...
+</div>
+
+  </div>  <!-- LOADING -->  <div id="loading" class="loading">
     Loading players...
-  </div>  <div id="auctionCard"
+  </div>  <!-- AUCTION CARD -->  <div id="auctionCard"
        class="card"
        style="display:none;"><div class="photo-box">
+
   <img id="playerPhoto"
        src=""
        alt="Player Photo"
        onerror="photoError()">
+
 </div>
 
-<div id="playerReg" class="reg"></div>
 
-<div id="playerName" class="player-name"></div>
+<div id="playerReg"
+     class="reg">
+</div>
 
-<div id="playerPlace" class="place"></div>
+
+<div id="playerName"
+     class="player-name">
+</div>
+
+
+<div id="playerPlace"
+     class="place">
+</div>
+
 
 <div class="details">
 
+
   <div class="detail">
+
     <span>Playing Role</span>
-    <strong id="playerRole">-</strong>
+
+    <strong id="playerRole">
+      -
+    </strong>
+
   </div>
 
+
   <div class="detail">
+
     <span>Batting Style</span>
-    <strong id="playerBatting">-</strong>
+
+    <strong id="playerBatting">
+      -
+    </strong>
+
   </div>
 
+
   <div class="detail">
+
     <span>Bowling Style</span>
-    <strong id="playerBowling">-</strong>
+
+    <strong id="playerBowling">
+      -
+    </strong>
+
   </div>
 
+
   <div class="detail">
+
     <span>Previous Team</span>
-    <strong id="playerTeam">-</strong>
+
+    <strong id="playerTeam">
+      -
+    </strong>
+
   </div>
+
 
 </div>
 
+
 <div class="auction-box">
+
 
   <div class="base">
     Base Price: ₹1,000
   </div>
 
+
   <div class="bid-label">
     Current Bid
   </div>
 
-  <div id="currentBid" class="current-bid">
+
+  <div id="currentBid"
+       class="current-bid">
+
     ₹1,000
+
   </div>
+
 
   <button class="bid-btn"
           onclick="decreaseBid()">
+
     − ₹1,000
+
   </button>
+
 
   <button class="bid-btn"
           onclick="increaseBid()">
+
     + ₹1,000
+
   </button>
 
+
   <br>
+
 
   <button class="sold-btn"
           onclick="openSoldModal()">
+
     SOLD
+
   </button>
+
 
   <button class="unsold-btn"
           onclick="markUnsold()">
+
     UNSOLD
+
   </button>
 
-  <div id="auctionStatus" class="status"></div>
+
+  <div id="auctionStatus"
+       class="status">
+  </div>
+
 
 </div>
+
 
 <div class="nav">
 
+
   <button class="prev-btn"
           onclick="previousPlayer()">
+
     ◀ PREVIOUS
+
   </button>
+
 
   <button class="next-btn"
           onclick="nextPlayer()">
+
     NEXT ▶
+
   </button>
+
 
   <br>
 
+
   <button class="fullscreen"
           onclick="toggleFullscreen()">
+
     ⛶ FULL SCREEN
+
+  </button>
+
+
+</div>
+
+  </div>  <!-- SYNC UNSOLD -->  <div id="syncBox"
+       style="display:none;"><div class="finish-box">
+
+  <h2>FIRST AUCTION COMPLETED</h2>
+
+  <p>
+    All players in the first auction round
+    have been processed.
+  </p>
+
+  <p id="unsoldSummary">
+  </p>
+
+  <button class="sync-btn"
+          onclick="syncUnsoldPlayers()">
+
+    🔄 SYNC UNSOLD PLAYERS
+
   </button>
 
 </div>
 
-  </div></div><!-- SOLD TEAM MODAL --><div id="soldModal" class="modal">  <div class="modal-box"><h2>Select Winning Team</h2>
+  </div>  <!-- UNSOLD LIST -->  <div id="unsoldList"
+       class="unsold-list"><h2>UNSOLD PLAYERS</h2>
+
+<div id="unsoldItems"></div>
+
+  </div>  <!-- FINAL COMPLETE -->  <div id="completedBox"
+       class="finish-box"
+       style="display:none;"><h2>🏆 AUCTION COMPLETED</h2>
+
+<p>
+  All players have completed the auction.
+</p>
+
+  </div></div><!-- SOLD TEAM MODAL --><div id="soldModal"
+     class="modal">  <div class="modal-box"><h2>
+  Select Winning Team
+</h2>
+
 
 <button class="team"
         onclick="confirmSold('VOLCANO VARANJOOR')">
+
   VOLCANO VARANJOOR
+
 </button>
+
 
 <button class="team"
         onclick="confirmSold('DRAGON BOOSTER')">
+
   DRAGON BOOSTER
+
 </button>
+
 
 <button class="team"
         onclick="confirmSold('RAJEEVIJI KALLIOT')">
+
   RAJEEVIJI KALLIOT
+
 </button>
+
 
 <button class="team"
         onclick="confirmSold('ACADEMY BOYS BANDHADUKA')">
+
   ACADEMY BOYS BANDHADUKA
+
 </button>
+
 
 <button class="cancel"
         onclick="closeSoldModal()">
+
   CANCEL
+
 </button>
 
   </div></div><script>
 
+
 const API_URL =
 "https://script.google.com/macros/s/AKfycbx4_dUYrVPQEQjjWThl0q2vxYTt1SntdunMQbkN7LSV3t3JwiPhJgYTVkJQMJiI8PduSA/exec";
 
-const PASSWORD = "KMPL@2026";
+
+const PASSWORD =
+"KMPL@2026";
+
+
+let allPlayers = [];
 
 let players = [];
+
+let unsoldPlayers = [];
 
 let currentIndex = 0;
 
 let currentBid = 1000;
 
+let auctionRound = "FIRST";
+
 const BID_INCREMENT = 1000;
 
 
 /* ==========================================
-   GOOGLE DRIVE PHOTO URL CONVERTER
+   PHOTO URL
    ========================================== */
 
 function getPhotoUrl(photo){
@@ -411,24 +639,32 @@ function getPhotoUrl(photo){
 
   photo = String(photo).trim();
 
-  /* Already a data/image URL */
+
   if(photo.startsWith("data:image")){
     return photo;
   }
 
-  /* Extract Google Drive FILE ID */
 
   let fileId = "";
 
-  let match = photo.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+
+  let match =
+    photo.match(
+      /\/file\/d\/([a-zA-Z0-9_-]+)/
+    );
+
 
   if(match){
     fileId = match[1];
   }
 
+
   if(!fileId){
 
-    match = photo.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    match =
+      photo.match(
+        /[?&]id=([a-zA-Z0-9_-]+)/
+      );
 
     if(match){
       fileId = match[1];
@@ -436,9 +672,13 @@ function getPhotoUrl(photo){
 
   }
 
+
   if(!fileId){
 
-    match = photo.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    match =
+      photo.match(
+        /\/d\/([a-zA-Z0-9_-]+)/
+      );
 
     if(match){
       fileId = match[1];
@@ -446,16 +686,20 @@ function getPhotoUrl(photo){
 
   }
 
-  /* If Drive ID found */
+
   if(fileId){
 
-    return "https://drive.google.com/thumbnail?id=" +
-           fileId +
-           "&sz=w1000";
+    return (
+      "https://drive.google.com/thumbnail?id=" +
+      fileId +
+      "&sz=w1000"
+    );
+
   }
 
-  /* If already another image URL */
+
   return photo;
+
 }
 
 
@@ -468,7 +712,9 @@ function photoError(){
   const photo =
     document.getElementById("playerPhoto");
 
+
   photo.onerror = null;
+
 
   photo.src =
     "https://via.placeholder.com/500x500?text=Photo+Not+Available";
@@ -484,47 +730,136 @@ async function loadPlayers(){
 
   try{
 
-    const response = await fetch(
-      API_URL +
-      "?password=" +
-      encodeURIComponent(PASSWORD)
-    );
 
-    const data = await response.json();
+    const response =
+      await fetch(
+        API_URL +
+        "?password=" +
+        encodeURIComponent(PASSWORD)
+      );
+
+
+    const data =
+      await response.json();
+
 
     if(!data.success){
 
       throw new Error(
-        data.error || "Unable to load players"
+        data.error ||
+        "Unable to load players"
       );
 
     }
 
-    players = data.players || [];
+
+    allPlayers =
+      data.players || [];
+
+
+    /*
+      FIRST ROUND:
+      Only players without auction status
+      are shown.
+    */
+
+    players =
+      allPlayers.filter(
+        function(player){
+
+          return !player.auctionStatus ||
+                 player.auctionStatus === "";
+
+        }
+      );
+
+
+    /*
+      UNSOLD players are kept separately.
+    */
+
+    unsoldPlayers =
+      allPlayers.filter(
+        function(player){
+
+          return (
+            String(player.auctionStatus)
+              .toUpperCase() ===
+            "UNSOLD"
+          );
+
+        }
+      );
+
+
+    updateRoundDisplay();
+
 
     if(players.length === 0){
 
-      document.getElementById("loading").innerText =
-        "No players registered.";
+      showFirstRoundComplete();
 
       return;
 
     }
 
-    document.getElementById("loading").style.display =
-      "none";
 
-    document.getElementById("auctionCard").style.display =
-      "block";
+    document.getElementById("loading")
+      .style.display = "none";
+
+
+    document.getElementById("auctionCard")
+      .style.display = "block";
+
+
+    currentIndex = 0;
 
     showPlayer();
+
 
   }catch(error){
 
     console.error(error);
 
-    document.getElementById("loading").innerText =
+
+    document.getElementById("loading")
+      .innerText =
       "Unable to load players. Please refresh.";
+
+  }
+
+}
+
+
+/* ==========================================
+   ROUND DISPLAY
+   ========================================== */
+
+function updateRoundDisplay(){
+
+  if(auctionRound === "FIRST"){
+
+    document.getElementById("roundTitle")
+      .innerText =
+      "FIRST AUCTION ROUND";
+
+
+    document.getElementById("roundCount")
+      .innerText =
+      players.length +
+      " players remaining";
+
+  }else{
+
+    document.getElementById("roundTitle")
+      .innerText =
+      "UNSOLD AUCTION ROUND";
+
+
+    document.getElementById("roundCount")
+      .innerText =
+      unsoldPlayers.length +
+      " unsold players remaining";
 
   }
 
@@ -538,56 +873,69 @@ async function loadPlayers(){
 function showPlayer(){
 
   if(!players.length){
+
+    showFirstRoundComplete();
+
     return;
+
   }
+
 
   const player =
     players[currentIndex];
 
 
-  document.getElementById("playerName").innerText =
+  document.getElementById("playerName")
+    .innerText =
     player.name || "-";
 
 
-  document.getElementById("playerReg").innerText =
+  document.getElementById("playerReg")
+    .innerText =
     player.registrationNumber || "";
 
 
-  document.getElementById("playerPlace").innerText =
+  document.getElementById("playerPlace")
+    .innerText =
     player.place || "-";
 
 
-  document.getElementById("playerRole").innerText =
+  document.getElementById("playerRole")
+    .innerText =
     player.role || "-";
 
 
-  document.getElementById("playerBatting").innerText =
+  document.getElementById("playerBatting")
+    .innerText =
     player.batting || "-";
 
 
-  document.getElementById("playerBowling").innerText =
+  document.getElementById("playerBowling")
+    .innerText =
     player.bowling || "-";
 
 
-  document.getElementById("playerTeam").innerText =
+  document.getElementById("playerTeam")
+    .innerText =
     player.team || "-";
 
-
-  /* ======================================
-     PLAYER PHOTO
-     ====================================== */
 
   const photo =
     document.getElementById("playerPhoto");
 
-  photo.onerror = photoError;
+
+  photo.onerror =
+    photoError;
+
 
   const photoUrl =
     getPhotoUrl(player.photo);
 
+
   if(photoUrl){
 
-    photo.src = photoUrl;
+    photo.src =
+      photoUrl;
 
   }else{
 
@@ -597,41 +945,19 @@ function showPlayer(){
   }
 
 
-  /* ======================================
-     RESET BID
-     ====================================== */
+  currentBid =
+    1000;
 
-  currentBid = 1000;
 
   updateBidDisplay();
 
 
-  /* ======================================
-     AUCTION STATUS
-     ====================================== */
-
-  const status =
-    document.getElementById("auctionStatus");
+  document.getElementById("auctionStatus")
+    .innerText =
+    "";
 
 
-  if(player.auctionStatus === "SOLD"){
-
-    status.innerText =
-      "SOLD - ₹" +
-      Number(player.soldPrice || 0)
-        .toLocaleString("en-IN") +
-      " - " +
-      (player.soldTeam || "");
-
-  }else if(player.auctionStatus === "UNSOLD"){
-
-    status.innerText = "UNSOLD";
-
-  }else{
-
-    status.innerText = "";
-
-  }
+  updateRoundDisplay();
 
 }
 
@@ -642,7 +968,8 @@ function showPlayer(){
 
 function updateBidDisplay(){
 
-  document.getElementById("currentBid").innerText =
+  document.getElementById("currentBid")
+    .innerText =
     "₹" +
     currentBid.toLocaleString("en-IN");
 
@@ -650,12 +977,13 @@ function updateBidDisplay(){
 
 
 /* ==========================================
-   PLUS ₹1,000
+   PLUS
    ========================================== */
 
 function increaseBid(){
 
-  currentBid += BID_INCREMENT;
+  currentBid +=
+    BID_INCREMENT;
 
   updateBidDisplay();
 
@@ -663,20 +991,23 @@ function increaseBid(){
 
 
 /* ==========================================
-   MINUS ₹1,000
+   MINUS
    ========================================== */
 
 function decreaseBid(){
 
   if(currentBid > 1000){
 
-    currentBid -= BID_INCREMENT;
+    currentBid -=
+      BID_INCREMENT;
 
     updateBidDisplay();
 
   }else{
 
-    alert("Bid cannot go below ₹1,000");
+    alert(
+      "Bid cannot go below ₹1,000"
+    );
 
   }
 
@@ -689,7 +1020,8 @@ function decreaseBid(){
 
 function openSoldModal(){
 
-  document.getElementById("soldModal").style.display =
+  document.getElementById("soldModal")
+    .style.display =
     "flex";
 
 }
@@ -697,32 +1029,29 @@ function openSoldModal(){
 
 function closeSoldModal(){
 
-  document.getElementById("soldModal").style.display =
+  document.getElementById("soldModal")
+    .style.display =
     "none";
 
 }
 
 
 /* ==========================================
-   SOLD
+   SAVE AUCTION
    ========================================== */
 
-async function confirmSold(teamName){
+async function saveAuction(
+  player,
+  status,
+  soldPrice,
+  soldTeam
+){
 
-  closeSoldModal();
-
-  const player =
-    players[currentIndex];
-
-  document.getElementById("auctionStatus").innerText =
-    "Saving SOLD...";
-
-
-  try{
-
-    const response = await fetch(
+  const response =
+    await fetch(
       API_URL,
       {
+
         method:"POST",
 
         headers:{
@@ -737,13 +1066,14 @@ async function confirmSold(teamName){
           registrationNumber:
             player.registrationNumber,
 
-          status:"SOLD",
+          status:
+            status,
 
           soldPrice:
-            currentBid,
+            soldPrice,
 
           soldTeam:
-            teamName
+            soldTeam
 
         })
 
@@ -751,19 +1081,57 @@ async function confirmSold(teamName){
     );
 
 
-    const result =
-      await response.json();
+  const result =
+    await response.json();
 
 
-    if(!result.success){
+  if(!result.success){
 
-      throw new Error(
-        result.error ||
-        "Failed to save auction result"
-      );
+    throw new Error(
+      result.error ||
+      "Failed to save auction result"
+    );
 
-    }
+  }
 
+
+  return result;
+
+}
+
+
+/* ==========================================
+   SOLD
+   ========================================== */
+
+async function confirmSold(teamName){
+
+  closeSoldModal();
+
+
+  const player =
+    players[currentIndex];
+
+
+  document.getElementById("auctionStatus")
+    .innerText =
+    "Saving SOLD...";
+
+
+  try{
+
+
+    await saveAuction(
+      player,
+      "SOLD",
+      currentBid,
+      teamName
+    );
+
+
+    /*
+      Update local data
+    */
 
     player.auctionStatus =
       "SOLD";
@@ -775,29 +1143,55 @@ async function confirmSold(teamName){
       teamName;
 
 
-    document.getElementById("auctionStatus").innerText =
-      "SOLD - ₹" +
-      currentBid.toLocaleString("en-IN") +
-      " - " +
-      teamName;
+    /*
+      Remove from current auction list
+    */
 
-
-    alert(
-      "SOLD successfully!\n\n" +
-      player.name +
-      "\n₹" +
-      currentBid.toLocaleString("en-IN") +
-      "\n" +
-      teamName
+    players.splice(
+      currentIndex,
+      1
     );
+
+
+    /*
+      Adjust index
+    */
+
+    if(currentIndex >= players.length){
+
+      currentIndex =
+        players.length - 1;
+
+    }
+
+
+    /*
+      If no players remain
+    */
+
+    if(players.length === 0){
+
+      showFirstRoundComplete();
+
+      return;
+
+    }
+
+
+    updateRoundDisplay();
+
+    showPlayer();
 
 
   }catch(error){
 
     console.error(error);
 
-    document.getElementById("auctionStatus").innerText =
+
+    document.getElementById("auctionStatus")
+      .innerText =
       "Error saving SOLD result";
+
 
     alert(
       "Unable to save auction result.\n\n" +
@@ -830,80 +1224,90 @@ async function markUnsold(){
   }
 
 
-  document.getElementById("auctionStatus").innerText =
+  document.getElementById("auctionStatus")
+    .innerText =
     "Saving UNSOLD...";
 
 
   try{
 
-    const response = await fetch(
-      API_URL,
-      {
 
-        method:"POST",
-
-        headers:{
-          "Content-Type":
-            "text/plain;charset=utf-8"
-        },
-
-        body:JSON.stringify({
-
-          action:"auction",
-
-          registrationNumber:
-            player.registrationNumber,
-
-          status:"UNSOLD",
-
-          soldPrice:"",
-
-          soldTeam:""
-
-        })
-
-      }
+    await saveAuction(
+      player,
+      "UNSOLD",
+      "",
+      ""
     );
 
 
-    const result =
-      await response.json();
-
-
-    if(!result.success){
-
-      throw new Error(
-        result.error ||
-        "Failed to save auction result"
-      );
-
-    }
-
+    /*
+      Update player
+    */
 
     player.auctionStatus =
       "UNSOLD";
 
-    player.soldPrice = "";
+    player.soldPrice =
+      "";
 
-    player.soldTeam = "";
-
-
-    document.getElementById("auctionStatus").innerText =
-      "UNSOLD";
+    player.soldTeam =
+      "";
 
 
-    alert(
-      player.name +
-      " marked as UNSOLD."
+    /*
+      Add to hidden unsold list
+    */
+
+    unsoldPlayers.push(
+      player
     );
+
+
+    /*
+      Remove from current auction list
+    */
+
+    players.splice(
+      currentIndex,
+      1
+    );
+
+
+    if(currentIndex >= players.length){
+
+      currentIndex =
+        players.length - 1;
+
+    }
+
+
+    /*
+      First round finished
+    */
+
+    if(players.length === 0){
+
+      showFirstRoundComplete();
+
+      return;
+
+    }
+
+
+    updateRoundDisplay();
+
+    showPlayer();
 
 
   }catch(error){
 
     console.error(error);
 
-    document.getElementById("auctionStatus").innerText =
+
+    document.getElementById("auctionStatus")
+      .innerText =
       "Error saving UNSOLD result";
+
 
     alert(
       "Unable to save auction result.\n\n" +
@@ -916,7 +1320,99 @@ async function markUnsold(){
 
 
 /* ==========================================
-   NEXT PLAYER
+   FIRST ROUND COMPLETE
+   ========================================== */
+
+function showFirstRoundComplete(){
+
+  document.getElementById("loading")
+    .style.display =
+    "none";
+
+
+  document.getElementById("auctionCard")
+    .style.display =
+    "none";
+
+
+  document.getElementById("syncBox")
+    .style.display =
+    "block";
+
+
+  document.getElementById("unsoldSummary")
+    .innerText =
+    "UNSOLD PLAYERS: " +
+    unsoldPlayers.length;
+
+
+  updateRoundDisplay();
+
+}
+
+
+/* ==========================================
+   SYNC UNSOLD PLAYERS
+   ========================================== */
+
+function syncUnsoldPlayers(){
+
+  if(unsoldPlayers.length === 0){
+
+    alert(
+      "There are no UNSOLD players."
+    );
+
+    document.getElementById("syncBox")
+      .style.display =
+      "none";
+
+
+    document.getElementById("completedBox")
+      .style.display =
+      "block";
+
+    return;
+
+  }
+
+
+  auctionRound =
+    "UNSOLD";
+
+
+  players =
+    unsoldPlayers.slice();
+
+
+  currentIndex =
+    0;
+
+
+  document.getElementById("syncBox")
+    .style.display =
+    "none";
+
+
+  document.getElementById("unsoldList")
+    .style.display =
+    "none";
+
+
+  document.getElementById("auctionCard")
+    .style.display =
+    "block";
+
+
+  updateRoundDisplay();
+
+  showPlayer();
+
+}
+
+
+/* ==========================================
+   NEXT
    ========================================== */
 
 function nextPlayer(){
@@ -929,7 +1425,24 @@ function nextPlayer(){
 
   }else{
 
-    alert("This is the last player.");
+    /*
+      In UNSOLD ROUND, reaching last player
+      does not automatically complete.
+    */
+
+    if(auctionRound === "FIRST"){
+
+      alert(
+        "This is the last remaining player."
+      );
+
+    }else{
+
+      alert(
+        "This is the last UNSOLD player."
+      );
+
+    }
 
   }
 
@@ -937,7 +1450,7 @@ function nextPlayer(){
 
 
 /* ==========================================
-   PREVIOUS PLAYER
+   PREVIOUS
    ========================================== */
 
 function previousPlayer(){
@@ -950,7 +1463,9 @@ function previousPlayer(){
 
   }else{
 
-    alert("This is the first player.");
+    alert(
+      "This is the first player."
+    );
 
   }
 
@@ -967,11 +1482,13 @@ function toggleFullscreen(){
 
     document.documentElement
       .requestFullscreen()
-      .catch(function(error){
+      .catch(
+        function(error){
 
-        console.log(error);
+          console.log(error);
 
-      });
+        }
+      );
 
   }else{
 
@@ -988,5 +1505,4 @@ function toggleFullscreen(){
 
 loadPlayers();
 
-</script></body>
-</html>
+</script></body></html>
