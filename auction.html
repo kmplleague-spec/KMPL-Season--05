@@ -403,6 +403,35 @@ button{
         <button
           class="bid-btn"
           onclick="increaseBid()">
+          <button
+  class="bid-btn"
+  onclick="decreaseBid()">
+  − ₹1,000
+</button>
+
+<button
+  class="bid-btn"
+  onclick="increaseBid()">
+  + ₹1,000
+</button>
+
+പിന്നെ JavaScript-ൽ "increaseBid()" function-ന്റെ താഴെ ഇത് ചേർക്കുക:
+
+function decreaseBid(){
+
+  if(currentBid > 1000){
+
+    currentBid -= BID_INCREMENT;
+
+    updateBidDisplay();
+
+  }else{
+
+    alert("Bid cannot go below ₹1,000");
+
+  }
+
+}
           BID + ₹1,000
         </button>
 
