@@ -121,9 +121,7 @@ button{
 }
 
 
-/* =========================
-   HEADER
-========================= */
+/* HEADER */
 
 .card-header{
   position:relative;
@@ -146,9 +144,7 @@ button{
 }
 
 
-/* =========================
-   PHOTO
-========================= */
+/* PHOTO */
 
 .photo-wrap{
   position:relative;
@@ -193,9 +189,7 @@ button{
 }
 
 
-/* =========================
-   NAME
-========================= */
+/* NAME */
 
 .player-name{
   position:relative;
@@ -221,9 +215,7 @@ button{
 }
 
 
-/* =========================
-   DETAILS
-========================= */
+/* DETAILS */
 
 .details{
   position:relative;
@@ -267,9 +259,7 @@ button{
 }
 
 
-/* =========================
-   FOOTER
-========================= */
+/* FOOTER */
 
 .card-footer{
   position:absolute;
@@ -292,9 +282,7 @@ button{
 }
 
 
-/* =========================
-   ERROR
-========================= */
+/* ERROR */
 
 .error{
   text-align:center;
@@ -303,9 +291,7 @@ button{
 }
 
 
-/* =========================
-   PRINT
-========================= */
+/* PRINT */
 
 @media print{
 
@@ -327,7 +313,6 @@ button{
   }
 
   .player-card{
-
     width:210mm;
     height:297mm;
     min-height:297mm;
@@ -347,14 +332,11 @@ button{
 }
 
 
-/* =========================
-   MOBILE
-========================= */
+/* MOBILE */
 
 @media(max-width:700px){
 
   .player-card{
-
     width:100%;
     min-height:auto;
 
@@ -364,7 +346,6 @@ button{
   }
 
   .photo-wrap{
-
     width:75%;
     height:300px;
   }
@@ -381,9 +362,7 @@ button{
 </style>
 </head>
 
-
 <body>
-
 
 <div class="topbar">
 
@@ -411,22 +390,18 @@ button{
 
 </div>
 
-
 <div id="loading">
   ⏳ Loading Player Cards...
 </div>
 
-
 <div id="cards"></div>
-
 
 
 <script>
 
-
-// ======================================================
-// API
-// ======================================================
+/* ======================================================
+   API
+====================================================== */
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycbx4_dUYrVPQEQjjWThl0q2vxYTt1SntdunMQbkN7LSV3t3JwiPhJgYTVkJQMJiI8PduSA/exec";
@@ -436,15 +411,54 @@ const ADMIN_PASSWORD = "KMPL@2026";
 let players = [];
 
 
+/* ======================================================
+   GET VALUE
+   Supports multiple possible API field names
+====================================================== */
 
-// ======================================================
-// LOAD PLAYERS
-// ======================================================
+function getValue(player, keys){
+
+  for(let i = 0; i < keys.length; i++){
+
+    const key = keys[i];
+
+    if(
+      player &&
+      Object.prototype.hasOwnProperty.call(player,key)
+    ){
+
+      const value = player[key];
+
+      if(
+        value !== undefined &&
+        value !== null &&
+        String(value).trim() !== ""
+      ){
+
+        return String(value).trim();
+
+      }
+
+    }
+
+  }
+
+  return "";
+
+}
+
+
+/* ======================================================
+   LOAD PLAYERS
+====================================================== */
 
 async function loadPlayers(){
 
   document.getElementById("loading").style.display =
     "block";
+
+  document.getElementById("loading").innerHTML =
+    "⏳ Loading Player Cards...";
 
   document.getElementById("cards").innerHTML =
     "";
@@ -457,13 +471,18 @@ async function loadPlayers(){
       "?password=" +
       encodeURIComponent(
         ADMIN_PASSWORD
-      )
+      ) +
+      "&t=" +
+      Date.now()
 
     );
 
 
     const result =
       await response.json();
+
+
+    console.log("KMPL API RESPONSE:", result);
 
 
     if(!result.success){
@@ -476,7 +495,9 @@ async function loadPlayers(){
 
 
     players =
-      result.players || [];
+      result.players ||
+      result.data ||
+      [];
 
 
     document.getElementById("loading").style.display =
@@ -493,7 +514,10 @@ async function loadPlayers(){
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      "KMPL LOAD ERROR:",
+      error
+    );
 
     document.getElementById("loading").innerHTML =
       "❌ Error loading player data.";
@@ -503,52 +527,163 @@ async function loadPlayers(){
 }
 
 
-
-// ======================================================
-// RENDER CARDS
-// ======================================================
+/* ======================================================
+   RENDER CARDS
+====================================================== */
 
 function renderCards(){
 
   const container =
     document.getElementById("cards");
 
+  container.innerHTML = "";
 
-  container.innerHTML =
-    "";
+
+  if(!players.length){
+
+    container.innerHTML =
+      '<div class="error">No players found.</div>';
+
+    return;
+  }
 
 
   players.forEach(
     function(player,index){
 
+      /* -----------------------------------------------
+         NORMALIZE PLAYER DATA
+      ------------------------------------------------ */
+
+      const name =
+        getValue(
+          player,
+          [
+            "name",
+            "playerName",
+            "player_name",
+            "Name",
+            "Player Name"
+          ]
+        );
+
+
+      const registrationNumber =
+        getValue(
+          player,
+          [
+            "registrationNumber",
+            "registrationNo",
+            "registration",
+            "regNo",
+            "Registration Number",
+            "Registration No"
+          ]
+        );
+
+
+      const place =
+        getValue(
+          player,
+          [
+            "place",
+            "Place"
+          ]
+        );
+
+
+      const role =
+        getValue(
+          player,
+          [
+            "role",
+            "playingRole",
+            "playing_role",
+            "Playing Role",
+            "Role"
+          ]
+        );
+
+
+      const batting =
+        getValue(
+          player,
+          [
+            "batting",
+            "battingStyle",
+            "batting_style",
+            "Batting Style",
+            "Batting"
+          ]
+        );
+
+
+      const bowling =
+        getValue(
+          player,
+          [
+            "bowling",
+            "bowlingStyle",
+            "bowling_style",
+            "Bowling Style",
+            "Bowling"
+          ]
+        );
+
+
+      const team =
+        getValue(
+          player,
+          [
+            "team",
+            "previousTeam",
+            "previous_team",
+            "Previous Team",
+            "PreviousTeam"
+          ]
+        );
+
+
+      const photo =
+        getValue(
+          player,
+          [
+            "photo",
+            "photoUrl",
+            "photoURL",
+            "photo_url",
+            "Photo"
+          ]
+        );
+
+
+      console.log(
+        "PLAYER " + (index + 1),
+        {
+          name:name,
+          registrationNumber:registrationNumber,
+          place:place,
+          role:role,
+          batting:batting,
+          bowling:bowling,
+          team:team,
+          photo:photo
+        }
+      );
+
+
+      /* -----------------------------------------------
+         CARD
+      ------------------------------------------------ */
 
       const card =
         document.createElement("div");
-
 
       card.className =
         "player-card";
 
 
-      /*
-       * IMPORTANT:
-       *
-       * Code.gs returns:
-       *
-       * name
-       * registrationNumber
-       * place
-       * role
-       * batting
-       * bowling
-       * team
-       * photo
-       *
-       */
-
-
       card.innerHTML = `
-
 
         <div class="card-header">
 
@@ -566,9 +701,6 @@ function renderCards(){
 
         </div>
 
-
-
-        <!-- PHOTO -->
 
         <div class="photo-wrap">
 
@@ -594,41 +726,27 @@ function renderCards(){
         </div>
 
 
-
-        <!-- PLAYER NAME -->
-
         <div class="player-name">
 
           ${escapeHtml(
-            player.name ||
-            "PLAYER"
+            name || "PLAYER"
           )}
 
         </div>
 
-
-
-        <!-- REGISTRATION NUMBER -->
 
         <div class="reg">
 
           REGISTRATION NO:
 
           ${escapeHtml(
-            player.registrationNumber ||
-            "-"
+            registrationNumber || "-"
           )}
 
         </div>
 
 
-
-        <!-- DETAILS -->
-
         <div class="details">
-
-
-          <!-- PLACE -->
 
           <div class="detail-row">
 
@@ -637,19 +755,13 @@ function renderCards(){
             </span>
 
             <span class="value">
-
               ${escapeHtml(
-                player.place ||
-                "-"
+                place || "-"
               )}
-
             </span>
 
           </div>
 
-
-
-          <!-- PLAYING ROLE -->
 
           <div class="detail-row">
 
@@ -658,19 +770,13 @@ function renderCards(){
             </span>
 
             <span class="value">
-
               ${escapeHtml(
-                player.role ||
-                "-"
+                role || "-"
               )}
-
             </span>
 
           </div>
 
-
-
-          <!-- BATTING STYLE -->
 
           <div class="detail-row">
 
@@ -679,19 +785,13 @@ function renderCards(){
             </span>
 
             <span class="value">
-
               ${escapeHtml(
-                player.batting ||
-                "-"
+                batting || "-"
               )}
-
             </span>
 
           </div>
 
-
-
-          <!-- BOWLING STYLE -->
 
           <div class="detail-row">
 
@@ -700,19 +800,13 @@ function renderCards(){
             </span>
 
             <span class="value">
-
               ${escapeHtml(
-                player.bowling ||
-                "-"
+                bowling || "-"
               )}
-
             </span>
 
           </div>
 
-
-
-          <!-- PREVIOUS TEAM -->
 
           <div class="detail-row">
 
@@ -721,29 +815,21 @@ function renderCards(){
             </span>
 
             <span class="value">
-
               ${escapeHtml(
-                player.team ||
-                "-"
+                team || "-"
               )}
-
             </span>
 
           </div>
 
-
         </div>
 
-
-
-        <!-- FOOTER -->
 
         <div class="card-footer">
 
           KMPL SEASON 05 • PLAYER AUCTION
 
         </div>
-
 
       `;
 
@@ -752,7 +838,7 @@ function renderCards(){
 
 
       setPhoto(
-        player.photo,
+        photo,
         index
       );
 
@@ -762,21 +848,16 @@ function renderCards(){
 }
 
 
+/* ======================================================
+   DRIVE PHOTO
+====================================================== */
 
-// ======================================================
-// DRIVE PHOTO
-// ======================================================
-
-function setPhoto(
-  photo,
-  index
-){
+function setPhoto(photo,index){
 
   const img =
     document.getElementById(
       "photo-" + index
     );
-
 
   const noPhoto =
     document.getElementById(
@@ -799,9 +880,7 @@ function setPhoto(
   let url =
     String(photo).trim();
 
-
-  let fileId =
-    "";
+  let fileId = "";
 
 
   let match =
@@ -825,7 +904,6 @@ function setPhoto(
         /[?&]id=([a-zA-Z0-9_-]+)/
       );
 
-
     if(match){
 
       fileId =
@@ -842,7 +920,6 @@ function setPhoto(
       url.match(
         /\/d\/([a-zA-Z0-9_-]+)/
       );
-
 
     if(match){
 
@@ -870,10 +947,9 @@ function setPhoto(
 }
 
 
-
-// ======================================================
-// PHOTO ERROR
-// ======================================================
+/* ======================================================
+   PHOTO ERROR
+====================================================== */
 
 function photoError(index){
 
@@ -881,7 +957,6 @@ function photoError(index){
     document.getElementById(
       "photo-" + index
     );
-
 
   const noPhoto =
     document.getElementById(
@@ -892,17 +967,15 @@ function photoError(index){
   img.style.display =
     "none";
 
-
   noPhoto.style.display =
     "block";
 
 }
 
 
-
-// ======================================================
-// PRINT / SAVE PDF
-// ======================================================
+/* ======================================================
+   PRINT / SAVE PDF
+====================================================== */
 
 function printPDF(){
 
@@ -921,10 +994,9 @@ function printPDF(){
 }
 
 
-
-// ======================================================
-// HTML ESCAPE
-// ======================================================
+/* ======================================================
+   ESCAPE HTML
+====================================================== */
 
 function escapeHtml(value){
 
@@ -958,13 +1030,11 @@ function escapeHtml(value){
 }
 
 
-
-// ======================================================
-// START
-// ======================================================
+/* ======================================================
+   START
+====================================================== */
 
 loadPlayers();
-
 
 </script>
 
