@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>KMPL Season 05 - Team Players</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#101010;
+  color:#fff;
+}
+
+.header{
+  text-align:center;
+  padding:20px 12px;
+  background:linear-gradient(135deg,#111,#333);
+  border-bottom:2px solid #555;
+}
+
+.header h1{
+  margin:0;
+  font-size:28px;
+}
+
+.header p{
+  margin:7px 0 15px;
+  color:#ccc;
+}
+
+.team-buttons{
+  max-width:1000px;
+  margin:20px auto;
+  padding:0 15px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:12px;
+}
+
+.team-button{
+  padding:16px;
+  border-radius:12px;
+  border:1px solid #555;
+  background:linear-gradient(135deg,#252525,#111);
+  color:#fff;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.team-button:hover{
+  transform:translateY(-2px);
+  background:linear-gradient(135deg,#444,#222);
+}
+
+.content{
+  max-width:1000px;
+  margin:auto;
+  padding:10px 15px 40px;
+}
+
+.team-title{
+  text-align:center;
+  margin:20px 0;
+}
+
+.team-title h2{
+  margin:0;
+  font-size:28px;
+}
+
+.team-title p{
+  color:#bbb;
+}
+
+.players{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:18px;
+}
+
+.player{
+  position:relative;
+  overflow:hidden;
+  border-radius:18px;
+  padding:16px;
+
+  background:
+    radial-gradient(circle at top right,#ffd74055,transparent 35%),
+    radial-gradient(circle at bottom left,#00e5ff44,transparent 35%),
+    linear-gradient(135deg,#17175c,#7b1fa2,#c2185b);
+
+  border:1px solid #ffffff33;
+  box-shadow:0 8px 25px #000;
+}
+
+.photo{
+  width:150px;
+  height:170px;
+  margin:0 auto 12px;
+  border-radius:15px;
+  overflow:hidden;
+  background:#222;
+  border:4px solid #fff;
+}
+
+.photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.no-photo{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#aaa;
+}
+
+.player-name{
+  text-align:center;
+  font-size:22px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+
+.reg{
+  text-align:center;
+  color:#ddd;
+  font-size:13px;
+  margin:5px 0 12px;
+}
+
+.details{
+  background:#00000055;
+  border-radius:12px;
+  padding:10px;
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding:7px 3px;
+  border-bottom:1px solid #ffffff22;
+  font-size:14px;
+}
+
+.row:last-child{
+  border-bottom:0;
+}
+
+.label{
+  color:#ffe082;
+  font-weight:bold;
+}
+
+.value{
+  text-align:right;
+  font-weight:bold;
+}
+
+.price{
+  margin-top:12px;
+  text-align:center;
+  font-size:22px;
+  font-weight:900;
+  color:#ffe082;
+}
+
+.actions{
+  text-align:center;
+  margin:20px 0;
+}
+
+.actions button{
+  border:0;
+  border-radius:10px;
+  padding:13px 20px;
+  margin:4px;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.print{
+  background:#f5b400;
+  color:#000;
+}
+
+.refresh{
+  background:#333;
+  color:#fff;
+}
+
+.empty{
+  text-align:center;
+  padding:50px 20px;
+  background:#191919;
+  border-radius:15px;
+  color:#aaa;
+}
+
+.loading{
+  text-align:center;
+  padding:50px;
+  font-size:20px;
+}
+
+
+/* PRINT */
+
+@media print{
+
+  @page{
+    size:A4;
+    margin:10mm;
+  }
+
+  body{
+    background:#fff;
+    color:#000;
+  }
+
+  .header,
+  .team-buttons,
+  .actions{
+    display:none !important;
+  }
+
+  .content{
+    max-width:none;
+    padding:0;
+  }
+
+  .team-title{
+    margin-top:0;
+  }
+
+  .players{
+    display:block;
+  }
+
+  .player{
+    page-break-inside:avoid;
+    break-inside:avoid;
+    margin-bottom:12mm;
+
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+
+}
+
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+  .header h1{
+    font-size:23px;
+  }
+
+  .players{
+    grid-template-columns:1fr;
+  }
+
+  .player-name{
+    font-size:20px;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+
+  <h1>🏏 KMPL SEASON 05</h1>
+
+  <p>TEAM WISE PLAYER LIST</p>
+
+  <button
+    class="refresh"
+    onclick="loadPlayers()">
+    🔄 Refresh
+  </button>
+
+</div>
+
+
+<div
+  id="teamButtons"
+  class="team-buttons">
+</div>
+
+
+<div class="content">
+
+  <div
+    id="loading"
+    class="loading">
+    ⏳ Loading players...
+  </div>
+
+
+  <div
+    id="teamContent"
+    style="display:none;">
+
+    <div class="team-title">
+
+      <h2 id="teamName"></h2>
+
+      <p id="teamCount"></p>
+
+    </div>
+
+
+    <div class="actions">
+
+      <button
+        class="print"
+        onclick="printTeam()">
+        📄 DOWNLOAD TEAM PDF
+      </button>
+
+    </div>
+
+
+    <div
+      id="players"
+      class="players">
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbx4_dUYrVPQEQjjWThl0q2vxYTt1SntdunMQbkN7LSV3t3JwiPhJgYTVkJQMJiI8PduSA/exec";
+
+const ADMIN_PASSWORD = "KMPL@2026";
+
+
+/*
+  Current teams supplied by user.
+  Remaining teams can be added later.
+*/
+
+const teams = [
+
+  "VOLCANO VARANJOOR",
+
+  "DRAGON BOOSTER",
+
+  "RAJEEVIJI KALLIOT",
+
+  "ACADEMY BOYS BANDHADUKA"
+
+];
+
+
+let allPlayers = [];
+
+let selectedTeam = "";
+
+
+/* =========================
+   LOAD PLAYERS
+========================= */
+
+async function loadPlayers(){
+
+  document.getElementById("loading").style.display =
+    "block";
+
+  document.getElementById("teamContent").style.display =
+    "none";
+
+  try{
+
+    const response =
+      await fetch(
+        API_URL +
+        "?password=" +
+        encodeURIComponent(ADMIN_PASSWORD)
+      );
+
+    const result =
+      await response.json();
+
+
+    if(!result.success){
+
+      document.getElementById("loading").textContent =
+        "❌ Unable to load players.";
+
+      return;
+
+    }
+
+
+    allPlayers =
+      result.players || [];
+
+
+    document.getElementById("loading").style.display =
+      "none";
+
+
+    createTeamButtons();
+
+    /*
+      Automatically show first team.
+    */
+
+    if(teams.length > 0){
+
+      selectTeam(teams[0]);
+
+    }
+
+  }catch(error){
+
+    console.error(error);
+
+    document.getElementById("loading").textContent =
+      "❌ Error loading players.";
+
+  }
+
+}
+
+
+/* =========================
+   TEAM BUTTONS
+========================= */
+
+function createTeamButtons(){
+
+  const container =
+    document.getElementById("teamButtons");
+
+  container.innerHTML = "";
+
+
+  teams.forEach(function(team){
+
+    const button =
+      document.createElement("button");
+
+    button.className =
+      "team-button";
+
+    button.textContent =
+      team;
+
+    button.onclick =
+      function(){
+
+        selectTeam(team);
+
+      };
+
+    container.appendChild(button);
+
+  });
+
+}
+
+
+/* =========================
+   SELECT TEAM
+========================= */
+
+function selectTeam(team){
+
+  selectedTeam =
+    team;
+
+
+  const teamPlayers =
+    allPlayers.filter(function(player){
+
+      const status =
+        String(
+          player.auctionStatus || ""
+        )
+        .trim()
+        .toUpperCase();
+
+
+      const soldTeam =
+        String(
+          player.soldTeam || ""
+        )
+        .trim()
+        .toUpperCase();
+
+
+      return (
+        status === "SOLD" &&
+        soldTeam === team.toUpperCase()
+      );
+
+    });
+
+
+  document.getElementById("teamName").textContent =
+    "🏆 " + team;
+
+
+  document.getElementById("teamCount").textContent =
+    teamPlayers.length +
+    " Players";
+
+
+  document.getElementById("teamContent").style.display =
+    "block";
+
+
+  renderPlayers(teamPlayers);
+
+}
+
+
+/* =========================
+   RENDER PLAYERS
+========================= */
+
+function renderPlayers(teamPlayers){
+
+  const container =
+    document.getElementById("players");
+
+  container.innerHTML = "";
+
+
+  if(teamPlayers.length === 0){
+
+    container.innerHTML = `
+      <div class="empty">
+        <h3>No SOLD players yet</h3>
+        <p>
+          Players will appear here after the auction.
+        </p>
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  teamPlayers.forEach(function(player,index){
+
+    const card =
+      document.createElement("div");
+
+    card.className =
+      "player";
+
+
+    card.innerHTML = `
+
+      <div class="photo">
+
+        <img
+          id="team-photo-${index}"
+          src=""
+          alt="Player Photo"
+          onerror="photoError(${index})"
+        >
+
+        <div
+          id="team-no-photo-${index}"
+          class="no-photo"
+          style="display:none;">
+          No Photo
+        </div>
+
+      </div>
+
+
+      <div class="player-name">
+        ${escapeHtml(
+          player.playerName || "PLAYER"
+        )}
+      </div>
+
+
+      <div class="reg">
+        Registration No:
+        ${escapeHtml(
+          player.registrationNumber || "-"
+        )}
+      </div>
+
+
+      <div class="details">
+
+        <div class="row">
+
+          <span class="label">
+            📍 Place
+          </span>
+
+          <span class="value">
+            ${escapeHtml(
+              player.place || "-"
+            )}
+          </span>
+
+        </div>
+
+
+        <div class="row">
+
+          <span class="label">
+            🏏 Role
+          </span>
+
+          <span class="value">
+            ${escapeHtml(
+              player.playingRole || "-"
+            )}
+          </span>
+
+        </div>
+
+
+        <div class="row">
+
+          <span class="label">
+            🏏 Batting
+          </span>
+
+          <span class="value">
+            ${escapeHtml(
+              player.battingStyle || "-"
+            )}
+          </span>
+
+        </div>
+
+
+        <div class="row">
+
+          <span class="label">
+            🎯 Bowling
+          </span>
+
+          <span class="value">
+            ${escapeHtml(
+              player.bowlingStyle || "-"
+            )}
+          </span>
+
+        </div>
+
+
+        <div class="row">
+
+          <span class="label">
+            👕 Previous Team
+          </span>
+
+          <span class="value">
+            ${escapeHtml(
+              player.previousTeam || "-"
+            )}
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="price">
+
+        SOLD:
+        ${formatPrice(
+          player.soldPrice || 0
+        )}
+
+      </div>
+
+    `;
+
+
+    container.appendChild(card);
+
+
+    setPhoto(
+      player.photo,
+      index
+    );
+
+  });
+
+}
+
+
+/* =========================
+   PHOTO
+========================= */
+
+function setPhoto(photo,index){
+
+  const img =
+    document.getElementById(
+      "team-photo-" + index
+    );
+
+  const noPhoto =
+    document.getElementById(
+      "team-no-photo-" + index
+    );
+
+
+  if(!photo){
+
+    img.style.display =
+      "none";
+
+    noPhoto.style.display =
+      "flex";
+
+    return;
+
+  }
+
+
+  let url =
+    String(photo).trim();
+
+  let fileId =
+    "";
+
+
+  let match =
+    url.match(
+      /\/file\/d\/([a-zA-Z0-9_-]+)/
+    );
+
+
+  if(match){
+
+    fileId =
+      match[1];
+
+  }
+
+
+  if(!fileId){
+
+    match =
+      url.match(
+        /[?&]id=([a-zA-Z0-9_-]+)/
+      );
+
+
+    if(match){
+
+      fileId =
+        match[1];
+
+    }
+
+  }
+
+
+  if(!fileId){
+
+    match =
+      url.match(
+        /\/d\/([a-zA-Z0-9_-]+)/
+      );
+
+
+    if(match){
+
+      fileId =
+        match[1];
+
+    }
+
+  }
+
+
+  if(fileId){
+
+    url =
+      "https://drive.google.com/thumbnail?id=" +
+      fileId +
+      "&sz=w1000";
+
+  }
+
+
+  img.src =
+    url;
+
+}
+
+
+/* =========================
+   PHOTO ERROR
+========================= */
+
+function photoError(index){
+
+  const img =
+    document.getElementById(
+      "team-photo-" + index
+    );
+
+  const noPhoto =
+    document.getElementById(
+      "team-no-photo-" + index
+    );
+
+
+  img.style.display =
+    "none";
+
+  noPhoto.style.display =
+    "flex";
+
+}
+
+
+/* =========================
+   TEAM PDF
+========================= */
+
+function printTeam(){
+
+  if(!selectedTeam){
+
+    alert(
+      "Please select a team."
+    );
+
+    return;
+
+  }
+
+
+  const teamPlayers =
+    allPlayers.filter(function(player){
+
+      return (
+        String(
+          player.auctionStatus || ""
+        ).toUpperCase() === "SOLD"
+
+        &&
+
+        String(
+          player.soldTeam || ""
+        ).trim().toUpperCase()
+        ===
+        selectedTeam.toUpperCase()
+      );
+
+    });
+
+
+  if(teamPlayers.length === 0){
+
+    alert(
+      "No SOLD players in this team."
+    );
+
+    return;
+
+  }
+
+
+  window.print();
+
+}
+
+
+/* =========================
+   FORMAT PRICE
+========================= */
+
+function formatPrice(amount){
+
+  return "₹" +
+    Number(amount)
+      .toLocaleString("en-IN");
+
+}
+
+
+/* =========================
+   ESCAPE HTML
+========================= */
+
+function escapeHtml(value){
+
+  return String(value)
+
+    .replace(/&/g,"&amp;")
+
+    .replace(/</g,"&lt;")
+
+    .replace(/>/g,"&gt;")
+
+    .replace(/"/g,"&quot;")
+
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+loadPlayers();
+
+</script>
+
+</body>
+</html>
