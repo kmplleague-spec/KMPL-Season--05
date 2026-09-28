@@ -1,65 +1,83 @@
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>KMPL Season 05 – Player Registration</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>KMPL Season 05 – Registration</title>
 
 <style>
+
 *{
     box-sizing:border-box;
 }
 
 body{
     margin:0;
-    font-family:Arial,Helvetica,sans-serif;
-    background:linear-gradient(135deg,#071a2b,#0d3b66,#071a2b);
-    color:#fff;
+    font-family:Arial,sans-serif;
+    background:
+    linear-gradient(
+        135deg,
+        #061426,
+        #0b3d68,
+        #061426
+    );
+    color:white;
     min-height:100vh;
 }
 
 .container{
-    width:95%;
+    width:94%;
     max-width:650px;
-    margin:25px auto;
+    margin:auto;
+    padding:20px 0;
 }
 
 .header{
     text-align:center;
-    padding:25px 15px;
+    padding:20px 10px;
 }
 
 .header h1{
     margin:0;
-    font-size:32px;
-    font-weight:800;
     color:#ffd700;
+    font-size:32px;
+    font-weight:900;
 }
 
 .header h2{
-    margin:8px 0 0;
-    font-size:20px;
+    margin:8px 0;
+    font-size:19px;
 }
 
 .header p{
-    margin:8px 0;
-    color:#d7e6f5;
+    margin:5px 0;
+    color:#d8e7f5;
 }
 
 .card{
-    background:rgba(255,255,255,0.10);
-    border:1px solid rgba(255,255,255,0.20);
+    background:rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.2);
     border-radius:18px;
     padding:25px;
-    box-shadow:0 10px 35px rgba(0,0,0,0.35);
-    backdrop-filter:blur(10px);
+    box-shadow:
+    0 10px 40px rgba(0,0,0,.35);
 }
 
 label{
     display:block;
-    margin:15px 0 7px;
-    font-weight:700;
+    margin-top:15px;
+    margin-bottom:7px;
+    font-weight:bold;
+}
+
+.required{
+    color:#ff5555;
 }
 
 input,
@@ -81,11 +99,11 @@ button{
     width:100%;
     border:0;
     border-radius:12px;
-    padding:14px;
-    font-size:17px;
-    font-weight:800;
-    cursor:pointer;
+    padding:15px;
     margin-top:20px;
+    font-size:17px;
+    font-weight:900;
+    cursor:pointer;
 }
 
 .submit-btn{
@@ -95,245 +113,372 @@ button{
 
 .submit-btn:disabled{
     opacity:.6;
-    cursor:not-allowed;
 }
 
 .whatsapp-btn{
     background:#25D366;
-    color:#fff;
-    margin-top:15px;
+    color:white;
+    margin-top:18px;
+}
+
+.error{
+    display:none;
+    margin-top:18px;
+    padding:15px;
+    border-radius:10px;
+    background:rgba(255,0,0,.18);
+    border:1px solid #ff5555;
 }
 
 .success{
     display:none;
     margin-top:20px;
-    padding:18px;
-    border-radius:12px;
-    background:rgba(0,180,80,.18);
-    border:1px solid #25D366;
+    padding:25px 18px;
+    border-radius:15px;
     text-align:center;
+    background:rgba(0,180,80,.15);
+    border:2px solid #25D366;
 }
 
-.success h3{
-    margin:0 0 10px;
+.success-title{
     color:#25D366;
+    font-size:23px;
+    font-weight:900;
+    margin-bottom:20px;
+}
+
+.player-info{
+    background:rgba(0,0,0,.20);
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:15px;
+}
+
+.player-info div{
+    margin:8px 0;
 }
 
 .reg-number{
-    font-size:24px;
-    font-weight:900;
     color:#ffd700;
-    margin:10px 0;
+    font-size:28px;
+    font-weight:900;
 }
 
-.error{
-    display:none;
+.join-text{
     margin-top:15px;
-    padding:15px;
-    border-radius:10px;
-    background:rgba(255,0,0,.15);
-    border:1px solid #ff5555;
-    color:#fff;
+    font-size:15px;
+    color:#e4eef7;
 }
 
 .footer{
     text-align:center;
-    padding:20px;
-    color:#bcd0e3;
+    padding:20px 5px;
     font-size:13px;
-}
-
-.required{
-    color:#ff6b6b;
-}
-
-.note{
-    font-size:12px;
-    color:#cbd9e6;
-    margin-top:5px;
+    color:#b7c9da;
 }
 
 @media(max-width:500px){
+
     .header h1{
-        font-size:25px;
+        font-size:26px;
     }
 
     .header h2{
-        font-size:17px;
+        font-size:16px;
     }
 
     .card{
         padding:18px;
     }
+
 }
+
 </style>
+
 </head>
+
 
 <body>
 
 <div class="container">
 
-    <div class="header">
-        <h1>KMPL SEASON 05</h1>
-        <h2>KIZHAKAN MEGALA PREMIER LEAGUE</h2>
-        <p>Player Registration</p>
-    </div>
 
-    <div class="card">
+<div class="header">
 
-        <form id="registrationForm">
+<h1>🏏 KMPL SEASON 05</h1>
 
-            <label>
-                Player Name <span class="required">*</span>
-            </label>
-            <input
-                type="text"
-                id="name"
-                name="name"
-                placeholder="Enter player name"
-                required
-            >
+<h2>KIZHAKAN MEGALA PREMIER LEAGUE</h2>
 
-            <label>
-                Mobile Number <span class="required">*</span>
-            </label>
-            <input
-                type="tel"
-                id="mobile"
-                name="mobile"
-                placeholder="Enter mobile number"
-                maxlength="15"
-                required
-            >
-            <div class="note">
-                One mobile number can register only once.
-            </div>
+<p>Player Registration</p>
 
-            <label>
-                Place <span class="required">*</span>
-            </label>
-            <input
-                type="text"
-                id="place"
-                name="place"
-                placeholder="Enter place"
-                required
-            >
+</div>
 
-            <label>
-                Playing Role <span class="required">*</span>
-            </label>
-            <select id="role" name="role" required>
-                <option value="">Select Playing Role</option>
-                <option value="Batter">Batter</option>
-                <option value="Bowler">Bowler</option>
-                <option value="All Rounder">All Rounder</option>
-                <option value="Wicket Keeper">Wicket Keeper</option>
-            </select>
 
-            <label>
-                Batting Style <span class="required">*</span>
-            </label>
-            <select id="batting" name="batting" required>
-                <option value="">Select Batting Style</option>
-                <option value="Right Hand">Right Hand</option>
-                <option value="Left Hand">Left Hand</option>
-            </select>
+<div class="card">
 
-            <label>
-                Bowling Style <span class="required">*</span>
-            </label>
-            <select id="bowling" name="bowling" required>
-                <option value="">Select Bowling Style</option>
-                <option value="Right Arm Fast">Right Arm Fast</option>
-                <option value="Right Arm Medium">Right Arm Medium</option>
-                <option value="Right Arm Spin">Right Arm Spin</option>
-                <option value="Left Arm Fast">Left Arm Fast</option>
-                <option value="Left Arm Medium">Left Arm Medium</option>
-                <option value="Left Arm Spin">Left Arm Spin</option>
-                <option value="None">None</option>
-            </select>
 
-            <label>
-                Previous Team
-            </label>
-            <input
-                type="text"
-                id="team"
-                name="team"
-                placeholder="Enter previous team (if any)"
-            >
+<form id="registrationForm">
 
-            <label>
-                Player Photo <span class="required">*</span>
-            </label>
-            <input
-                type="file"
-                id="photo"
-                name="photo"
-                accept="image/*"
-                required
-            >
 
-            <button
-                type="submit"
-                id="submitBtn"
-                class="submit-btn"
-            >
-                REGISTER NOW
-            </button>
+<label>
+Player Name <span class="required">*</span>
+</label>
 
-        </form>
+<input
+type="text"
+id="name"
+placeholder="Enter player name"
+required
+>
 
-        <div id="errorBox" class="error"></div>
 
-        <div id="successBox" class="success">
+<label>
+Mobile Number <span class="required">*</span>
+</label>
 
-            <h3>✅ REGISTRATION SUCCESSFUL</h3>
+<input
+type="tel"
+id="mobile"
+placeholder="Enter mobile number"
+maxlength="15"
+required
+>
 
-            <div>Your Registration Number</div>
 
-            <div
-                id="regNumber"
-                class="reg-number"
-            ></div>
+<label>
+Place <span class="required">*</span>
+</label>
 
-            <div>
-                Please join the official KMPL WhatsApp Group.
-            </div>
+<input
+type="text"
+id="place"
+placeholder="Enter place"
+required
+>
 
-            <button
-                type="button"
-                id="whatsappBtn"
-                class="whatsapp-btn"
-            >
-                📱 JOIN KMPL WHATSAPP GROUP
-            </button>
 
-        </div>
+<label>
+Playing Role <span class="required">*</span>
+</label>
 
-    </div>
+<select id="role" required>
 
-    <div class="footer">
-        © KMPL Season 05 – Kizhakan Megala Premier League
-    </div>
+<option value="">
+Select Playing Role
+</option>
+
+<option value="Batter">
+Batter
+</option>
+
+<option value="Bowler">
+Bowler
+</option>
+
+<option value="All Rounder">
+All Rounder
+</option>
+
+<option value="Wicket Keeper">
+Wicket Keeper
+</option>
+
+</select>
+
+
+<label>
+Batting Style <span class="required">*</span>
+</label>
+
+<select id="batting" required>
+
+<option value="">
+Select Batting Style
+</option>
+
+<option value="Right Hand">
+Right Hand
+</option>
+
+<option value="Left Hand">
+Left Hand
+</option>
+
+</select>
+
+
+<label>
+Bowling Style <span class="required">*</span>
+</label>
+
+<select id="bowling" required>
+
+<option value="">
+Select Bowling Style
+</option>
+
+<option value="Right Arm Fast">
+Right Arm Fast
+</option>
+
+<option value="Right Arm Medium">
+Right Arm Medium
+</option>
+
+<option value="Right Arm Spin">
+Right Arm Spin
+</option>
+
+<option value="Left Arm Fast">
+Left Arm Fast
+</option>
+
+<option value="Left Arm Medium">
+Left Arm Medium
+</option>
+
+<option value="Left Arm Spin">
+Left Arm Spin
+</option>
+
+<option value="None">
+None
+</option>
+
+</select>
+
+
+<label>
+Previous Team
+</label>
+
+<input
+type="text"
+id="team"
+placeholder="Enter previous team"
+>
+
+
+<label>
+Player Photo <span class="required">*</span>
+</label>
+
+<input
+type="file"
+id="photo"
+accept="image/*"
+required
+>
+
+
+<button
+type="submit"
+id="submitBtn"
+class="submit-btn"
+>
+REGISTER NOW
+</button>
+
+
+</form>
+
+
+<div id="errorBox"
+class="error">
+</div>
+
+
+<!-- =========================================
+     SUCCESS BOX
+========================================= -->
+
+<div id="successBox"
+class="success">
+
+<div class="success-title">
+✅ Registration Successful!
+</div>
+
+
+<div class="player-info">
+
+<div>
+<strong>Player Name:</strong>
+<span id="successName"></span>
+</div>
+
+
+<div>
+<strong>Registration No:</strong>
+</div>
+
+<div
+id="successReg"
+class="reg-number">
+</div>
+
+</div>
+
+
+<div class="join-text">
+
+Thank you for registering with KMPL. ❤️
+
+<br><br>
+
+Please join the official KMPL WhatsApp Group.
+
+</div>
+
+
+<button
+type="button"
+id="whatsappBtn"
+class="whatsapp-btn"
+>
+📱 JOIN KMPL WHATSAPP GROUP
+</button>
+
+
+</div>
+
+
+</div>
+
+
+<div class="footer">
+
+© KMPL Season 05<br>
+Kizhakan Megala Premier League
+
+</div>
+
 
 </div>
 
 
 <script>
 
+
+// ======================================================
+// APPS SCRIPT URL
+// ======================================================
+
 const SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbx4_dUYrVPQEQjjWThl0q2vxYTt1SntdunMQbkN7LSV3t3JwiPhJgYTVkJQMJiI8PduSA/exec";
 
 
-/*
-  IMPORTANT:
-  This is the official KMPL WhatsApp Group invite link.
-*/
+// ======================================================
+// WHATSAPP GROUP
+// ======================================================
+
 const KMPL_WHATSAPP_GROUP =
 "https://chat.whatsapp.com/LcByyY2SQII2sK1ZJOsvVb";
 
+
+// ======================================================
+// ELEMENTS
+// ======================================================
 
 const form =
 document.getElementById("registrationForm");
@@ -341,103 +486,155 @@ document.getElementById("registrationForm");
 const submitBtn =
 document.getElementById("submitBtn");
 
-const successBox =
-document.getElementById("successBox");
-
 const errorBox =
 document.getElementById("errorBox");
 
-const regNumber =
-document.getElementById("regNumber");
+const successBox =
+document.getElementById("successBox");
+
+const successName =
+document.getElementById("successName");
+
+const successReg =
+document.getElementById("successReg");
 
 const whatsappBtn =
 document.getElementById("whatsappBtn");
 
 
-/* WhatsApp Group Button */
+// ======================================================
+// WHATSAPP BUTTON
+// ======================================================
 
-whatsappBtn.addEventListener("click", function(){
+whatsappBtn.addEventListener(
+"click",
+function(){
 
     /*
-      Directly open the WhatsApp group invite page.
+      Direct WhatsApp group invite URL.
     */
 
-    window.location.href = KMPL_WHATSAPP_GROUP;
+    window.location.href =
+    KMPL_WHATSAPP_GROUP;
 
 });
 
 
-/* Registration */
+// ======================================================
+// FORM SUBMIT
+// ======================================================
 
-form.addEventListener("submit", async function(e){
+form.addEventListener(
+"submit",
+async function(e){
 
     e.preventDefault();
 
-    errorBox.style.display = "none";
-    errorBox.textContent = "";
 
-    successBox.style.display = "none";
+    errorBox.style.display =
+    "none";
 
-    submitBtn.disabled = true;
-    submitBtn.textContent = "REGISTERING...";
+    successBox.style.display =
+    "none";
+
+
+    submitBtn.disabled =
+    true;
+
+    submitBtn.textContent =
+    "REGISTERING...";
 
 
     const name =
-    document.getElementById("name").value.trim();
+    document
+    .getElementById("name")
+    .value
+    .trim();
+
 
     const mobile =
-    document.getElementById("mobile").value.trim();
+    document
+    .getElementById("mobile")
+    .value
+    .trim();
+
 
     const place =
-    document.getElementById("place").value.trim();
+    document
+    .getElementById("place")
+    .value
+    .trim();
+
 
     const role =
-    document.getElementById("role").value;
+    document
+    .getElementById("role")
+    .value;
+
 
     const batting =
-    document.getElementById("batting").value;
+    document
+    .getElementById("batting")
+    .value;
+
 
     const bowling =
-    document.getElementById("bowling").value;
+    document
+    .getElementById("bowling")
+    .value;
+
 
     const team =
-    document.getElementById("team").value.trim();
+    document
+    .getElementById("team")
+    .value
+    .trim();
+
 
     const photoInput =
-    document.getElementById("photo");
+    document
+    .getElementById("photo");
 
 
+    // ==================================================
+    // VALIDATION
+    // ==================================================
 
-    /* Basic validation */
-
-    if(!name || !mobile || !place ||
-       !role || !batting || !bowling ||
-       !photoInput.files.length){
+    if(
+        !name ||
+        !mobile ||
+        !place ||
+        !role ||
+        !batting ||
+        !bowling ||
+        !photoInput.files.length
+    ){
 
         showError(
-            "Please fill all required fields and select a player photo."
+        "Please fill all required fields."
         );
 
-        submitBtn.disabled = false;
-        submitBtn.textContent = "REGISTER NOW";
+        resetButton();
 
         return;
     }
 
 
-    /* Mobile validation */
-
     const cleanMobile =
-    mobile.replace(/\s+/g,"");
+    mobile
+    .replace(/\s+/g,"");
 
-    if(!/^[0-9+]{10,15}$/.test(cleanMobile)){
+
+    if(
+        !/^[0-9+]{10,15}$/
+        .test(cleanMobile)
+    ){
 
         showError(
-            "Please enter a valid mobile number."
+        "Please enter a valid mobile number."
         );
 
-        submitBtn.disabled = false;
-        submitBtn.textContent = "REGISTER NOW";
+        resetButton();
 
         return;
     }
@@ -445,51 +642,72 @@ form.addEventListener("submit", async function(e){
 
     try{
 
+
         const file =
         photoInput.files[0];
 
 
-        /*
-          Convert image to Base64
-        */
+        // ==================================================
+        // IMAGE BASE64
+        // ==================================================
 
         const base64 =
         await fileToBase64(file);
 
 
+        // ==================================================
+        // DATA
+        // ==================================================
+
         const payload = {
 
-            action: "register",
+            action:
+            "register",
 
-            name: name,
+            name:
+            name,
 
-            mobile: cleanMobile,
+            mobile:
+            cleanMobile,
 
-            place: place,
+            place:
+            place,
 
-            role: role,
+            role:
+            role,
 
-            batting: batting,
+            batting:
+            batting,
 
-            bowling: bowling,
+            bowling:
+            bowling,
 
-            team: team,
+            team:
+            team,
 
-            photoBase64: base64,
+            photo:
+            file.name,
 
-            photoName: file.name,
+            photoData:
+            base64,
 
-            photoType: file.type
+            photoType:
+            file.type
 
         };
 
+
+        // ==================================================
+        // SEND TO GOOGLE APPS SCRIPT
+        // ==================================================
 
         const response =
         await fetch(
             SCRIPT_URL,
             {
                 method:"POST",
-                body:JSON.stringify(payload)
+                body:
+                JSON.stringify(payload)
             }
         );
 
@@ -498,32 +716,27 @@ form.addEventListener("submit", async function(e){
         await response.json();
 
 
+        // ==================================================
+        // SUCCESS
+        // ==================================================
+
         if(result.success){
 
-            /*
-              Show registration number
-            */
-
-            regNumber.textContent =
-            result.registrationNumber || "SUCCESS";
+            successName.textContent =
+            result.name || name;
 
 
-            successBox.style.display =
-            "block";
+            successReg.textContent =
+            result.registrationNumber || "";
 
-
-            /*
-              Disable registration after successful
-              registration.
-            */
 
             form.style.display =
             "none";
 
 
-            /*
-              Scroll to success message
-            */
+            successBox.style.display =
+            "block";
+
 
             successBox.scrollIntoView({
                 behavior:"smooth",
@@ -531,52 +744,68 @@ form.addEventListener("submit", async function(e){
             });
 
 
-        }else{
+        }
 
-            if(result.duplicate){
 
-                showError(
-                    "⚠️ This mobile number is already registered. Duplicate registration is not allowed."
-                );
+        // ==================================================
+        // DUPLICATE
+        // ==================================================
 
-            }else{
+        else if(result.duplicate){
 
-                showError(
-                    result.error ||
-                    "Registration failed. Please try again."
-                );
+            showError(
+            "⚠️ This mobile number is already registered. Duplicate registration is not allowed."
+            );
 
-            }
-
-            submitBtn.disabled = false;
-            submitBtn.textContent = "REGISTER NOW";
+            resetButton();
 
         }
 
-    }catch(error){
+
+        // ==================================================
+        // OTHER ERROR
+        // ==================================================
+
+        else{
+
+            showError(
+            result.error ||
+            "Registration failed. Please try again."
+            );
+
+            resetButton();
+
+        }
+
+
+    }
+    catch(error){
 
         console.error(error);
 
         showError(
-            "Unable to connect to the registration server. Please check your internet connection and try again."
+        "Unable to connect to registration server. Please try again."
         );
 
-        submitBtn.disabled = false;
-        submitBtn.textContent = "REGISTER NOW";
+        resetButton();
 
     }
 
 });
 
 
-/* Convert image to Base64 */
+// ======================================================
+// FILE TO BASE64
+// ======================================================
 
 function fileToBase64(file){
 
-    return new Promise(function(resolve,reject){
+    return new Promise(
+    function(resolve,reject){
 
         const reader =
         new FileReader();
+
 
         reader.onload =
         function(){
@@ -584,26 +813,28 @@ function fileToBase64(file){
             const result =
             reader.result;
 
-            /*
-              Remove:
-              data:image/jpeg;base64,
-            */
 
             const base64 =
-            result.split(",")[1];
+            result
+            .split(",")[1];
+
 
             resolve(base64);
 
         };
 
+
         reader.onerror =
         function(){
 
             reject(
-                new Error("Unable to read image")
+            new Error(
+            "Unable to read image"
+            )
             );
 
         };
+
 
         reader.readAsDataURL(file);
 
@@ -612,7 +843,9 @@ function fileToBase64(file){
 }
 
 
-/* Error message */
+// ======================================================
+// ERROR
+// ======================================================
 
 function showError(message){
 
@@ -629,7 +862,23 @@ function showError(message){
 
 }
 
+
+// ======================================================
+// RESET BUTTON
+// ======================================================
+
+function resetButton(){
+
+    submitBtn.disabled =
+    false;
+
+    submitBtn.textContent =
+    "REGISTER NOW";
+
+}
+
 </script>
 
 </body>
+
 </html>
