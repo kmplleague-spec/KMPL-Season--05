@@ -1,729 +1,635 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>KMPL Season 05 - Player Registration</title>
+<title>KMPL Season 05 – Player Registration</title>
 
 <style>
-
 *{
-box-sizing:border-box;
-margin:0;
-padding:0;
-font-family:Arial,sans-serif;
+    box-sizing:border-box;
 }
 
 body{
-background:#f2f4f7;
-padding:20px;
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:linear-gradient(135deg,#071a2b,#0d3b66,#071a2b);
+    color:#fff;
+    min-height:100vh;
 }
 
 .container{
-max-width:600px;
-margin:auto;
-background:#fff;
-border-radius:18px;
-overflow:hidden;
-box-shadow:0 8px 30px rgba(0,0,0,.12);
+    width:95%;
+    max-width:650px;
+    margin:25px auto;
 }
 
 .header{
-background:linear-gradient(135deg,#064e3b,#16a34a);
-color:#fff;
-text-align:center;
-padding:30px 20px;
+    text-align:center;
+    padding:25px 15px;
 }
 
 .header h1{
-font-size:30px;
-margin-bottom:8px;
+    margin:0;
+    font-size:32px;
+    font-weight:800;
+    color:#ffd700;
 }
 
 .header h2{
-font-size:17px;
-font-weight:normal;
+    margin:8px 0 0;
+    font-size:20px;
 }
 
 .header p{
-margin-top:12px;
-font-size:15px;
+    margin:8px 0;
+    color:#d7e6f5;
 }
 
-.form{
-padding:25px;
+.card{
+    background:rgba(255,255,255,0.10);
+    border:1px solid rgba(255,255,255,0.20);
+    border-radius:18px;
+    padding:25px;
+    box-shadow:0 10px 35px rgba(0,0,0,0.35);
+    backdrop-filter:blur(10px);
 }
 
 label{
-display:block;
-font-weight:bold;
-margin:18px 0 7px;
+    display:block;
+    margin:15px 0 7px;
+    font-weight:700;
 }
 
 input,
 select{
-width:100%;
-padding:13px;
-border:1px solid #ccc;
-border-radius:9px;
-font-size:15px;
+    width:100%;
+    padding:13px;
+    border-radius:10px;
+    border:1px solid #aaa;
+    font-size:15px;
+    outline:none;
 }
 
 input:focus,
 select:focus{
-border-color:#16a34a;
-outline:none;
-}
-
-.photo-box{
-border:2px dashed #16a34a;
-padding:18px;
-text-align:center;
-border-radius:10px;
+    border-color:#ffd700;
 }
 
 button{
-width:100%;
-margin-top:25px;
-padding:15px;
-border:0;
-border-radius:10px;
-background:#16a34a;
-color:#fff;
-font-size:17px;
-font-weight:bold;
-cursor:pointer;
+    width:100%;
+    border:0;
+    border-radius:12px;
+    padding:14px;
+    font-size:17px;
+    font-weight:800;
+    cursor:pointer;
+    margin-top:20px;
 }
 
-button:disabled{
-background:#999;
-cursor:not-allowed;
+.submit-btn{
+    background:#ffd700;
+    color:#111;
 }
 
-.whatsapp{
-background:#25D366;
-display:none;
-margin-top:20px;
+.submit-btn:disabled{
+    opacity:.6;
+    cursor:not-allowed;
 }
 
-.whatsapp:hover{
-background:#1ebe5d;
+.whatsapp-btn{
+    background:#25D366;
+    color:#fff;
+    margin-top:15px;
 }
 
-.success-box{
-display:none;
-margin-top:20px;
-padding:20px;
-background:#ecfdf5;
-border-radius:12px;
-text-align:center;
+.success{
+    display:none;
+    margin-top:20px;
+    padding:18px;
+    border-radius:12px;
+    background:rgba(0,180,80,.18);
+    border:1px solid #25D366;
+    text-align:center;
+}
+
+.success h3{
+    margin:0 0 10px;
+    color:#25D366;
 }
 
 .reg-number{
-font-size:25px;
-font-weight:bold;
-margin-top:8px;
-color:#064e3b;
+    font-size:24px;
+    font-weight:900;
+    color:#ffd700;
+    margin:10px 0;
 }
 
-#playerName{
-margin-top:8px;
-font-weight:bold;
-}
-
-.note{
-text-align:center;
-color:#777;
-font-size:13px;
-margin-top:15px;
+.error{
+    display:none;
+    margin-top:15px;
+    padding:15px;
+    border-radius:10px;
+    background:rgba(255,0,0,.15);
+    border:1px solid #ff5555;
+    color:#fff;
 }
 
 .footer{
-text-align:center;
-padding:18px;
-background:#f8fafc;
-color:#555;
-font-size:13px;
+    text-align:center;
+    padding:20px;
+    color:#bcd0e3;
+    font-size:13px;
 }
 
-#message{
-text-align:center;
-margin-top:15px;
-font-weight:bold;
+.required{
+    color:#ff6b6b;
 }
 
+.note{
+    font-size:12px;
+    color:#cbd9e6;
+    margin-top:5px;
+}
+
+@media(max-width:500px){
+    .header h1{
+        font-size:25px;
+    }
+
+    .header h2{
+        font-size:17px;
+    }
+
+    .card{
+        padding:18px;
+    }
+}
 </style>
 </head>
-
 
 <body>
 
 <div class="container">
 
+    <div class="header">
+        <h1>KMPL SEASON 05</h1>
+        <h2>KIZHAKAN MEGALA PREMIER LEAGUE</h2>
+        <p>Player Registration</p>
+    </div>
+
+    <div class="card">
+
+        <form id="registrationForm">
+
+            <label>
+                Player Name <span class="required">*</span>
+            </label>
+            <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Enter player name"
+                required
+            >
+
+            <label>
+                Mobile Number <span class="required">*</span>
+            </label>
+            <input
+                type="tel"
+                id="mobile"
+                name="mobile"
+                placeholder="Enter mobile number"
+                maxlength="15"
+                required
+            >
+            <div class="note">
+                One mobile number can register only once.
+            </div>
+
+            <label>
+                Place <span class="required">*</span>
+            </label>
+            <input
+                type="text"
+                id="place"
+                name="place"
+                placeholder="Enter place"
+                required
+            >
+
+            <label>
+                Playing Role <span class="required">*</span>
+            </label>
+            <select id="role" name="role" required>
+                <option value="">Select Playing Role</option>
+                <option value="Batter">Batter</option>
+                <option value="Bowler">Bowler</option>
+                <option value="All Rounder">All Rounder</option>
+                <option value="Wicket Keeper">Wicket Keeper</option>
+            </select>
+
+            <label>
+                Batting Style <span class="required">*</span>
+            </label>
+            <select id="batting" name="batting" required>
+                <option value="">Select Batting Style</option>
+                <option value="Right Hand">Right Hand</option>
+                <option value="Left Hand">Left Hand</option>
+            </select>
+
+            <label>
+                Bowling Style <span class="required">*</span>
+            </label>
+            <select id="bowling" name="bowling" required>
+                <option value="">Select Bowling Style</option>
+                <option value="Right Arm Fast">Right Arm Fast</option>
+                <option value="Right Arm Medium">Right Arm Medium</option>
+                <option value="Right Arm Spin">Right Arm Spin</option>
+                <option value="Left Arm Fast">Left Arm Fast</option>
+                <option value="Left Arm Medium">Left Arm Medium</option>
+                <option value="Left Arm Spin">Left Arm Spin</option>
+                <option value="None">None</option>
+            </select>
+
+            <label>
+                Previous Team
+            </label>
+            <input
+                type="text"
+                id="team"
+                name="team"
+                placeholder="Enter previous team (if any)"
+            >
+
+            <label>
+                Player Photo <span class="required">*</span>
+            </label>
+            <input
+                type="file"
+                id="photo"
+                name="photo"
+                accept="image/*"
+                required
+            >
 
-<div class="header">
+            <button
+                type="submit"
+                id="submitBtn"
+                class="submit-btn"
+            >
+                REGISTER NOW
+            </button>
 
-<h1>🏏 KMPL</h1>
+        </form>
 
-<h2>KIZHAKAN MEGALA PREMIER LEAGUE</h2>
+        <div id="errorBox" class="error"></div>
 
-<p>SEASON 05 – PLAYER REGISTRATION</p>
+        <div id="successBox" class="success">
 
-</div>
+            <h3>✅ REGISTRATION SUCCESSFUL</h3>
 
+            <div>Your Registration Number</div>
 
-<form class="form" id="registrationForm">
+            <div
+                id="regNumber"
+                class="reg-number"
+            ></div>
 
+            <div>
+                Please join the official KMPL WhatsApp Group.
+            </div>
 
-<label>Player Name *</label>
+            <button
+                type="button"
+                id="whatsappBtn"
+                class="whatsapp-btn"
+            >
+                📱 JOIN KMPL WHATSAPP GROUP
+            </button>
 
-<input
-type="text"
-id="name"
-required
-placeholder="Enter your full name"
->
+        </div>
 
+    </div>
 
-<label>Mobile Number *</label>
-
-<input
-type="tel"
-id="mobile"
-maxlength="10"
-required
-placeholder="Enter mobile number"
->
-
-
-<label>Place *</label>
-
-<input
-type="text"
-id="place"
-required
-placeholder="Enter your place"
->
-
-
-<label>Playing Role *</label>
-
-<select id="role" required>
-
-<option value="">Select Playing Role</option>
-
-<option>Batsman</option>
-
-<option>Bowler</option>
-
-<option>All-Rounder</option>
-
-<option>Wicket Keeper</option>
-
-</select>
-
-
-<label>Batting Style</label>
-
-<select id="batting">
-
-<option value="">Select Batting Style</option>
-
-<option>Right Hand Batsman</option>
-
-<option>Left Hand Batsman</option>
-
-</select>
-
-
-<label>Bowling Style</label>
-
-<select id="bowling">
-
-<option value="">Select Bowling Style</option>
-
-<option>Right Arm Fast</option>
-
-<option>Left Arm Fast</option>
-
-<option>Right Arm Medium</option>
-
-<option>Left Arm Medium</option>
-
-<option>Right Arm Spin</option>
-
-<option>Left Arm Spin</option>
-
-<option>Do Not Bowl</option>
-
-</select>
-
-
-<label>Previous Team</label>
-
-<input
-type="text"
-id="team"
-placeholder="Enter previous team"
->
-
-
-<label>Player Photo *</label>
-
-<div class="photo-box">
-
-<input
-type="file"
-id="photo"
-accept="image/*"
-required
->
-
-</div>
-
-
-<button
-type="submit"
-id="submitBtn"
->
-SUBMIT REGISTRATION
-</button>
-
-
-<div id="message"></div>
-
-
-<div class="success-box" id="successBox">
-
-<div>🎉 Registration Successful!</div>
-
-<div class="reg-number" id="regNumber"></div>
-
-<div id="playerName"></div>
-
-
-<!-- WHATSAPP GROUP BUTTON -->
-
-<button
-type="button"
-class="whatsapp"
-id="whatsappBtn"
->
-📱 JOIN KMPL WHATSAPP GROUP
-</button>
-
-
-</div>
-
-
-<div class="note">
-
-* Please enter correct information before submitting.
-
-</div>
-
-
-</form>
-
-
-<div class="footer">
-
-© KMPL – Kizhakan Megala Premier League
-
-</div>
+    <div class="footer">
+        © KMPL Season 05 – Kizhakan Megala Premier League
+    </div>
 
 </div>
 
 
 <script>
 
-
-/* ======================================================
-   GOOGLE APPS SCRIPT
-====================================================== */
-
 const SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbx4_dUYrVPQEQjjWThl0q2vxYTt1SntdunMQbkN7LSV3t3JwiPhJgYTVkJQMJiI8PduSA/exec";
 
 
-/* ======================================================
-   KMPL WHATSAPP GROUP
-====================================================== */
-
+/*
+  IMPORTANT:
+  This is the official KMPL WhatsApp Group invite link.
+*/
 const KMPL_WHATSAPP_GROUP =
 "https://chat.whatsapp.com/LcByyY2SQII2sK1ZJOsvVb";
 
 
-/* ======================================================
-   COMPRESS IMAGE
-====================================================== */
+const form =
+document.getElementById("registrationForm");
 
-function compressImage(file){
-
-return new Promise((resolve,reject)=>{
-
-const reader =
-new FileReader();
-
-
-reader.onload = function(event){
-
-const img =
-new Image();
-
-
-img.onload = function(){
-
-const canvas =
-document.createElement("canvas");
-
-const maxSize = 1200;
-
-let width =
-img.width;
-
-let height =
-img.height;
-
-
-if(width > height){
-
-if(width > maxSize){
-
-height =
-height * maxSize / width;
-
-width =
-maxSize;
-
-}
-
-}else{
-
-if(height > maxSize){
-
-width =
-width * maxSize / height;
-
-height =
-maxSize;
-
-}
-
-}
-
-
-canvas.width =
-width;
-
-canvas.height =
-height;
-
-
-const ctx =
-canvas.getContext("2d");
-
-
-ctx.drawImage(
-img,
-0,
-0,
-width,
-height
-);
-
-
-canvas.toBlob(
-
-blob => resolve(blob),
-
-"image/jpeg",
-
-0.80
-
-);
-
-};
-
-
-img.onerror =
-reject;
-
-img.src =
-event.target.result;
-
-};
-
-
-reader.onerror =
-reject;
-
-reader.readAsDataURL(file);
-
-});
-
-}
-
-
-/* ======================================================
-   SUBMIT REGISTRATION
-====================================================== */
-
-document
-.getElementById("registrationForm")
-.addEventListener(
-"submit",
-async function(e){
-
-e.preventDefault();
-
-
-const button =
+const submitBtn =
 document.getElementById("submitBtn");
-
-const message =
-document.getElementById("message");
 
 const successBox =
 document.getElementById("successBox");
 
-
-button.disabled =
-true;
-
-button.innerText =
-"SUBMITTING...";
-
-message.innerText =
-"";
-
-successBox.style.display =
-"none";
-
-
-try{
-
-
-const photoFile =
-document.getElementById("photo").files[0];
-
-
-if(!photoFile){
-
-throw new Error(
-"Please select a player photo."
-);
-
-}
-
-
-const compressedPhoto =
-await compressImage(photoFile);
-
-
-const reader =
-new FileReader();
-
-
-reader.onloadend =
-async function(){
-
-
-const base64Data =
-reader.result.split(",")[1];
-
-
-const data = {
-
-name:
-document.getElementById("name").value.trim(),
-
-mobile:
-document.getElementById("mobile").value.trim(),
-
-place:
-document.getElementById("place").value.trim(),
-
-role:
-document.getElementById("role").value,
-
-batting:
-document.getElementById("batting").value,
-
-bowling:
-document.getElementById("bowling").value,
-
-team:
-document.getElementById("team").value.trim(),
-
-photo:
-"player-photo.jpg",
-
-photoData:
-base64Data,
-
-photoType:
-"image/jpeg"
-
-};
-
-
-try{
-
-
-const response =
-await fetch(
-
-SCRIPT_URL,
-
-{
-
-method:"POST",
-
-headers:{
-
-"Content-Type":
-"text/plain;charset=utf-8"
-
-},
-
-body:
-JSON.stringify(data)
-
-}
-
-);
-
-
-const result =
-await response.json();
-
-
-/* ==================================================
-   REGISTRATION FAILED
-================================================== */
-
-if(!result.success){
-
-throw new Error(
-result.error ||
-"Registration failed"
-);
-
-}
-
-
-/* ==================================================
-   REGISTRATION SUCCESS
-================================================== */
-
-message.style.color =
-"green";
-
-message.innerText =
-"✅ Registration completed successfully!";
-
-
-document.getElementById(
-"regNumber"
-).innerText =
-"Registration No: " +
-(result.registrationNumber || "-");
-
-
-document.getElementById(
-"playerName"
-).innerText =
-"Player: " +
-(result.name || data.name);
-
-
-successBox.style.display =
-"block";
-
-
-/* ==================================================
-   WHATSAPP GROUP BUTTON
-================================================== */
+const errorBox =
+document.getElementById("errorBox");
+
+const regNumber =
+document.getElementById("regNumber");
 
 const whatsappBtn =
-document.getElementById(
-"whatsappBtn"
-);
+document.getElementById("whatsappBtn");
 
 
-whatsappBtn.style.display =
-"block";
+/* WhatsApp Group Button */
 
+whatsappBtn.addEventListener("click", function(){
 
-whatsappBtn.onclick =
-function(){
+    /*
+      Directly open the WhatsApp group invite page.
+    */
 
-window.open(
-KMPL_WHATSAPP_GROUP,
-"_blank"
-);
-
-};
-
-
-/* Reset only after successful registration */
-
-document
-.getElementById(
-"registrationForm"
-)
-.reset();
-
-
-}catch(error){
-
-message.style.color =
-"red";
-
-message.innerText =
-"❌ " +
-error.message;
-
-}
-
-button.disabled =
-false;
-
-button.innerText =
-"SUBMIT REGISTRATION";
-
-};
-
-
-reader.readAsDataURL(
-compressedPhoto
-);
-
-
-}catch(error){
-
-message.style.color =
-"red";
-
-message.innerText =
-"❌ " +
-error.message;
-
-button.disabled =
-false;
-
-button.innerText =
-"SUBMIT REGISTRATION";
-
-}
+    window.location.href = KMPL_WHATSAPP_GROUP;
 
 });
+
+
+/* Registration */
+
+form.addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    errorBox.style.display = "none";
+    errorBox.textContent = "";
+
+    successBox.style.display = "none";
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "REGISTERING...";
+
+
+    const name =
+    document.getElementById("name").value.trim();
+
+    const mobile =
+    document.getElementById("mobile").value.trim();
+
+    const place =
+    document.getElementById("place").value.trim();
+
+    const role =
+    document.getElementById("role").value;
+
+    const batting =
+    document.getElementById("batting").value;
+
+    const bowling =
+    document.getElementById("bowling").value;
+
+    const team =
+    document.getElementById("team").value.trim();
+
+    const photoInput =
+    document.getElementById("photo");
+
+
+
+    /* Basic validation */
+
+    if(!name || !mobile || !place ||
+       !role || !batting || !bowling ||
+       !photoInput.files.length){
+
+        showError(
+            "Please fill all required fields and select a player photo."
+        );
+
+        submitBtn.disabled = false;
+        submitBtn.textContent = "REGISTER NOW";
+
+        return;
+    }
+
+
+    /* Mobile validation */
+
+    const cleanMobile =
+    mobile.replace(/\s+/g,"");
+
+    if(!/^[0-9+]{10,15}$/.test(cleanMobile)){
+
+        showError(
+            "Please enter a valid mobile number."
+        );
+
+        submitBtn.disabled = false;
+        submitBtn.textContent = "REGISTER NOW";
+
+        return;
+    }
+
+
+    try{
+
+        const file =
+        photoInput.files[0];
+
+
+        /*
+          Convert image to Base64
+        */
+
+        const base64 =
+        await fileToBase64(file);
+
+
+        const payload = {
+
+            action: "register",
+
+            name: name,
+
+            mobile: cleanMobile,
+
+            place: place,
+
+            role: role,
+
+            batting: batting,
+
+            bowling: bowling,
+
+            team: team,
+
+            photoBase64: base64,
+
+            photoName: file.name,
+
+            photoType: file.type
+
+        };
+
+
+        const response =
+        await fetch(
+            SCRIPT_URL,
+            {
+                method:"POST",
+                body:JSON.stringify(payload)
+            }
+        );
+
+
+        const result =
+        await response.json();
+
+
+        if(result.success){
+
+            /*
+              Show registration number
+            */
+
+            regNumber.textContent =
+            result.registrationNumber || "SUCCESS";
+
+
+            successBox.style.display =
+            "block";
+
+
+            /*
+              Disable registration after successful
+              registration.
+            */
+
+            form.style.display =
+            "none";
+
+
+            /*
+              Scroll to success message
+            */
+
+            successBox.scrollIntoView({
+                behavior:"smooth",
+                block:"center"
+            });
+
+
+        }else{
+
+            if(result.duplicate){
+
+                showError(
+                    "⚠️ This mobile number is already registered. Duplicate registration is not allowed."
+                );
+
+            }else{
+
+                showError(
+                    result.error ||
+                    "Registration failed. Please try again."
+                );
+
+            }
+
+            submitBtn.disabled = false;
+            submitBtn.textContent = "REGISTER NOW";
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+        showError(
+            "Unable to connect to the registration server. Please check your internet connection and try again."
+        );
+
+        submitBtn.disabled = false;
+        submitBtn.textContent = "REGISTER NOW";
+
+    }
+
+});
+
+
+/* Convert image to Base64 */
+
+function fileToBase64(file){
+
+    return new Promise(function(resolve,reject){
+
+        const reader =
+        new FileReader();
+
+        reader.onload =
+        function(){
+
+            const result =
+            reader.result;
+
+            /*
+              Remove:
+              data:image/jpeg;base64,
+            */
+
+            const base64 =
+            result.split(",")[1];
+
+            resolve(base64);
+
+        };
+
+        reader.onerror =
+        function(){
+
+            reject(
+                new Error("Unable to read image")
+            );
+
+        };
+
+        reader.readAsDataURL(file);
+
+    });
+
+}
+
+
+/* Error message */
+
+function showError(message){
+
+    errorBox.textContent =
+    message;
+
+    errorBox.style.display =
+    "block";
+
+    errorBox.scrollIntoView({
+        behavior:"smooth",
+        block:"center"
+    });
+
+}
 
 </script>
 
 </body>
-
 </html>
