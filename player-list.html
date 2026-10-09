@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>KMPL Season 05 – Player Cards</title>
+<title>KMPL Season 05 - Player Cards</title>
 
 <style>
 * {
@@ -15,13 +15,12 @@ body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
     background: #111;
-    color: #fff;
+    color: white;
 }
 
 .topbar {
     text-align: center;
     padding: 20px;
-    background: #111;
 }
 
 .topbar h1 {
@@ -42,7 +41,8 @@ body {
 
 .controls button {
     padding: 12px 20px;
-    border: 0;
+    margin: 5px;
+    border: none;
     border-radius: 8px;
     background: #ffd700;
     color: #111;
@@ -52,8 +52,8 @@ body {
 
 #loading {
     text-align: center;
-    padding: 50px 15px;
-    font-size: 20px;
+    padding: 35px 15px;
+    font-size: 18px;
 }
 
 .player-card {
@@ -67,30 +67,6 @@ body {
     position: relative;
     overflow: hidden;
     page-break-after: always;
-}
-
-.player-card::before {
-    content: "";
-    position: absolute;
-    width: 250px;
-    height: 250px;
-    border-radius: 50%;
-    border: 30px solid rgba(255,215,0,.08);
-    right: -100px;
-    top: -80px;
-    pointer-events: none;
-}
-
-.player-card::after {
-    content: "";
-    position: absolute;
-    width: 220px;
-    height: 220px;
-    border-radius: 50%;
-    border: 25px solid rgba(255,255,255,.04);
-    left: -100px;
-    bottom: -80px;
-    pointer-events: none;
 }
 
 .card-header {
@@ -132,42 +108,43 @@ body {
     display: block;
     max-width: 100%;
     max-height: 100%;
+    width: auto;
+    height: auto;
     object-fit: contain;
-    border-radius: 15px;
     border: 5px solid #ffd700;
-    box-shadow: 0 8px 30px rgba(0,0,0,.5);
+    border-radius: 15px;
     background: #222;
+    box-shadow: 0 8px 30px rgba(0,0,0,.5);
 }
 
 .photo-fallback {
-    display: flex;
     width: 100%;
     height: 100%;
+    display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     gap: 10px;
+    border: 2px dashed #ffd700;
+    border-radius: 15px;
     color: #ddd;
     text-align: center;
-    border: 2px dashed rgba(255,215,0,.6);
-    border-radius: 15px;
     background: rgba(0,0,0,.2);
 }
 
-.photo-fallback .person-icon {
-    font-size: 70px;
+.photo-fallback .person {
+    font-size: 65px;
 }
 
 .photo-fallback small {
-    font-size: 13px;
     color: #ffd700;
+    font-size: 13px;
 }
 
 .player-name {
     position: relative;
     z-index: 2;
     text-align: center;
-    color: #fff;
     font-size: 30px;
     font-weight: 900;
     text-transform: uppercase;
@@ -183,7 +160,6 @@ body {
     font-weight: bold;
     color: #ffd700;
     margin-bottom: 20px;
-    overflow-wrap: anywhere;
 }
 
 .details {
@@ -192,7 +168,6 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
-    margin-top: 10px;
 }
 
 .detail {
@@ -213,7 +188,6 @@ body {
 .detail-value {
     font-size: 17px;
     font-weight: 800;
-    color: #fff;
     overflow-wrap: anywhere;
 }
 
@@ -225,7 +199,6 @@ body {
     text-align: center;
     color: #b8c9d8;
     font-size: 12px;
-    z-index: 2;
 }
 
 @media print {
@@ -235,7 +208,7 @@ body {
     }
 
     body {
-        background: #fff;
+        background: white;
     }
 
     .topbar,
@@ -245,10 +218,10 @@ body {
     }
 
     .player-card {
-        margin: 0;
         width: 210mm;
         height: 297mm;
         min-height: 297mm;
+        margin: 0;
         border-radius: 0;
         page-break-after: always;
         -webkit-print-color-adjust: exact;
@@ -289,12 +262,8 @@ body {
 </div>
 
 <div class="controls">
-    <button onclick="window.print()">
-        🖨️ PRINT / SAVE AS PDF
-    </button>
-    <button onclick="loadPlayers()" style="margin-left:8px">
-        🔄 REFRESH PLAYERS
-    </button>
+    <button onclick="loadPlayers()">🔄 REFRESH PLAYERS</button>
+    <button onclick="window.print()">🖨️ PRINT / SAVE AS PDF</button>
 </div>
 
 <div id="loading">Loading Players...</div>
@@ -304,14 +273,12 @@ body {
 "use strict";
 
 // =============================================
-// APPS SCRIPT URL
+// APPS SCRIPT CONFIGURATION
 // =============================================
 
 const SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbx4_dUYrVPQEQjjWThl0q2vxYTt1SntdunMQbkN7LSV3t3JwiPhJgYTVkJQMJiI8PduSA/exec";
 
-// Keep this only if your Apps Script GET endpoint
-// requires the password parameter.
 const ADMIN_PASSWORD = "KMPL@2026";
 
 // =============================================
@@ -327,23 +294,28 @@ async function loadPlayers() {
     container.innerHTML = "";
 
     try {
-        const response = await fetch(
-            SCRIPT_URL + "?password=" +
-            encodeURIComponent(ADMIN_PASSWORD),
-            { cache: "no-store" }
-        );
+        const apiUrl =
+            SCRIPT_URL +
+            "?password=" +
+            encodeURIComponent(ADMIN_PASSWORD);
+
+        const response = await fetch(apiUrl, {
+            cache: "no-store"
+        });
 
         if (!response.ok) {
-            throw new Error("Server response: " + response.status);
+            throw new Error("HTTP error: " + response.status);
         }
 
         const data = await response.json();
 
         if (!data.success) {
-            throw new Error(data.message || "Unable to load players.");
+            throw new Error(data.error || data.message || "API error");
         }
 
-        const players = Array.isArray(data.players) ? data.players : [];
+        const players = Array.isArray(data.players)
+            ? data.players
+            : [];
 
         if (players.length === 0) {
             loading.textContent = "No players found.";
@@ -354,28 +326,48 @@ async function loadPlayers() {
         renderPlayers(players);
 
     } catch (error) {
-        console.error("KMPL player loading error:", error);
-        loading.style.display = "block";
+        console.error("KMPL API error:", error);
         loading.textContent =
-            "Could not load players. Check Apps Script access and response.";
+            "Players could not be loaded. Check Apps Script deployment and access.";
     }
 }
 
 // =============================================
-// GET FIELD FROM DIFFERENT POSSIBLE API KEYS
+// FIELD HELPERS
 // =============================================
 
 function getField(player, keys) {
     for (const key of keys) {
+        const value = player[key];
+
         if (
-            player[key] !== undefined &&
-            player[key] !== null &&
-            String(player[key]).trim() !== ""
+            value !== undefined &&
+            value !== null &&
+            String(value).trim() !== ""
         ) {
-            return String(player[key]).trim();
+            return String(value).trim();
         }
     }
+
     return "";
+}
+
+function escapeHtml(value) {
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function makeDetail(label, value) {
+    return `
+        <div class="detail">
+            <div class="detail-label">${escapeHtml(label)}</div>
+            <div class="detail-value">${escapeHtml(value || "-")}</div>
+        </div>
+    `;
 }
 
 // =============================================
@@ -387,12 +379,14 @@ function renderPlayers(players) {
     container.innerHTML = "";
 
     players.forEach(function(player) {
-        const name = getField(player, ["name", "Name"]);
+        const name = getField(player, ["name", "Name", "C"]);
         const registration = getField(player, [
-            "registrationNumber", "registration_number",
-            "Registration Number", "RegistrationNumber",
-            "registration", "regNo", "B"
+            "registrationNumber",
+            "registration_number",
+            "Registration Number",
+            "B"
         ]);
+
         const mobile = getField(player, ["mobile", "Mobile", "D"]);
         const place = getField(player, ["place", "Place", "E"]);
         const role = getField(player, ["role", "Role", "F"]);
@@ -403,15 +397,13 @@ function renderPlayers(players) {
             "Previous Team", "I"
         ]);
 
-        // Try common names for the Photo field.
         const photoValue = getField(player, [
             "photo", "photoUrl", "photoURL", "photo_url",
             "image", "imageUrl", "imageURL",
-            "playerPhoto", "player_photo",
-            "Player Photo", "Photo", "J"
+            "playerPhoto", "Player Photo", "Photo", "J"
         ]);
 
-        const card = document.createElement("div");
+        const card = document.createElement("section");
         card.className = "player-card";
 
         card.innerHTML = `
@@ -423,9 +415,9 @@ function renderPlayers(players) {
 
             <div class="photo-wrap">
                 <div class="photo-fallback">
-                    <div class="person-icon">👤</div>
-                    <div>Player Photo</div>
-                    <small>Photo unavailable</small>
+                    <div class="person">👤</div>
+                    <div>PLAYER PHOTO</div>
+                    <small>Loading photo...</small>
                 </div>
             </div>
 
@@ -439,9 +431,9 @@ function renderPlayers(players) {
                 ${makeDetail("Mobile Number", "📱 " + (mobile || "-"))}
                 ${makeDetail("Place", "📍 " + (place || "-"))}
                 ${makeDetail("Playing Role", "🏏 " + (role || "-"))}
-                ${makeDetail("Batting Style", batting || "-")}
-                ${makeDetail("Bowling Style", bowling || "-")}
-                ${makeDetail("Previous Team", team || "-")}
+                ${makeDetail("Batting Style", batting)}
+                ${makeDetail("Bowling Style", bowling)}
+                ${makeDetail("Previous Team", team)}
             </div>
 
             <div class="card-footer">
@@ -456,17 +448,8 @@ function renderPlayers(players) {
     });
 }
 
-function makeDetail(label, value) {
-    return `
-        <div class="detail">
-            <div class="detail-label">${escapeHtml(label)}</div>
-            <div class="detail-value">${escapeHtml(value)}</div>
-        </div>
-    `;
-}
-
 // =============================================
-// GOOGLE DRIVE PHOTO URL HANDLING
+// EXTRACT GOOGLE DRIVE FILE ID
 // =============================================
 
 function extractDriveId(value) {
@@ -474,22 +457,15 @@ function extractDriveId(value) {
 
     const input = String(value).trim();
 
-    // Accept a plain Drive file ID.
     if (/^[a-zA-Z0-9_-]{25,}$/.test(input)) {
         return input;
     }
 
-    // Common links:
-    // drive.google.com/file/d/FILE_ID/view
-    // drive.google.com/open?id=FILE_ID
-    // drive.google.com/uc?id=FILE_ID
-    // drive.google.com/thumbnail?id=FILE_ID
-    // drive.google.com/drive/folders/... is not a photo file link.
     const patterns = [
-        /drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/i,
-        /drive\.google\.com\/thumbnail\?[^#]*\bid=([a-zA-Z0-9_-]+)/i,
-        /drive\.google\.com\/uc\?[^#]*\bid=([a-zA-Z0-9_-]+)/i,
-        /drive\.google\.com\/open\?[^#]*\bid=([a-zA-Z0-9_-]+)/i,
+        /\/file\/d\/([a-zA-Z0-9_-]+)/i,
+        /\/thumbnail\?[^#]*\bid=([a-zA-Z0-9_-]+)/i,
+        /\/uc\?[^#]*\bid=([a-zA-Z0-9_-]+)/i,
+        /\/open\?[^#]*\bid=([a-zA-Z0-9_-]+)/i,
         /[?&]id=([a-zA-Z0-9_-]{25,})/i
     ];
 
@@ -501,82 +477,89 @@ function extractDriveId(value) {
     return "";
 }
 
+// =============================================
+// BUILD PHOTO URL CANDIDATES
+// =============================================
+
 function getPhotoCandidates(value) {
     if (!value) return [];
 
     const input = String(value).trim();
-    const id = extractDriveId(input);
+    const fileId = extractDriveId(input);
 
-    if (!id) {
-        // If it is already an image URL, try it as provided.
-        if (/^https?:\/\//i.test(input)) return [input];
-        return [];
+    if (!fileId) {
+        return /^https?:\/\//i.test(input) ? [input] : [];
     }
 
-    // Try several Drive image endpoints.
-    // These work only if the file is accessible to the viewer.
     return [
         "https://drive.google.com/thumbnail?id=" +
-            encodeURIComponent(id) + "&sz=w1000",
+            encodeURIComponent(fileId) + "&sz=w1000",
 
         "https://drive.google.com/uc?export=view&id=" +
-            encodeURIComponent(id),
+            encodeURIComponent(fileId),
 
         "https://drive.google.com/uc?id=" +
-            encodeURIComponent(id),
+            encodeURIComponent(fileId),
 
         "https://lh3.googleusercontent.com/d/" +
-            encodeURIComponent(id)
+            encodeURIComponent(fileId)
     ];
 }
 
+// =============================================
+// LOAD PHOTO
+// =============================================
+
 function loadPlayerPhoto(value, photoWrap) {
     const candidates = getPhotoCandidates(value);
+    const fallback = photoWrap.querySelector(".photo-fallback");
 
     if (candidates.length === 0) {
+        if (fallback) {
+            fallback.querySelector("small").textContent =
+                "Photo URL missing in API";
+        }
+
+        console.warn("Photo URL missing:", value);
         return;
     }
 
-    let index = 0;
     const img = document.createElement("img");
     img.alt = "Player Photo";
-    img.loading = "eager";
-    img.referrerPolicy = "no-referrer";
+    img.style.display = "none";
 
-    const fallback = photoWrap.querySelector(".photo-fallback");
+    let currentIndex = 0;
 
     img.onload = function() {
         if (fallback) fallback.remove();
+
         img.style.display = "block";
+
+        console.log("Player photo loaded:", candidates[currentIndex]);
     };
 
     img.onerror = function() {
-        index++;
+        currentIndex++;
 
-        if (index < candidates.length) {
-            img.src = candidates[index];
+        if (currentIndex < candidates.length) {
+            img.src = candidates[currentIndex];
         } else {
-            console.warn("Unable to display player photo:", value);
             img.remove();
+
+            if (fallback) {
+                fallback.querySelector("small").textContent =
+                    "Photo could not be loaded";
+            }
+
+            console.error(
+                "All photo URLs failed:",
+                candidates
+            );
         }
     };
 
-    img.style.display = "none";
     photoWrap.appendChild(img);
-    img.src = candidates[index];
-}
-
-// =============================================
-// ESCAPE HTML
-// =============================================
-
-function escapeHtml(value) {
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    img.src = candidates[currentIndex];
 }
 
 // =============================================
