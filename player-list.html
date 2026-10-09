@@ -7,736 +7,584 @@
 <title>KMPL Season 05 – Player Cards</title>
 
 <style>
-*{
-    box-sizing:border-box;
+* {
+    box-sizing: border-box;
 }
 
-body{
-    margin:0;
-    font-family:Arial,Helvetica,sans-serif;
-    background:#111;
-    color:#fff;
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #111;
+    color: #fff;
 }
 
-.topbar{
-    text-align:center;
-    padding:20px;
-    background:#111;
+.topbar {
+    text-align: center;
+    padding: 20px;
+    background: #111;
 }
 
-.topbar h1{
-    margin:0;
-    color:#ffd700;
-    font-size:28px;
+.topbar h1 {
+    margin: 0;
+    color: #ffd700;
+    font-size: 28px;
 }
 
-.topbar p{
-    margin:6px 0 0;
-    color:#ccc;
+.topbar p {
+    margin: 6px 0 0;
+    color: #ccc;
 }
 
-.controls{
-    text-align:center;
-    padding:10px 15px 20px;
+.controls {
+    text-align: center;
+    padding: 10px 15px 20px;
 }
 
-.controls button{
-    padding:12px 20px;
-    border:0;
-    border-radius:8px;
-    background:#ffd700;
-    color:#111;
-    font-weight:bold;
-    cursor:pointer;
+.controls button {
+    padding: 12px 20px;
+    border: 0;
+    border-radius: 8px;
+    background: #ffd700;
+    color: #111;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-
-/* ======================================================
-   A4 PLAYER CARD
-====================================================== */
-
-.player-card{
-    width:210mm;
-    min-height:297mm;
-    margin:20px auto;
-    padding:18mm;
-
-    background:
-        linear-gradient(
-            145deg,
-            #071426,
-            #0d3d68,
-            #071426
-        );
-
-    border:5px solid #ffd700;
-    border-radius:10px;
-
-    position:relative;
-
-    overflow:hidden;
-
-    page-break-after:always;
+#loading {
+    text-align: center;
+    padding: 50px 15px;
+    font-size: 20px;
 }
 
-
-/* Decorative circle */
-
-.player-card::before{
-    content:"";
-    position:absolute;
-    width:250px;
-    height:250px;
-    border-radius:50%;
-    border:30px solid rgba(255,215,0,.08);
-    right:-100px;
-    top:-80px;
+.player-card {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 20px auto;
+    padding: 18mm;
+    background: linear-gradient(145deg, #071426, #0d3d68, #071426);
+    border: 5px solid #ffd700;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
 }
 
-.player-card::after{
-    content:"";
-    position:absolute;
-    width:220px;
-    height:220px;
-    border-radius:50%;
-    border:25px solid rgba(255,255,255,.04);
-    left:-100px;
-    bottom:-80px;
+.player-card::before {
+    content: "";
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    border: 30px solid rgba(255,215,0,.08);
+    right: -100px;
+    top: -80px;
+    pointer-events: none;
 }
 
-
-/* Header */
-
-.card-header{
-    position:relative;
-    z-index:2;
-    text-align:center;
+.player-card::after {
+    content: "";
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    border: 25px solid rgba(255,255,255,.04);
+    left: -100px;
+    bottom: -80px;
+    pointer-events: none;
 }
 
-.card-header h1{
-    margin:0;
-    color:#ffd700;
-    font-size:30px;
-    font-weight:900;
+.card-header {
+    position: relative;
+    z-index: 2;
+    text-align: center;
 }
 
-.card-header h2{
-    margin:7px 0 0;
-    font-size:18px;
+.card-header h1 {
+    margin: 0;
+    color: #ffd700;
+    font-size: 30px;
+    font-weight: 900;
 }
 
-.card-header p{
-    margin:6px 0 18px;
-    color:#d8e7f5;
+.card-header h2 {
+    margin: 7px 0 0;
+    font-size: 18px;
 }
 
-
-/* Photo */
-
-.photo-wrap{
-    position:relative;
-    z-index:2;
-
-    width:145mm;
-    height:115mm;
-
-    margin:0 auto 20px;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
+.card-header p {
+    margin: 6px 0 18px;
+    color: #d8e7f5;
 }
 
-.photo-wrap img{
-    max-width:100%;
-    max-height:100%;
-
-    object-fit:contain;
-
-    border-radius:15px;
-
-    border:5px solid #ffd700;
-
-    box-shadow:
-        0 8px 30px rgba(0,0,0,.5);
-
-    background:#222;
+.photo-wrap {
+    position: relative;
+    z-index: 2;
+    width: 145mm;
+    height: 115mm;
+    margin: 0 auto 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
-
-/* Player name */
-
-.player-name{
-    position:relative;
-    z-index:2;
-
-    text-align:center;
-
-    color:#fff;
-
-    font-size:30px;
-    font-weight:900;
-
-    text-transform:uppercase;
-
-    margin:10px 0 18px;
+.photo-wrap img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 15px;
+    border: 5px solid #ffd700;
+    box-shadow: 0 8px 30px rgba(0,0,0,.5);
+    background: #222;
 }
 
-
-/* Registration number */
-
-.registration{
-    position:relative;
-    z-index:2;
-
-    text-align:center;
-
-    font-size:18px;
-    font-weight:bold;
-
-    color:#ffd700;
-
-    margin-bottom:20px;
+.photo-fallback {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    color: #ddd;
+    text-align: center;
+    border: 2px dashed rgba(255,215,0,.6);
+    border-radius: 15px;
+    background: rgba(0,0,0,.2);
 }
 
-
-/* Details */
-
-.details{
-    position:relative;
-    z-index:2;
-
-    display:grid;
-
-    grid-template-columns:1fr 1fr;
-
-    gap:12px;
-
-    margin-top:10px;
+.photo-fallback .person-icon {
+    font-size: 70px;
 }
 
-.detail{
-    background:rgba(255,255,255,.09);
-
-    border:1px solid rgba(255,255,255,.15);
-
-    border-radius:10px;
-
-    padding:13px;
-
-    min-height:62px;
+.photo-fallback small {
+    font-size: 13px;
+    color: #ffd700;
 }
 
-.detail-label{
-    font-size:12px;
-
-    color:#b9cde0;
-
-    text-transform:uppercase;
-
-    margin-bottom:5px;
+.player-name {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: #fff;
+    font-size: 30px;
+    font-weight: 900;
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+    margin: 10px 0 18px;
 }
 
-.detail-value{
-    font-size:17px;
-
-    font-weight:800;
-
-    color:#fff;
-
-    word-break:break-word;
+.registration {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffd700;
+    margin-bottom: 20px;
+    overflow-wrap: anywhere;
 }
 
-
-/* Footer */
-
-.card-footer{
-    position:absolute;
-
-    bottom:10mm;
-
-    left:0;
-    right:0;
-
-    text-align:center;
-
-    color:#b8c9d8;
-
-    font-size:12px;
-
-    z-index:2;
+.details {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 10px;
 }
 
-
-/* ======================================================
-   LOADING
-====================================================== */
-
-#loading{
-    text-align:center;
-    padding:50px;
-    font-size:20px;
+.detail {
+    background: rgba(255,255,255,.09);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 10px;
+    padding: 13px;
+    min-height: 62px;
 }
 
+.detail-label {
+    font-size: 12px;
+    color: #b9cde0;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
 
-/* ======================================================
-   PRINT
-====================================================== */
+.detail-value {
+    font-size: 17px;
+    font-weight: 800;
+    color: #fff;
+    overflow-wrap: anywhere;
+}
 
-@media print{
+.card-footer {
+    position: absolute;
+    bottom: 10mm;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: #b8c9d8;
+    font-size: 12px;
+    z-index: 2;
+}
 
-    @page{
-        size:A4;
-        margin:0;
+@media print {
+    @page {
+        size: A4;
+        margin: 0;
     }
 
-    body{
-        background:#fff;
+    body {
+        background: #fff;
     }
 
     .topbar,
     .controls,
-    #loading{
-        display:none !important;
+    #loading {
+        display: none !important;
     }
 
-    .player-card{
-        margin:0;
-        width:210mm;
-        height:297mm;
-        min-height:297mm;
-
-        border-radius:0;
-
-        page-break-after:always;
-
-        -webkit-print-color-adjust:exact;
-        print-color-adjust:exact;
+    .player-card {
+        margin: 0;
+        width: 210mm;
+        height: 297mm;
+        min-height: 297mm;
+        border-radius: 0;
+        page-break-after: always;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
     }
-
 }
 
-
-/* ======================================================
-   MOBILE PREVIEW
-====================================================== */
-
-@media screen and (max-width:700px){
-
-    .player-card{
-        width:95%;
-        min-height:auto;
-
-        padding:25px;
-
-        margin:15px auto;
+@media screen and (max-width: 700px) {
+    .player-card {
+        width: 95%;
+        min-height: auto;
+        padding: 25px;
+        margin: 15px auto;
     }
 
-    .photo-wrap{
-        width:100%;
-        height:350px;
+    .photo-wrap {
+        width: 100%;
+        height: 350px;
     }
 
-    .details{
-        grid-template-columns:1fr;
+    .details {
+        grid-template-columns: 1fr;
     }
 
-    .card-footer{
-        position:static;
-        margin-top:25px;
+    .card-footer {
+        position: static;
+        margin-top: 25px;
     }
-
 }
 </style>
-
 </head>
-
 
 <body>
 
-
 <div class="topbar">
-
     <h1>🏏 KMPL SEASON 05</h1>
-
-    <p>
-        KIZHAKAN MEGALA PREMIER LEAGUE
-    </p>
-
+    <p>KIZHAKAN MEGALA PREMIER LEAGUE</p>
 </div>
 
-
 <div class="controls">
-
     <button onclick="window.print()">
         🖨️ PRINT / SAVE AS PDF
     </button>
-
+    <button onclick="loadPlayers()" style="margin-left:8px">
+        🔄 REFRESH PLAYERS
+    </button>
 </div>
 
-
-<div id="loading">
-    Loading Players...
-</div>
-
-
+<div id="loading">Loading Players...</div>
 <div id="playersContainer"></div>
 
-
 <script>
+"use strict";
 
-
-// ======================================================
+// =============================================
 // APPS SCRIPT URL
-// ======================================================
+// =============================================
 
 const SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbx4_dUYrVPQEQjjWThl0q2vxYTt1SntdunMQbkN7LSV3t3JwiPhJgYTVkJQMJiI8PduSA/exec";
 
+// Keep this only if your Apps Script GET endpoint
+// requires the password parameter.
+const ADMIN_PASSWORD = "KMPL@2026";
 
-// ======================================================
-// ADMIN PASSWORD
-// ======================================================
-
-const ADMIN_PASSWORD =
-"KMPL@2026";
-
-
-// ======================================================
+// =============================================
 // LOAD PLAYERS
-// ======================================================
+// =============================================
 
-async function loadPlayers(){
+async function loadPlayers() {
+    const loading = document.getElementById("loading");
+    const container = document.getElementById("playersContainer");
 
-    try{
+    loading.style.display = "block";
+    loading.textContent = "Loading Players...";
+    container.innerHTML = "";
 
-        const response =
-        await fetch(
-            SCRIPT_URL +
-            "?password=" +
-            encodeURIComponent(
-                ADMIN_PASSWORD
-            )
+    try {
+        const response = await fetch(
+            SCRIPT_URL + "?password=" +
+            encodeURIComponent(ADMIN_PASSWORD),
+            { cache: "no-store" }
         );
 
+        if (!response.ok) {
+            throw new Error("Server response: " + response.status);
+        }
 
-        const data =
-        await response.json();
+        const data = await response.json();
 
+        if (!data.success) {
+            throw new Error(data.message || "Unable to load players.");
+        }
 
-        if(!data.success){
+        const players = Array.isArray(data.players) ? data.players : [];
 
-            document.getElementById(
-                "loading"
-            ).textContent =
-            "Unable to load players.";
-
+        if (players.length === 0) {
+            loading.textContent = "No players found.";
             return;
         }
 
-
-        const players =
-        data.players || [];
-
-
-        document.getElementById(
-            "loading"
-        ).style.display =
-        "none";
-
-
+        loading.style.display = "none";
         renderPlayers(players);
 
-
+    } catch (error) {
+        console.error("KMPL player loading error:", error);
+        loading.style.display = "block";
+        loading.textContent =
+            "Could not load players. Check Apps Script access and response.";
     }
-    catch(error){
-
-        console.error(error);
-
-        document.getElementById(
-            "loading"
-        ).textContent =
-        "Error loading players.";
-
-    }
-
 }
 
+// =============================================
+// GET FIELD FROM DIFFERENT POSSIBLE API KEYS
+// =============================================
 
-// ======================================================
-// RENDER PLAYERS
-// ======================================================
+function getField(player, keys) {
+    for (const key of keys) {
+        if (
+            player[key] !== undefined &&
+            player[key] !== null &&
+            String(player[key]).trim() !== ""
+        ) {
+            return String(player[key]).trim();
+        }
+    }
+    return "";
+}
 
-function renderPlayers(players){
+// =============================================
+// RENDER PLAYER CARDS
+// =============================================
 
-    const container =
-    document.getElementById(
-        "playersContainer"
-    );
-
-
+function renderPlayers(players) {
+    const container = document.getElementById("playersContainer");
     container.innerHTML = "";
 
+    players.forEach(function(player) {
+        const name = getField(player, ["name", "Name"]);
+        const registration = getField(player, [
+            "registrationNumber", "registration_number",
+            "Registration Number", "RegistrationNumber",
+            "registration", "regNo", "B"
+        ]);
+        const mobile = getField(player, ["mobile", "Mobile", "D"]);
+        const place = getField(player, ["place", "Place", "E"]);
+        const role = getField(player, ["role", "Role", "F"]);
+        const batting = getField(player, ["batting", "Batting", "G"]);
+        const bowling = getField(player, ["bowling", "Bowling", "H"]);
+        const team = getField(player, [
+            "team", "previousTeam", "previous_team",
+            "Previous Team", "I"
+        ]);
 
-    players.forEach(function(player){
+        // Try common names for the Photo field.
+        const photoValue = getField(player, [
+            "photo", "photoUrl", "photoURL", "photo_url",
+            "image", "imageUrl", "imageURL",
+            "playerPhoto", "player_photo",
+            "Player Photo", "Photo", "J"
+        ]);
 
-        const card =
-        document.createElement("div");
-
-        card.className =
-        "player-card";
-
-
-        const photo =
-        getPhotoUrl(
-            player.photo
-        );
-
+        const card = document.createElement("div");
+        card.className = "player-card";
 
         card.innerHTML = `
-
             <div class="card-header">
-
-                <h1>
-                    KMPL SEASON 05
-                </h1>
-
-                <h2>
-                    KIZHAKAN MEGALA PREMIER LEAGUE
-                </h2>
-
-                <p>
-                    OFFICIAL PLAYER CARD
-                </p>
-
+                <h1>KMPL SEASON 05</h1>
+                <h2>KIZHAKAN MEGALA PREMIER LEAGUE</h2>
+                <p>OFFICIAL PLAYER CARD</p>
             </div>
-
 
             <div class="photo-wrap">
-
-                ${
-                    photo
-                    ?
-                    `<img
-                        src="${photo}"
-                        alt="Player Photo"
-                        onerror="this.style.display='none'"
-                    >`
-                    :
-                    `<div
-                        style="
-                        font-size:70px;
-                        color:#777;
-                        "
-                    >
-                        👤
-                    </div>`
-                }
-
+                <div class="photo-fallback">
+                    <div class="person-icon">👤</div>
+                    <div>Player Photo</div>
+                    <small>Photo unavailable</small>
+                </div>
             </div>
 
-
-            <div class="player-name">
-
-                ${escapeHtml(
-                    player.name || "-"
-                )}
-
-            </div>
-
+            <div class="player-name">${escapeHtml(name || "-")}</div>
 
             <div class="registration">
-
-                REGISTRATION NO:
-                ${escapeHtml(
-                    player.registrationNumber || "-"
-                )}
-
+                REGISTRATION NO: ${escapeHtml(registration || "-")}
             </div>
-
 
             <div class="details">
-
-
-                <div class="detail">
-
-                    <div class="detail-label">
-                        Mobile Number
-                    </div>
-
-                    <div class="detail-value">
-                        📱 ${
-                            escapeHtml(
-                                player.mobile || "-"
-                            )
-                        }
-                    </div>
-
-                </div>
-
-
-                <div class="detail">
-
-                    <div class="detail-label">
-                        Place
-                    </div>
-
-                    <div class="detail-value">
-                        📍 ${
-                            escapeHtml(
-                                player.place || "-"
-                            )
-                        }
-                    </div>
-
-                </div>
-
-
-                <div class="detail">
-
-                    <div class="detail-label">
-                        Playing Role
-                    </div>
-
-                    <div class="detail-value">
-                        🏏 ${
-                            escapeHtml(
-                                player.role || "-"
-                            )
-                        }
-                    </div>
-
-                </div>
-
-
-                <div class="detail">
-
-                    <div class="detail-label">
-                        Batting Style
-                    </div>
-
-                    <div class="detail-value">
-                        ${
-                            escapeHtml(
-                                player.batting || "-"
-                            )
-                        }
-                    </div>
-
-                </div>
-
-
-                <div class="detail">
-
-                    <div class="detail-label">
-                        Bowling Style
-                    </div>
-
-                    <div class="detail-value">
-                        ${
-                            escapeHtml(
-                                player.bowling || "-"
-                            )
-                        }
-                    </div>
-
-                </div>
-
-
-                <div class="detail">
-
-                    <div class="detail-label">
-                        Previous Team
-                    </div>
-
-                    <div class="detail-value">
-                        ${
-                            escapeHtml(
-                                player.team || "-"
-                            )
-                        }
-                    </div>
-
-                </div>
-
-
+                ${makeDetail("Mobile Number", "📱 " + (mobile || "-"))}
+                ${makeDetail("Place", "📍 " + (place || "-"))}
+                ${makeDetail("Playing Role", "🏏 " + (role || "-"))}
+                ${makeDetail("Batting Style", batting || "-")}
+                ${makeDetail("Bowling Style", bowling || "-")}
+                ${makeDetail("Previous Team", team || "-")}
             </div>
-
 
             <div class="card-footer">
-
-                KMPL SEASON 05
-                • OFFICIAL PLAYER CARD
-
+                KMPL SEASON 05 • OFFICIAL PLAYER CARD
             </div>
-
         `;
-
 
         container.appendChild(card);
 
+        const photoWrap = card.querySelector(".photo-wrap");
+        loadPlayerPhoto(photoValue, photoWrap);
     });
-
 }
 
-
-// ======================================================
-// GOOGLE DRIVE PHOTO
-// ======================================================
-
-function getPhotoUrl(url){
-
-    if(!url){
-        return "";
-    }
-
-
-    const match =
-    String(url).match(
-        /[-\w]{25,}/
-    );
-
-
-    if(match){
-
-        return (
-            "https://drive.google.com/thumbnail?id=" +
-            match[0] +
-            "&sz=w1000"
-        );
-
-    }
-
-
-    return url;
-
+function makeDetail(label, value) {
+    return `
+        <div class="detail">
+            <div class="detail-label">${escapeHtml(label)}</div>
+            <div class="detail-value">${escapeHtml(value)}</div>
+        </div>
+    `;
 }
 
+// =============================================
+// GOOGLE DRIVE PHOTO URL HANDLING
+// =============================================
 
-// ======================================================
+function extractDriveId(value) {
+    if (!value) return "";
+
+    const input = String(value).trim();
+
+    // Accept a plain Drive file ID.
+    if (/^[a-zA-Z0-9_-]{25,}$/.test(input)) {
+        return input;
+    }
+
+    // Common links:
+    // drive.google.com/file/d/FILE_ID/view
+    // drive.google.com/open?id=FILE_ID
+    // drive.google.com/uc?id=FILE_ID
+    // drive.google.com/thumbnail?id=FILE_ID
+    // drive.google.com/drive/folders/... is not a photo file link.
+    const patterns = [
+        /drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/i,
+        /drive\.google\.com\/thumbnail\?[^#]*\bid=([a-zA-Z0-9_-]+)/i,
+        /drive\.google\.com\/uc\?[^#]*\bid=([a-zA-Z0-9_-]+)/i,
+        /drive\.google\.com\/open\?[^#]*\bid=([a-zA-Z0-9_-]+)/i,
+        /[?&]id=([a-zA-Z0-9_-]{25,})/i
+    ];
+
+    for (const pattern of patterns) {
+        const match = input.match(pattern);
+        if (match && match[1]) return match[1];
+    }
+
+    return "";
+}
+
+function getPhotoCandidates(value) {
+    if (!value) return [];
+
+    const input = String(value).trim();
+    const id = extractDriveId(input);
+
+    if (!id) {
+        // If it is already an image URL, try it as provided.
+        if (/^https?:\/\//i.test(input)) return [input];
+        return [];
+    }
+
+    // Try several Drive image endpoints.
+    // These work only if the file is accessible to the viewer.
+    return [
+        "https://drive.google.com/thumbnail?id=" +
+            encodeURIComponent(id) + "&sz=w1000",
+
+        "https://drive.google.com/uc?export=view&id=" +
+            encodeURIComponent(id),
+
+        "https://drive.google.com/uc?id=" +
+            encodeURIComponent(id),
+
+        "https://lh3.googleusercontent.com/d/" +
+            encodeURIComponent(id)
+    ];
+}
+
+function loadPlayerPhoto(value, photoWrap) {
+    const candidates = getPhotoCandidates(value);
+
+    if (candidates.length === 0) {
+        return;
+    }
+
+    let index = 0;
+    const img = document.createElement("img");
+    img.alt = "Player Photo";
+    img.loading = "eager";
+    img.referrerPolicy = "no-referrer";
+
+    const fallback = photoWrap.querySelector(".photo-fallback");
+
+    img.onload = function() {
+        if (fallback) fallback.remove();
+        img.style.display = "block";
+    };
+
+    img.onerror = function() {
+        index++;
+
+        if (index < candidates.length) {
+            img.src = candidates[index];
+        } else {
+            console.warn("Unable to display player photo:", value);
+            img.remove();
+        }
+    };
+
+    img.style.display = "none";
+    photoWrap.appendChild(img);
+    img.src = candidates[index];
+}
+
+// =============================================
 // ESCAPE HTML
-// ======================================================
+// =============================================
 
-function escapeHtml(value){
-
+function escapeHtml(value) {
     return String(value)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
-
-// ======================================================
+// =============================================
 // START
-// ======================================================
+// =============================================
 
 loadPlayers();
-
 </script>
-
 
 </body>
 </html>
