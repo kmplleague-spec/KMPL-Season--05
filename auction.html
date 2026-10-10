@@ -36,11 +36,9 @@ body{
   padding:20px;
 }
 
-/* PHOTO AND PLAYER DETAILS SIDE BY SIDE */
-
 .player-layout{
   display:grid;
-  grid-template-columns:minmax(0,0.9fr) minmax(0,1.1fr);
+  grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
   gap:22px;
   align-items:start;
 }
@@ -76,20 +74,13 @@ body{
 }
 
 .player-info{min-width:0}
-
-.reg{
-  color:#aaa;
-  margin-top:5px;
-  overflow-wrap:anywhere;
-}
-
+.reg{color:#aaa;margin-top:5px;overflow-wrap:anywhere}
 .player-name{
   font-size:30px;
   font-weight:bold;
   margin:8px 0;
   overflow-wrap:anywhere;
 }
-
 .place{color:#bbb;overflow-wrap:anywhere}
 
 .details{
@@ -116,8 +107,6 @@ body{
 
 .detail strong{font-size:14px}
 
-/* BIDDING PANEL */
-
 .auction-box{
   margin-top:20px;
   padding:18px 12px;
@@ -132,11 +121,7 @@ body{
   font-size:17px;
   font-weight:bold;
 }
-
-.bid-label{
-  color:#aaa;
-  margin-top:14px;
-}
+.bid-label{color:#aaa;margin-top:14px}
 
 .current-bid{
   font-size:42px;
@@ -156,10 +141,7 @@ button{
   cursor:pointer;
 }
 
-button:disabled{
-  opacity:.5;
-  cursor:not-allowed;
-}
+button:disabled{opacity:.5;cursor:not-allowed}
 
 .bid-btn{
   background:#f1c40f;
@@ -188,10 +170,7 @@ button:disabled{
   min-width:140px;
 }
 
-.fullscreen{
-  background:#444;
-  color:white;
-}
+.fullscreen{background:#444;color:white}
 
 .status{
   margin-top:12px;
@@ -200,10 +179,7 @@ button:disabled{
   overflow-wrap:anywhere;
 }
 
-.nav{
-  text-align:center;
-  margin-top:18px;
-}
+.nav{text-align:center;margin-top:18px}
 
 .round-box{
   background:#181818;
@@ -286,21 +262,12 @@ button:disabled{
   .card{padding:10px}
 
   .player-layout{
-    grid-template-columns:minmax(0,0.82fr) minmax(0,1.18fr);
+    grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);
     gap:10px;
   }
 
-  .photo-box{
-    height:260px;
-    border-radius:10px;
-  }
-
-  .player-name{
-    font-size:20px;
-    line-height:1.2;
-    margin:6px 0;
-  }
-
+  .photo-box{height:260px;border-radius:10px}
+  .player-name{font-size:20px;line-height:1.2;margin:6px 0}
   .reg{font-size:11px}
   .place{font-size:12px}
 
@@ -324,27 +291,9 @@ button:disabled{
   .bid-label{font-size:12px;margin-top:9px}
   .current-bid{font-size:27px;margin:5px 0 10px}
 
-  button{
-    font-size:12px;
-    padding:10px 4px;
-    margin:3px 0;
-  }
-
-  .bid-btn{
-    width:100%;
-    min-height:40px;
-  }
-
-  .sold-btn,.unsold-btn{
-    width:100%;
-    min-height:40px;
-  }
-
-  .prev-btn,.next-btn{
-    min-width:0;
-    width:48%;
-  }
-
+  button{font-size:12px;padding:10px 4px;margin:3px 0}
+  .bid-btn,.sold-btn,.unsold-btn{width:100%;min-height:40px}
+  .prev-btn,.next-btn{min-width:0;width:48%}
   .fullscreen{width:100%}
   .status{font-size:12px}
 }
@@ -374,7 +323,6 @@ button:disabled{
   <div id="loading" class="loading">Loading players...</div>
 
   <div id="auctionCard" class="card" style="display:none">
-
     <div class="player-layout">
 
       <div class="photo-box">
@@ -389,7 +337,6 @@ button:disabled{
       </div>
 
       <div class="player-info">
-
         <div id="playerReg" class="reg"></div>
         <div id="playerName" class="player-name"></div>
         <div id="playerPlace" class="place"></div>
@@ -399,17 +346,14 @@ button:disabled{
             <span>Playing Role</span>
             <strong id="playerRole">-</strong>
           </div>
-
           <div class="detail">
             <span>Batting Style</span>
             <strong id="playerBatting">-</strong>
           </div>
-
           <div class="detail">
             <span>Bowling Style</span>
             <strong id="playerBowling">-</strong>
           </div>
-
           <div class="detail">
             <span>Previous Team</span>
             <strong id="playerTeam">-</strong>
@@ -417,65 +361,37 @@ button:disabled{
         </div>
 
         <div class="auction-box">
-
           <div class="base">Base Price: ₹1,000</div>
-
           <div class="bid-label">CURRENT BID</div>
           <div id="currentBid" class="current-bid">₹1,000</div>
 
-          <button class="bid-btn" onclick="decreaseBid()">
-            − ₹1,000
-          </button>
-
-          <button class="bid-btn" onclick="increaseBid()">
-            + ₹1,000
-          </button>
+          <button class="bid-btn" onclick="decreaseBid()">− ₹1,000</button>
+          <button class="bid-btn" onclick="increaseBid()">+ ₹1,000</button>
 
           <div>
-            <button class="sold-btn" onclick="openSoldModal()">
-              SOLD
-            </button>
-
-            <button class="unsold-btn" onclick="markUnsold()">
-              UNSOLD
-            </button>
+            <button class="sold-btn" onclick="openSoldModal()">SOLD</button>
+            <button class="unsold-btn" onclick="markUnsold()">UNSOLD</button>
           </div>
 
           <div id="auctionStatus" class="status"></div>
-
         </div>
-
       </div>
     </div>
 
     <div class="nav">
-      <button class="prev-btn" onclick="previousPlayer()">
-        ◀ PREVIOUS
-      </button>
-
-      <button class="next-btn" onclick="nextPlayer()">
-        NEXT ▶
-      </button>
-
+      <button class="prev-btn" onclick="previousPlayer()">◀ PREVIOUS</button>
+      <button class="next-btn" onclick="nextPlayer()">NEXT ▶</button>
       <br>
-
-      <button class="fullscreen" onclick="toggleFullscreen()">
-        ⛶ FULL SCREEN
-      </button>
+      <button class="fullscreen" onclick="toggleFullscreen()">⛶ FULL SCREEN</button>
     </div>
-
   </div>
 
+  <!-- FIRST ROUND END PANEL -->
   <div id="syncBox" style="display:none">
     <div class="finish-box">
-      <div id="syncBox" style="display:none">
-    <div class="finish-box">
-      <h2>FIRST AUCTION COMPLETED</h2>
-      <p>All players in the first auction round have been processed.</p>
+      <h2>FIRST AUCTION ROUND FINISHED</h2>
+      <p>All eligible players in the first round have been processed.</p>
       <p id="unsoldSummary"></p>
-      <p>All players in the first auction round have been processed.</p>
-      <p id="unsoldSummary"></p>
-
       <button class="sync-btn" onclick="syncUnsoldPlayers()">
         🔄 SYNC UNSOLD PLAYERS
       </button>
@@ -490,76 +406,27 @@ button:disabled{
 </div>
 
 <!-- TEAM SELECTION -->
-
 <div id="soldModal" class="modal">
   <div class="modal-box">
-
     <h2>Select Winning Team</h2>
 
-    <button class="team" onclick="confirmSold('VOLCANO VARANJOOR')">
-      VOLCANO VARANJOOR
-    </button>
+    <button class="team" onclick="confirmSold('VOLCANO VARANJOOR')">VOLCANO VARANJOOR</button>
+    <button class="team" onclick="confirmSold('DRAGON BOOSTER')">DRAGON BOOSTER</button>
+    <button class="team" onclick="confirmSold('RAJEEVIJI KALLIOT')">RAJEEVIJI KALLIOT</button>
+    <button class="team" onclick="confirmSold('ACADEMY BOYS BANDHADUKA')">ACADEMY BOYS BANDHADUKA</button>
+    <button class="team" onclick="confirmSold('SUPER STRIKERS ERUMAKULAM')">SUPER STRIKERS ERUMAKULAM</button>
+    <button class="team" onclick="confirmSold('CHAMPIONS AZAD')">CHAMPIONS AZAD</button>
+    <button class="team" onclick="confirmSold('RSA NILESHWARAM')">RSA NILESHWARAM</button>
+    <button class="team" onclick="confirmSold('WINDIES MARIKULAM')">WINDIES MARIKULAM</button>
+    <button class="team" onclick="confirmSold('KIWIS KASARAGOD')">KIWIS KASARAGOD</button>
+    <button class="team" onclick="confirmSold('FC CHEMBENCHERY')">FC CHEMBENCHERY</button>
+    <button class="team" onclick="confirmSold('GMC THAIRA')">GMC THAIRA</button>
+    <button class="team" onclick="confirmSold('OPTICS PERIYA')">OPTICS PERIYA</button>
+    <button class="team" onclick="confirmSold('MARX KONNAKKAD')">MARX KONNAKKAD</button>
+    <button class="team" onclick="confirmSold('KALLAI BROTHERS')">KALLAI BROTHERS</button>
+    <button class="team" onclick="confirmSold('RAM BROTHERS PERIYA')">RAM BROTHERS PERIYA</button>
 
-    <button class="team" onclick="confirmSold('DRAGON BOOSTER')">
-      DRAGON BOOSTER
-    </button>
-
-    <button class="team" onclick="confirmSold('RAJEEVIJI KALLIOT')">
-      RAJEEVIJI KALLIOT
-    </button>
-
-    <button class="team" onclick="confirmSold('ACADEMY BOYS BANDHADUKA')">
-      ACADEMY BOYS BANDHADUKA
-    </button>
-
-    <button class="team" onclick="confirmSold('SUPER STRIKES ERUMAKULAM')">
-      SUPER STRIKES ERUMAKULAM
-    </button>
-
-    <button class="team" onclick="confirmSold('CHAMPIONS AZAD')">
-      CHAMPIONS AZAD
-    </button>
-
-    <button class="team" onclick="confirmSold('RSA NILESHWARAM')">
-      RSA NILESHWARAM
-    </button>
-
-    <button class="team" onclick="confirmSold('WINDIES MARIKULAM')">
-      WINDIES MARIKULAM
-    </button>
-
-    <button class="team" onclick="confirmSold('KIWIS KASARAGOD')">
-      KIWIS KASARAGOD
-    </button>
-
-    <button class="team" onclick="confirmSold('FC CHEMBENCHERY')">
-      FC CHEMBENCHERY
-    </button>
-
-    <button class="team" onclick="confirmSold('GMC THAIRA')">
-      GMC THAIRA
-    </button>
-
-    <button class="team" onclick="confirmSold('OPTICS PERIYA')">
-      OPTICS PERIYA
-    </button>
-
-    <button class="team" onclick="confirmSold('MARX KONNAKKAD')">
-      MARX KONNAKKAD
-    </button>
-
-    <button class="team" onclick="confirmSold('KALLAI BROTHERS')">
-      KALLAI BROTHERS
-    </button>
-
-    <button class="team" onclick="confirmSold('RAM BROTHERS PERIYA')">
-      RAM BROTHERS PERIYA
-    </button>
-
-    <button class="cancel" onclick="closeSoldModal()">
-      CANCEL
-    </button>
-
+    <button class="cancel" onclick="closeSoldModal()">CANCEL</button>
   </div>
 </div>
 
@@ -582,11 +449,10 @@ let photoSources = [];
 let photoSourceIndex = 0;
 let currentPhotoToken = 0;
 
-/* PHOTO URL HANDLING */
+/* PHOTO HANDLING */
 
 function getPhotoUrls(value) {
   if (!value) return [];
-
   value = String(value).trim();
 
   if (!value ||
@@ -597,7 +463,6 @@ function getPhotoUrls(value) {
   if (value.startsWith("data:image/")) return [value];
 
   let id = "";
-
   const patterns = [
     /drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/,
     /drive\.google\.com\/thumbnail\?[^#]*id=([a-zA-Z0-9_-]+)/,
@@ -624,20 +489,16 @@ function getPhotoUrls(value) {
     return [
       "https://drive.google.com/thumbnail?id=" +
         encodeURIComponent(id) + "&sz=w1200",
-
       "https://drive.google.com/uc?export=view&id=" +
         encodeURIComponent(id),
-
       "https://drive.google.com/uc?id=" +
         encodeURIComponent(id),
-
       "https://lh3.googleusercontent.com/d/" +
         encodeURIComponent(id)
     ];
   }
 
   if (/^https?:\/\//i.test(value)) return [value];
-
   return [];
 }
 
@@ -660,11 +521,9 @@ function tryNextPhoto(token) {
   photoSourceIndex++;
 
   if (photoSourceIndex < photoSources.length) {
-    const img = document.getElementById("playerPhoto");
-    img.referrerPolicy = "no-referrer";
-    img.src = photoSources[photoSourceIndex];
+    document.getElementById("playerPhoto").src =
+      photoSources[photoSourceIndex];
   } else {
-    console.error("All photo URLs failed:", photoSources);
     showPhotoFallback("PHOTO NOT AVAILABLE");
   }
 }
@@ -678,14 +537,10 @@ function loadPlayerPhoto(value) {
   img.onerror = null;
   img.style.display = "none";
   img.removeAttribute("src");
-
   fallback.style.display = "none";
 
   photoSources = getPhotoUrls(value);
   photoSourceIndex = 0;
-
-  console.log("Original photo value:", value);
-  console.log("Photo URLs to try:", photoSources);
 
   if (!photoSources.length) {
     showPhotoFallback("NO PHOTO URL IN PLAYER DATA");
@@ -699,24 +554,19 @@ function loadPlayerPhoto(value) {
 
   img.onload = function() {
     if (token !== currentPhotoToken) return;
-
     img.style.display = "block";
     fallback.style.display = "none";
-
-    console.log("Photo loaded:", img.currentSrc || img.src);
   };
 
   img.onerror = function() {
     if (token !== currentPhotoToken) return;
-
-    console.warn("Photo URL failed:", img.src);
     tryNextPhoto(token);
   };
 
   img.src = photoSources[0];
 }
 
-/* PLAYER DATA */
+/* PLAYER FIELDS */
 
 function getPlayerPhotoValue(p) {
   const fields = [
@@ -755,11 +605,15 @@ async function loadPlayers() {
     document.getElementById("loading").style.display = "block";
     document.getElementById("loading").innerText = "Loading players...";
 
+    document.getElementById("auctionCard").style.display = "none";
+    document.getElementById("syncBox").style.display = "none";
+    document.getElementById("completedBox").style.display = "none";
+
     const response = await fetch(
       API_URL +
       "?password=" + encodeURIComponent(PASSWORD) +
       "&_=" + Date.now(),
-      {cache: "no-store"}
+      {cache:"no-store"}
     );
 
     if (!response.ok) {
@@ -774,9 +628,29 @@ async function loadPlayers() {
 
     allPlayers = Array.isArray(data.players) ? data.players : [];
 
-    players = allPlayers.filter(p => normalizeStatus(p) === "");
+    /*
+      FIRST ROUND:
+      Include all players except those explicitly SOLD or UNSOLD.
+      This supports blank, PENDING and REGISTERED statuses.
+    */
+    players = allPlayers.filter(p => {
+      const status = normalizeStatus(p);
+      return status !== "SOLD" && status !== "UNSOLD";
+    });
+
     unsoldPlayers = allPlayers.filter(
       p => normalizeStatus(p) === "UNSOLD"
+    );
+
+    console.log("Total players:", allPlayers.length);
+    console.log("Remaining players:", players.length);
+    console.log("Unsold players:", unsoldPlayers.length);
+    console.log("Player status sample:",
+      allPlayers.slice(0, 5).map(p => ({
+        name: p.name || p.playerName || p["Name"],
+        status: normalizeStatus(p),
+        registrationNumber: getRegistrationNumber(p)
+      }))
     );
 
     document.getElementById("loading").style.display = "none";
@@ -784,14 +658,15 @@ async function loadPlayers() {
     updateRoundDisplay();
 
     if (!players.length) {
+      /*
+        Do not mark the auction fully completed automatically.
+        Show the round-end panel only when no eligible players remain.
+      */
       showFirstRoundComplete();
       return;
     }
 
-    document.getElementById("syncBox").style.display = "none";
-    document.getElementById("completedBox").style.display = "none";
     document.getElementById("auctionCard").style.display = "block";
-
     currentIndex = 0;
     showPlayer();
 
@@ -800,7 +675,7 @@ async function loadPlayers() {
 
     document.getElementById("loading").style.display = "block";
     document.getElementById("loading").innerText =
-      "Unable to load players. Check API URL, password and internet connection.";
+      "Unable to load players: " + error.message;
   }
 }
 
@@ -811,7 +686,7 @@ function updateRoundDisplay() {
       : "UNSOLD AUCTION ROUND";
 
   document.getElementById("roundCount").innerText =
-    players.length + " players remaining";
+    players.length + " PLAYERS REMAINING";
 }
 
 function showPlayer() {
@@ -846,12 +721,10 @@ function showPlayer() {
 
   loadPlayerPhoto(getPlayerPhotoValue(p));
 
-  // Start each player at the base price.
   currentBid = BASE_PRICE;
   updateBidDisplay();
 
   document.getElementById("auctionStatus").innerText = "";
-
   updateRoundDisplay();
 }
 
@@ -864,7 +737,6 @@ function updateBidDisplay() {
 
 function increaseBid() {
   if (isSaving) return;
-
   currentBid += BID_INCREMENT;
   updateBidDisplay();
 }
@@ -880,11 +752,10 @@ function decreaseBid() {
   }
 }
 
-/* SOLD / UNSOLD */
+/* SAVE AUCTION */
 
 function openSoldModal() {
   if (!players[currentIndex] || isSaving) return;
-
   document.getElementById("soldModal").style.display = "flex";
 }
 
@@ -900,18 +771,18 @@ async function saveAuction(player, status, soldPrice, soldTeam) {
   }
 
   const response = await fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "text/plain;charset=utf-8"
+    method:"POST",
+    headers:{
+      "Content-Type":"text/plain;charset=utf-8"
     },
-    body: JSON.stringify({
-      action: "auction",
+    body:JSON.stringify({
+      action:"auction",
       registrationNumber,
       status,
-      auctionStatus: status,
+      auctionStatus:status,
       soldPrice,
       soldTeam,
-      password: PASSWORD
+      password:PASSWORD
     })
   });
 
@@ -934,11 +805,6 @@ async function confirmSold(teamName) {
   const p = players[currentIndex];
   if (!p) return;
 
-  if (currentBid < BASE_PRICE) {
-    alert("Bid cannot be below ₹1,000");
-    return;
-  }
-
   const confirmed = confirm(
     "Confirm SOLD?\n\nPlayer: " +
     (p.name || p.playerName || "Player") +
@@ -949,7 +815,6 @@ async function confirmSold(teamName) {
   if (!confirmed) return;
 
   closeSoldModal();
-
   isSaving = true;
   document.getElementById("auctionStatus").innerText = "Saving SOLD...";
 
@@ -975,10 +840,8 @@ async function confirmSold(teamName) {
 
   } catch (error) {
     console.error("SOLD save error:", error);
-
     document.getElementById("auctionStatus").innerText =
       "Error saving SOLD";
-
     alert("Unable to save SOLD result: " + error.message);
 
   } finally {
@@ -992,16 +855,12 @@ async function markUnsold() {
   const p = players[currentIndex];
   if (!p) return;
 
-  if (!confirm(
-    "Mark " + (p.name || "this player") + " as UNSOLD?"
-  )) {
+  if (!confirm("Mark " + (p.name || "this player") + " as UNSOLD?")) {
     return;
   }
 
   isSaving = true;
-
-  document.getElementById("auctionStatus").innerText =
-    "Saving UNSOLD...";
+  document.getElementById("auctionStatus").innerText = "Saving UNSOLD...";
 
   try {
     await saveAuction(p, "UNSOLD", "", "");
@@ -1012,9 +871,7 @@ async function markUnsold() {
 
     const reg = getRegistrationNumber(p);
 
-    if (!unsoldPlayers.some(
-      x => getRegistrationNumber(x) === reg
-    )) {
+    if (!unsoldPlayers.some(x => getRegistrationNumber(x) === reg)) {
       unsoldPlayers.push(p);
     }
 
@@ -1033,10 +890,8 @@ async function markUnsold() {
 
   } catch (error) {
     console.error("UNSOLD save error:", error);
-
     document.getElementById("auctionStatus").innerText =
       "Error saving UNSOLD";
-
     alert("Unable to save UNSOLD result: " + error.message);
 
   } finally {
@@ -1065,12 +920,8 @@ function syncUnsoldPlayers() {
     document.getElementById("syncBox").style.display = "none";
     document.getElementById("completedBox").style.display = "block";
 
-    document.getElementById("roundTitle").innerText =
-      "AUCTION COMPLETED";
-
-    document.getElementById("roundCount").innerText =
-      "All players processed";
-
+    document.getElementById("roundTitle").innerText = "AUCTION COMPLETED";
+    document.getElementById("roundCount").innerText = "All players processed";
     return;
   }
 
