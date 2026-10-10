@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,563 +9,732 @@
 
 <style>
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #111;
-    color: white;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #101010;
+  color: white;
 }
 
 .topbar {
-    text-align: center;
-    padding: 20px;
+  text-align: center;
+  padding: 22px 15px;
+  background: linear-gradient(135deg, #080f1c, #18395c);
+  border-bottom: 3px solid #ffd700;
 }
 
 .topbar h1 {
-    margin: 0;
-    color: #ffd700;
-    font-size: 28px;
+  margin: 0;
+  color: #ffd700;
+  font-size: 28px;
 }
 
 .topbar p {
-    margin: 6px 0 0;
-    color: #ccc;
+  margin: 8px 0 0;
+  color: #ddd;
+  font-size: 13px;
 }
 
 .controls {
-    text-align: center;
-    padding: 10px 15px 20px;
+  max-width: 900px;
+  margin: auto;
+  padding: 15px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.controls input,
+.controls select,
+.controls button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.controls input,
+.controls select {
+  color: white;
+  background: #222;
+  border: 1px solid #555;
 }
 
 .controls button {
-    padding: 12px 20px;
-    margin: 5px;
-    border: none;
-    border-radius: 8px;
-    background: #ffd700;
-    color: #111;
-    font-weight: bold;
-    cursor: pointer;
+  border: none;
+  background: #ffd700;
+  color: #111;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 #loading {
-    text-align: center;
-    padding: 35px 15px;
-    font-size: 18px;
+  text-align: center;
+  padding: 25px 15px;
+  color: #ffd700;
+  line-height: 1.7;
+}
+
+#summary {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 15px 15px;
+  color: #ddd;
+  text-align: center;
+}
+
+#summary strong {
+  color: #ffd700;
+}
+
+#playersContainer {
+  padding: 0 12px 30px;
 }
 
 .player-card {
-    width: 210mm;
-    min-height: 297mm;
-    margin: 20px auto;
-    padding: 18mm;
-    background: linear-gradient(145deg, #071426, #0d3d68, #071426);
-    border: 5px solid #ffd700;
-    border-radius: 10px;
-    position: relative;
-    overflow: hidden;
-    page-break-after: always;
+  width: 210mm;
+  min-height: 297mm;
+  margin: 20px auto;
+  padding: 16mm;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(145deg, #071426, #0d3d68, #071426);
+  border: 5px solid #ffd700;
+  border-radius: 10px;
+  page-break-after: always;
+  break-after: page;
 }
 
 .card-header {
-    position: relative;
-    z-index: 2;
-    text-align: center;
+  text-align: center;
 }
 
 .card-header h1 {
-    margin: 0;
-    color: #ffd700;
-    font-size: 30px;
-    font-weight: 900;
+  margin: 0;
+  color: #ffd700;
+  font-size: 30px;
+  font-weight: 900;
 }
 
 .card-header h2 {
-    margin: 7px 0 0;
-    font-size: 18px;
+  margin: 8px 0 0;
+  font-size: 18px;
 }
 
 .card-header p {
-    margin: 6px 0 18px;
-    color: #d8e7f5;
+  margin: 7px 0 18px;
+  color: #d8e7f5;
 }
 
 .photo-wrap {
-    position: relative;
-    z-index: 2;
-    width: 145mm;
-    height: 115mm;
-    margin: 0 auto 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+  width: 145mm;
+  height: 110mm;
+  max-width: 100%;
+  margin: 0 auto 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
 .photo-wrap img {
-    display: block;
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    border: 5px solid #ffd700;
-    border-radius: 15px;
-    background: #222;
-    box-shadow: 0 8px 30px rgba(0,0,0,.5);
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border: 4px solid #ffd700;
+  border-radius: 12px;
+  background: #222;
+  box-shadow: 0 8px 30px rgba(0,0,0,.5);
 }
 
 .photo-fallback {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    border: 2px dashed #ffd700;
-    border-radius: 15px;
-    color: #ddd;
-    text-align: center;
-    background: rgba(0,0,0,.2);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border: 2px dashed #ffd700;
+  border-radius: 12px;
+  background: rgba(0,0,0,.2);
+  color: #ddd;
+  text-align: center;
 }
 
 .photo-fallback .person {
-    font-size: 65px;
+  font-size: 60px;
 }
 
 .photo-fallback small {
-    color: #ffd700;
-    font-size: 13px;
+  color: #ffd700;
 }
 
 .player-name {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    font-size: 30px;
-    font-weight: 900;
-    text-transform: uppercase;
-    overflow-wrap: anywhere;
-    margin: 10px 0 18px;
+  text-align: center;
+  margin: 12px 0;
+  font-size: 30px;
+  font-weight: 900;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
 }
 
 .registration {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    font-size: 18px;
-    font-weight: bold;
-    color: #ffd700;
-    margin-bottom: 20px;
+  text-align: center;
+  color: #ffd700;
+  font-size: 17px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
 .details {
-    position: relative;
-    z-index: 2;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
 .detail {
-    background: rgba(255,255,255,.09);
-    border: 1px solid rgba(255,255,255,.15);
-    border-radius: 10px;
-    padding: 13px;
-    min-height: 62px;
+  min-height: 60px;
+  padding: 12px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 9px;
+  overflow-wrap: anywhere;
 }
 
 .detail-label {
-    font-size: 12px;
-    color: #b9cde0;
-    text-transform: uppercase;
-    margin-bottom: 5px;
+  color: #b9cde0;
+  font-size: 11px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
 }
 
 .detail-value {
-    font-size: 17px;
-    font-weight: 800;
-    overflow-wrap: anywhere;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .card-footer {
-    position: absolute;
-    bottom: 10mm;
-    left: 0;
-    right: 0;
-    text-align: center;
-    color: #b8c9d8;
-    font-size: 12px;
+  position: absolute;
+  bottom: 8mm;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #b8c9d8;
+  font-size: 12px;
 }
 
-@media print {
-    @page {
-        size: A4;
-        margin: 0;
-    }
+.empty {
+  max-width: 700px;
+  margin: 20px auto;
+  padding: 25px;
+  border-radius: 10px;
+  background: #222;
+  text-align: center;
+  color: #ddd;
+}
 
-    body {
-        background: white;
-    }
+@media (min-width: 650px) {
+  .controls {
+    grid-template-columns: 1fr 1fr;
+  }
 
-    .topbar,
-    .controls,
-    #loading {
-        display: none !important;
-    }
-
-    .player-card {
-        width: 210mm;
-        height: 297mm;
-        min-height: 297mm;
-        margin: 0;
-        border-radius: 0;
-        page-break-after: always;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-    }
+  .controls button {
+    width: 100%;
+  }
 }
 
 @media screen and (max-width: 700px) {
-    .player-card {
-        width: 95%;
-        min-height: auto;
-        padding: 25px;
-        margin: 15px auto;
-    }
+  .player-card {
+    width: 100%;
+    min-height: 0;
+    padding: 22px;
+    margin: 12px auto;
+    border-width: 3px;
+  }
 
-    .photo-wrap {
-        width: 100%;
-        height: 350px;
-    }
+  .photo-wrap {
+    width: 100%;
+    height: 320px;
+  }
 
-    .details {
-        grid-template-columns: 1fr;
-    }
+  .card-header h1 {
+    font-size: 25px;
+  }
 
-    .card-footer {
-        position: static;
-        margin-top: 25px;
-    }
+  .card-header h2 {
+    font-size: 14px;
+  }
+
+  .player-name {
+    font-size: 25px;
+  }
+
+  .details {
+    grid-template-columns: 1fr;
+  }
+
+  .card-footer {
+    position: static;
+    margin-top: 25px;
+  }
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  body {
+    background: white;
+  }
+
+  .topbar,
+  .controls,
+  #loading,
+  #summary {
+    display: none !important;
+  }
+
+  #playersContainer {
+    padding: 0;
+  }
+
+  .player-card {
+    width: 210mm;
+    height: 297mm;
+    min-height: 297mm;
+    margin: 0;
+    border-radius: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="topbar">
-    <h1>🏏 KMPL SEASON 05</h1>
-    <p>KIZHAKAN MEGALA PREMIER LEAGUE</p>
-</div>
+<header class="topbar">
+  <h1>🏏 KMPL SEASON 05</h1>
+  <p>KIZHAKAN MEGALA PREMIER LEAGUE</p>
+</header>
 
 <div class="controls">
-    <button onclick="loadPlayers()">🔄 REFRESH PLAYERS</button>
-    <button onclick="window.print()">🖨️ PRINT / SAVE AS PDF</button>
+  <input
+    id="searchInput"
+    type="search"
+    placeholder="Search player or team..."
+    autocomplete="off"
+  >
+
+  <select id="teamFilter">
+    <option value="">All Teams</option>
+  </select>
+
+  <button id="refreshButton" type="button">
+    🔄 REFRESH PLAYERS
+  </button>
+
+  <button id="printButton" type="button">
+    🖨️ PRINT / SAVE AS PDF
+  </button>
 </div>
 
-<div id="loading">Loading Players...</div>
+<div id="summary">
+  Players: <strong id="playerCount">0</strong>
+</div>
+
+<div id="loading" role="status" aria-live="polite">
+  Loading Players...
+</div>
+
 <div id="playersContainer"></div>
 
 <script>
 "use strict";
 
-// =============================================
-// APPS SCRIPT CONFIGURATION
-// =============================================
+/* =========================================
+   GOOGLE APPS SCRIPT CONFIGURATION
+========================================= */
 
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbx4_dUYrVPQEQjjWThl0q2vxYTt1SntdunMQbkN7LSV3t3JwiPhJgYTVkJQMJiI8PduSA/exec";
+  "https://script.google.com/macros/s/AKfycbx4_dUYrVPQEQjjWThl0q2vxYTt1SntdunMQbkN7LSV3t3JwiPhJgYTVkJQMJiI8PduSA/exec";
 
-const ADMIN_PASSWORD = "KMPL@2026";
+const API_URL = SCRIPT_URL + "?action=publicPlayers";
 
-// =============================================
-// LOAD PLAYERS
-// =============================================
+let allPlayers = [];
 
-async function loadPlayers() {
-    const loading = document.getElementById("loading");
-    const container = document.getElementById("playersContainer");
+const loading = document.getElementById("loading");
+const container = document.getElementById("playersContainer");
+const searchInput = document.getElementById("searchInput");
+const teamFilter = document.getElementById("teamFilter");
+const playerCount = document.getElementById("playerCount");
+const refreshButton = document.getElementById("refreshButton");
 
-    loading.style.display = "block";
-    loading.textContent = "Loading Players...";
-    container.innerHTML = "";
-
-    try {
-        const apiUrl =
-            SCRIPT_URL +
-            "?password=" +
-            encodeURIComponent(ADMIN_PASSWORD);
-
-        const response = await fetch(apiUrl, {
-            cache: "no-store"
-        });
-
-        if (!response.ok) {
-            throw new Error("HTTP error: " + response.status);
-        }
-
-        const data = await response.json();
-
-        if (!data.success) {
-            throw new Error(data.error || data.message || "API error");
-        }
-
-        const players = Array.isArray(data.players)
-            ? data.players
-            : [];
-
-        if (players.length === 0) {
-            loading.textContent = "No players found.";
-            return;
-        }
-
-        loading.style.display = "none";
-        renderPlayers(players);
-
-    } catch (error) {
-        console.error("KMPL API error:", error);
-        loading.textContent =
-            "Players could not be loaded. Check Apps Script deployment and access.";
-    }
-}
-
-// =============================================
-// FIELD HELPERS
-// =============================================
+/* =========================================
+   SAFE FIELD HELPERS
+========================================= */
 
 function getField(player, keys) {
-    for (const key of keys) {
-        const value = player[key];
+  for (const key of keys) {
+    const value = player && player[key];
 
-        if (
-            value !== undefined &&
-            value !== null &&
-            String(value).trim() !== ""
-        ) {
-            return String(value).trim();
-        }
+    if (
+      value !== undefined &&
+      value !== null &&
+      String(value).trim() !== ""
+    ) {
+      return String(value).trim();
     }
+  }
 
-    return "";
+  return "";
 }
 
 function escapeHtml(value) {
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function normalize(value) {
+  return String(value || "").trim().toUpperCase();
+}
+
+/* =========================================
+   LOAD PLAYER DATA
+========================================= */
+
+async function loadPlayers() {
+  loading.style.display = "block";
+  loading.textContent = "Loading Players...";
+  container.innerHTML = "";
+  refreshButton.disabled = true;
+
+  try {
+    const response = await fetch(API_URL, {
+      method: "GET",
+      cache: "no-store"
+    });
+
+    if (!response.ok) {
+      throw new Error("HTTP " + response.status);
+    }
+
+    const data = await response.json();
+
+    console.log("KMPL API response:", data);
+
+    if (!data || data.success !== true) {
+      throw new Error(
+        data && data.error
+          ? data.error
+          : "API returned an unsuccessful response"
+      );
+    }
+
+    if (!Array.isArray(data.players)) {
+      throw new Error("The API did not return a players array");
+    }
+
+    allPlayers = data.players;
+
+    if (allPlayers.length === 0) {
+      loading.textContent = "No registered players found.";
+      playerCount.textContent = "0";
+      return;
+    }
+
+    initializeTeamFilter();
+    loading.style.display = "none";
+    renderPlayers();
+
+  } catch (error) {
+    console.error("KMPL loading error:", error);
+
+    loading.style.display = "block";
+    loading.textContent =
+      "Unable to load players: " + error.message;
+
+    playerCount.textContent = "0";
+
+  } finally {
+    refreshButton.disabled = false;
+  }
+}
+
+/* =========================================
+   TEAM FILTER
+========================================= */
+
+function initializeTeamFilter() {
+  const selectedValue = teamFilter.value;
+
+  const uniqueTeams = [
+    ...new Set(
+      allPlayers.map(function(player) {
+        return getField(player, [
+          "team",
+          "previousTeam",
+          "previous_team",
+          "Previous Team"
+        ]);
+      }).filter(Boolean)
+    )
+  ].sort();
+
+  teamFilter.innerHTML = '<option value="">All Teams</option>';
+
+  uniqueTeams.forEach(function(team) {
+    const option = document.createElement("option");
+    option.value = team;
+    option.textContent = team;
+    teamFilter.appendChild(option);
+  });
+
+  if (uniqueTeams.includes(selectedValue)) {
+    teamFilter.value = selectedValue;
+  }
+}
+
+/* =========================================
+   FILTER PLAYERS
+========================================= */
+
+function renderPlayers() {
+  const search = searchInput.value.trim().toLowerCase();
+  const selectedTeam = normalize(teamFilter.value);
+
+  const filteredPlayers = allPlayers.filter(function(player) {
+    const name = getField(player, ["name", "Name", "C"]);
+    const team = getField(player, [
+      "team",
+      "previousTeam",
+      "previous_team",
+      "Previous Team",
+      "I"
+    ]);
+
+    const matchesSearch =
+      name.toLowerCase().includes(search) ||
+      team.toLowerCase().includes(search);
+
+    const matchesTeam =
+      !selectedTeam || normalize(team) === selectedTeam;
+
+    return matchesSearch && matchesTeam;
+  });
+
+  container.innerHTML = "";
+  playerCount.textContent = filteredPlayers.length;
+
+  if (filteredPlayers.length === 0) {
+    container.innerHTML =
+      '<div class="empty">No players match your search.</div>';
+    return;
+  }
+
+  filteredPlayers.forEach(function(player, index) {
+    const name = getField(player, ["name", "Name", "C"]) || "-";
+
+    const registration = getField(player, [
+      "registrationNumber",
+      "registration_number",
+      "Registration Number",
+      "B"
+    ]) || "-";
+
+    const role = getField(player, ["role", "Role", "F"]) || "-";
+
+    const place = getField(player, ["place", "Place", "E"]) || "-";
+
+    const batting = getField(player, ["batting", "Batting", "G"]) || "-";
+
+    const bowling = getField(player, ["bowling", "Bowling", "H"]) || "-";
+
+    const team = getField(player, [
+      "team",
+      "previousTeam",
+      "previous_team",
+      "Previous Team",
+      "I"
+    ]) || "-";
+
+    const photo = getField(player, [
+      "photo",
+      "photoUrl",
+      "photoURL",
+      "photo_url",
+      "imageUrl",
+      "imageURL",
+      "image",
+      "J"
+    ]);
+
+    const card = document.createElement("section");
+    card.className = "player-card";
+
+    card.innerHTML = `
+      <div class="card-header">
+        <h1>KMPL SEASON 05</h1>
+        <h2>KIZHAKAN MEGALA PREMIER LEAGUE</h2>
+        <p>OFFICIAL PLAYER CARD · ${index + 1}</p>
+      </div>
+
+      <div class="photo-wrap">
+        <div class="photo-fallback">
+          <div class="person">👤</div>
+          <div>PLAYER PHOTO</div>
+          <small>${photo ? "Loading photo..." : "No photo available"}</small>
+        </div>
+      </div>
+
+      <div class="player-name">${escapeHtml(name)}</div>
+
+      <div class="registration">
+        REGISTRATION NO: ${escapeHtml(registration)}
+      </div>
+
+      <div class="details">
+        ${makeDetail("Place", place)}
+        ${makeDetail("Playing Role", role)}
+        ${makeDetail("Batting Style", batting)}
+        ${makeDetail("Bowling Style", bowling)}
+        ${makeDetail("Previous Team", team)}
+      </div>
+
+      <div class="card-footer">
+        GOLDEN WINGS PRESENTS · KMPL SEASON 05
+      </div>
+    `;
+
+    container.appendChild(card);
+
+    loadPlayerPhoto(photo, card.querySelector(".photo-wrap"));
+  });
 }
 
 function makeDetail(label, value) {
-    return `
-        <div class="detail">
-            <div class="detail-label">${escapeHtml(label)}</div>
-            <div class="detail-value">${escapeHtml(value || "-")}</div>
-        </div>
-    `;
+  return `
+    <div class="detail">
+      <div class="detail-label">${escapeHtml(label)}</div>
+      <div class="detail-value">${escapeHtml(value || "-")}</div>
+    </div>
+  `;
 }
 
-// =============================================
-// RENDER PLAYER CARDS
-// =============================================
-
-function renderPlayers(players) {
-    const container = document.getElementById("playersContainer");
-    container.innerHTML = "";
-
-    players.forEach(function(player) {
-        const name = getField(player, ["name", "Name", "C"]);
-        const registration = getField(player, [
-            "registrationNumber",
-            "registration_number",
-            "Registration Number",
-            "B"
-        ]);
-
-        const mobile = getField(player, ["mobile", "Mobile", "D"]);
-        const place = getField(player, ["place", "Place", "E"]);
-        const role = getField(player, ["role", "Role", "F"]);
-        const batting = getField(player, ["batting", "Batting", "G"]);
-        const bowling = getField(player, ["bowling", "Bowling", "H"]);
-        const team = getField(player, [
-            "team", "previousTeam", "previous_team",
-            "Previous Team", "I"
-        ]);
-
-        const photoValue = getField(player, [
-            "photo", "photoUrl", "photoURL", "photo_url",
-            "image", "imageUrl", "imageURL",
-            "playerPhoto", "Player Photo", "Photo", "J"
-        ]);
-
-        const card = document.createElement("section");
-        card.className = "player-card";
-
-        card.innerHTML = `
-            <div class="card-header">
-                <h1>KMPL SEASON 05</h1>
-                <h2>KIZHAKAN MEGALA PREMIER LEAGUE</h2>
-                <p>OFFICIAL PLAYER CARD</p>
-            </div>
-
-            <div class="photo-wrap">
-                <div class="photo-fallback">
-                    <div class="person">👤</div>
-                    <div>PLAYER PHOTO</div>
-                    <small>Loading photo...</small>
-                </div>
-            </div>
-
-            <div class="player-name">${escapeHtml(name || "-")}</div>
-
-            <div class="registration">
-                REGISTRATION NO: ${escapeHtml(registration || "-")}
-            </div>
-
-            <div class="details">
-                ${makeDetail("Mobile Number", "📱 " + (mobile || "-"))}
-                ${makeDetail("Place", "📍 " + (place || "-"))}
-                ${makeDetail("Playing Role", "🏏 " + (role || "-"))}
-                ${makeDetail("Batting Style", batting)}
-                ${makeDetail("Bowling Style", bowling)}
-                ${makeDetail("Previous Team", team)}
-            </div>
-
-            <div class="card-footer">
-                KMPL SEASON 05 • OFFICIAL PLAYER CARD
-            </div>
-        `;
-
-        container.appendChild(card);
-
-        const photoWrap = card.querySelector(".photo-wrap");
-        loadPlayerPhoto(photoValue, photoWrap);
-    });
-}
-
-// =============================================
-// EXTRACT GOOGLE DRIVE FILE ID
-// =============================================
+/* =========================================
+   GOOGLE DRIVE PHOTO URL
+========================================= */
 
 function extractDriveId(value) {
-    if (!value) return "";
+  if (!value) return "";
 
-    const input = String(value).trim();
+  const text = String(value).trim();
 
-    if (/^[a-zA-Z0-9_-]{25,}$/.test(input)) {
-        return input;
-    }
+  if (/^[a-zA-Z0-9_-]{25,}$/.test(text)) {
+    return text;
+  }
 
-    const patterns = [
-        /\/file\/d\/([a-zA-Z0-9_-]+)/i,
-        /\/thumbnail\?[^#]*\bid=([a-zA-Z0-9_-]+)/i,
-        /\/uc\?[^#]*\bid=([a-zA-Z0-9_-]+)/i,
-        /\/open\?[^#]*\bid=([a-zA-Z0-9_-]+)/i,
-        /[?&]id=([a-zA-Z0-9_-]{25,})/i
-    ];
+  const patterns = [
+    /\/file\/d\/([a-zA-Z0-9_-]+)/i,
+    /\/thumbnail\?[^#]*\bid=([a-zA-Z0-9_-]+)/i,
+    /\/uc\?[^#]*\bid=([a-zA-Z0-9_-]+)/i,
+    /[?&]id=([a-zA-Z0-9_-]{25,})/i
+  ];
 
-    for (const pattern of patterns) {
-        const match = input.match(pattern);
-        if (match && match[1]) return match[1];
-    }
+  for (const pattern of patterns) {
+    const match = text.match(pattern);
+    if (match) return match[1];
+  }
 
-    return "";
+  return "";
 }
-
-// =============================================
-// BUILD PHOTO URL CANDIDATES
-// =============================================
 
 function getPhotoCandidates(value) {
-    if (!value) return [];
+  if (!value) return [];
 
-    const input = String(value).trim();
-    const fileId = extractDriveId(input);
+  const text = String(value).trim();
+  const fileId = extractDriveId(text);
 
-    if (!fileId) {
-        return /^https?:\/\//i.test(input) ? [input] : [];
-    }
+  if (!fileId) {
+    return /^https?:\/\//i.test(text) ? [text] : [];
+  }
 
-    return [
-        "https://drive.google.com/thumbnail?id=" +
-            encodeURIComponent(fileId) + "&sz=w1000",
+  return [
+    "https://drive.google.com/thumbnail?id=" +
+      encodeURIComponent(fileId) + "&sz=w1000",
 
-        "https://drive.google.com/uc?export=view&id=" +
-            encodeURIComponent(fileId),
-
-        "https://drive.google.com/uc?id=" +
-            encodeURIComponent(fileId),
-
-        "https://lh3.googleusercontent.com/d/" +
-            encodeURIComponent(fileId)
-    ];
+    "https://drive.google.com/uc?export=view&id=" +
+      encodeURIComponent(fileId)
+  ];
 }
-
-// =============================================
-// LOAD PHOTO
-// =============================================
 
 function loadPlayerPhoto(value, photoWrap) {
-    const candidates = getPhotoCandidates(value);
-    const fallback = photoWrap.querySelector(".photo-fallback");
+  const candidates = getPhotoCandidates(value);
+  const fallback = photoWrap.querySelector(".photo-fallback");
 
-    if (candidates.length === 0) {
-        if (fallback) {
-            fallback.querySelector("small").textContent =
-                "Photo URL missing in API";
-        }
+  if (candidates.length === 0) return;
 
-        console.warn("Photo URL missing:", value);
-        return;
+  const image = document.createElement("img");
+  image.alt = "Player photo";
+  image.style.display = "none";
+
+  let index = 0;
+
+  image.onload = function() {
+    if (fallback) fallback.remove();
+    image.style.display = "block";
+  };
+
+  image.onerror = function() {
+    index++;
+
+    if (index < candidates.length) {
+      image.src = candidates[index];
+    } else {
+      image.remove();
+
+      if (fallback) {
+        fallback.querySelector("small").textContent =
+          "Photo unavailable or private";
+      }
     }
+  };
 
-    const img = document.createElement("img");
-    img.alt = "Player Photo";
-    img.style.display = "none";
-
-    let currentIndex = 0;
-
-    img.onload = function() {
-        if (fallback) fallback.remove();
-
-        img.style.display = "block";
-
-        console.log("Player photo loaded:", candidates[currentIndex]);
-    };
-
-    img.onerror = function() {
-        currentIndex++;
-
-        if (currentIndex < candidates.length) {
-            img.src = candidates[currentIndex];
-        } else {
-            img.remove();
-
-            if (fallback) {
-                fallback.querySelector("small").textContent =
-                    "Photo could not be loaded";
-            }
-
-            console.error(
-                "All photo URLs failed:",
-                candidates
-            );
-        }
-    };
-
-    photoWrap.appendChild(img);
-    img.src = candidates[currentIndex];
+  photoWrap.appendChild(image);
+  image.src = candidates[index];
 }
 
-// =============================================
-// START
-// =============================================
+/* =========================================
+   EVENTS
+========================================= */
+
+searchInput.addEventListener("input", renderPlayers);
+teamFilter.addEventListener("change", renderPlayers);
+
+refreshButton.addEventListener("click", loadPlayers);
+
+document.getElementById("printButton").addEventListener(
+  "click",
+  function() {
+    window.print();
+  }
+);
+
+/* =========================================
+   START
+========================================= */
 
 loadPlayers();
 </script>
