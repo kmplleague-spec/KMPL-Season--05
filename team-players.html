@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>KMPL Season 05 - Team Players</title>
 
 <style>
@@ -13,160 +14,212 @@
 
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: #101010;
-  color: #fff;
+  font-family: Arial, sans-serif;
+  background: #0b0d12;
+  color: #ffffff;
 }
 
-.header {
-  padding: 25px 15px;
+header {
   text-align: center;
+  padding: 26px 12px;
   background: linear-gradient(135deg, #151515, #252525);
-  border-bottom: 3px solid #f5bd35;
+  border-bottom: 3px solid #e9b949;
 }
 
-.header h1 {
+header h1 {
   margin: 0;
-  color: #f5bd35;
+  color: #f5c451;
   font-size: 27px;
 }
 
-.header p {
+header p {
   margin: 8px 0 0;
-  color: #ddd;
-  font-size: 14px;
+  color: #dddddd;
+  font-size: 13px;
+  letter-spacing: 1px;
 }
 
 .container {
   width: 100%;
-  max-width: 1000px;
+  max-width: 1150px;
   margin: auto;
-  padding: 18px;
+  padding: 16px;
 }
 
 .controls {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
-  margin-bottom: 18px;
+  gap: 10px;
+  margin-bottom: 15px;
 }
 
-select,
-input,
-button {
+input, select, button {
   width: 100%;
-  padding: 13px;
+  min-height: 45px;
+  padding: 12px;
   border-radius: 8px;
-  border: 1px solid #444;
+  border: 1px solid #383d49;
+  background: #171a22;
+  color: white;
   font-size: 15px;
 }
 
-select,
-input {
-  background: #202020;
-  color: white;
-}
-
 button {
-  background: #f5bd35;
-  color: #111;
-  border: none;
+  background: #e9b949;
+  color: #151515;
   font-weight: bold;
+  border: none;
   cursor: pointer;
 }
 
-button:disabled {
-  opacity: .6;
-  cursor: wait;
-}
-
 .summary {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  padding: 14px;
-  margin-bottom: 16px;
-  background: #1d1d1d;
-  border: 1px solid #383838;
-  border-radius: 10px;
-}
-
-.summary strong {
-  color: #f5bd35;
-}
-
-#status {
-  text-align: center;
-  padding: 25px 10px;
-  color: #f5bd35;
-  line-height: 1.7;
-  overflow-wrap: anywhere;
-}
-
-#players {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 18px 0;
+}
+
+.summary-box {
+  background: #171a22;
+  border: 1px solid #303542;
+  border-radius: 10px;
+  text-align: center;
+  padding: 13px 5px;
+}
+
+.summary-box strong {
+  display: block;
+  color: #f5c451;
+  font-size: 22px;
+}
+
+.summary-box span {
+  display: block;
+  color: #c4c7d0;
+  font-size: 11px;
+  margin-top: 5px;
+}
+
+.section-title {
+  margin: 20px 0 12px;
+  color: #f5c451;
+  font-size: 18px;
+}
+
+.player-grid {
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 13px;
 }
 
 .player-card {
+  background: #171a22;
+  border: 1px solid #343947;
+  border-radius: 12px;
   padding: 16px;
-  background: #1d1d1d;
-  border: 1px solid #393939;
-  border-left: 4px solid #f5bd35;
-  border-radius: 10px;
   overflow-wrap: anywhere;
 }
 
-.player-number {
-  color: #f5bd35;
-  font-size: 12px;
+.player-name {
+  font-size: 19px;
+  font-weight: bold;
+  color: #ffffff;
   margin-bottom: 8px;
 }
 
-.player-name {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
+.reg-number {
+  display: inline-block;
+  font-size: 12px;
+  color: #f5c451;
+  background: #2b281e;
+  padding: 5px 8px;
+  border-radius: 5px;
+  margin-bottom: 12px;
 }
 
-.player-detail {
-  color: #ccc;
+.detail {
+  font-size: 14px;
+  color: #d5d7de;
+  margin: 7px 0;
+  line-height: 1.5;
+}
+
+.detail strong {
+  color: #ffffff;
+}
+
+.auction-box {
+  margin-top: 13px;
+  padding: 12px;
+  border-radius: 9px;
+  background: #10131a;
+  border: 1px solid #343947;
+}
+
+.auction-heading {
+  color: #f5c451;
+  font-weight: bold;
   font-size: 13px;
-  line-height: 1.8;
+  margin-bottom: 9px;
 }
 
-.team-name {
-  color: #f5bd35;
+.status {
+  display: inline-block;
+  margin-top: 5px;
+  padding: 5px 9px;
+  border-radius: 5px;
+  font-size: 12px;
   font-weight: bold;
 }
 
-.empty {
-  grid-column: 1 / -1;
+.status-sold {
+  color: #7ff0ad;
+  background: #123523;
+}
+
+.status-unsold {
+  color: #ffb1b1;
+  background: #3a2020;
+}
+
+.status-pending {
+  color: #ffdf89;
+  background: #3b3018;
+}
+
+.message {
   text-align: center;
-  padding: 25px;
-  background: #1d1d1d;
+  padding: 30px 12px;
+  color: #c5c8d1;
+  background: #171a22;
   border-radius: 10px;
-  color: #ccc;
+  margin-top: 12px;
 }
 
 .footer {
   text-align: center;
-  padding: 22px 10px;
-  color: #888;
+  padding: 25px 10px;
+  color: #8d929e;
   font-size: 12px;
 }
 
-@media (min-width: 650px) {
+@media (min-width: 600px) {
   .controls {
-    grid-template-columns: 1fr 1fr auto;
+    grid-template-columns: 2fr 2fr 1fr;
   }
 
-  .controls button {
-    width: auto;
-    min-width: 120px;
+  .player-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  header h1 {
+    font-size: 34px;
+  }
+}
+
+@media (min-width: 950px) {
+  .player-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 </style>
@@ -174,353 +227,337 @@ button:disabled {
 
 <body>
 
-<header class="header">
-  <h1>🏏 KMPL SEASON 05</h1>
-  <p>OFFICIAL TEAM PLAYERS LIST</p>
+<header>
+  <h1>KMPL SEASON 05</h1>
+  <p>PLAYER LIST & AUCTION RESULTS</p>
 </header>
 
 <main class="container">
 
   <div class="controls">
-    <select id="teamFilter">
-      <option value="">All Teams</option>
-    </select>
-
     <input
-      id="searchInput"
       type="search"
+      id="searchInput"
       placeholder="Search player name or registration number..."
-      autocomplete="off"
+      aria-label="Search players"
     >
 
+    <select id="teamFilter" aria-label="Filter by team">
+      <option value="">All Teams</option>
+      <option>VOLCANO VARANJOOR</option>
+      <option>DRAGON BOOSTER NATTAKAL</option>
+      <option>RAJEEVIJI KALLIOT</option>
+      <option>ACADEMY BOYS BANDHADUKA</option>
+      <option>KIWIS KASARAGOD</option>
+      <option>RSA NILESHWARAM</option>
+      <option>FC CHEMBENCHERY</option>
+      <option>CHAMPIONS AZAD</option>
+      <option>SUPER STRIKERS ERUMAKULAM</option>
+      <option>OPTICS PERIYA</option>
+      <option>GMC THAIRA</option>
+      <option>MARX KONNAKKAD</option>
+      <option>WINDIES MARIKULAM</option>
+      <option>KALLAI BROTHERS</option>
+      <option>RAM BROTHERS PERIYA</option>
+      <option>GREEN STAR KOLLADA</option>
+    </select>
+
     <button id="refreshButton" type="button">
-      ↻ Refresh
+      ↻ Refresh Players
     </button>
   </div>
 
   <div class="summary">
-    <div>Teams: <strong id="teamCount">16</strong></div>
-    <div>Players: <strong id="playerCount">0</strong></div>
+    <div class="summary-box">
+      <strong id="totalCount">0</strong>
+      <span>TOTAL PLAYERS</span>
+    </div>
+
+    <div class="summary-box">
+      <strong id="soldCount">0</strong>
+      <span>SOLD</span>
+    </div>
+
+    <div class="summary-box">
+      <strong id="unsoldCount">0</strong>
+      <span>UNSOLD</span>
+    </div>
   </div>
 
-  <div id="status" role="status" aria-live="polite">
+  <h2 class="section-title">Registered Players</h2>
+
+  <div id="message" class="message">
     Loading players...
   </div>
 
-  <section id="players"></section>
+  <div id="playerGrid" class="player-grid"></div>
 
 </main>
 
-<footer class="footer">
+<div class="footer">
   GOLDEN WINGS PRESENTS · KMPL SEASON 05
-</footer>
+</div>
 
 <script>
 "use strict";
 
-/* ======================================
-   GOOGLE APPS SCRIPT PUBLIC API
-====================================== */
-
 const API_URL =
   "https://script.google.com/macros/s/AKfycbx4_dUYrVPQEQjjWThl0q2vxYTt1SntdunMQbkN7LSV3t3JwiPhJgYTVkJQMJiI8PduSA/exec?action=publicPlayers";
 
-/* ======================================
-   KMPL SEASON 05 TEAMS
-====================================== */
-
-const teams = [
-  "VOLCANO VARANJOOR",
-  "DRAGON BOOSTER NATTAKAL",
-  "RAJEEVIJI KALLIOT",
-  "ACADEMY BOYS BANDHADUKA",
-  "KIWIS KASARAGOD",
-  "RSA NILESHWARAM",
-  "FC CHEMBENCHERY",
-  "CHAMPIONS AZAD",
-  "SUPER STRIKERS ERUMAKULAM",
-  "OPTICS PERIYA",
-  "GMC THAIRA",
-  "MARX KONNAKKAD",
-  "WINDIES MARIKULAM",
-  "KALLAI BROTHERS",
-  "RAM BROTHERS PERIYA",
-  "GREEN STAR KOLLADA"
-];
-
 let allPlayers = [];
 
-const teamFilter = document.getElementById("teamFilter");
+const playerGrid = document.getElementById("playerGrid");
+const message = document.getElementById("message");
 const searchInput = document.getElementById("searchInput");
-const playersContainer = document.getElementById("players");
-const statusBox = document.getElementById("status");
-const playerCount = document.getElementById("playerCount");
-const teamCount = document.getElementById("teamCount");
+const teamFilter = document.getElementById("teamFilter");
 const refreshButton = document.getElementById("refreshButton");
 
-/* ======================================
-   INITIALIZE TEAM DROPDOWN
-====================================== */
-
-function initializeTeams() {
-  teamFilter.innerHTML = "";
-
-  const allOption = document.createElement("option");
-  allOption.value = "";
-  allOption.textContent = "All Teams";
-  teamFilter.appendChild(allOption);
-
-  teams.forEach(function(team) {
-    const option = document.createElement("option");
-    option.value = team;
-    option.textContent = team;
-    teamFilter.appendChild(option);
-  });
-
-  teamCount.textContent = teams.length;
-}
-
-/* ======================================
-   SAFE FIELD HELPERS
-====================================== */
-
-function getValue(player, keys) {
-  for (const key of keys) {
-    if (
-      player &&
-      player[key] !== undefined &&
-      player[key] !== null &&
-      String(player[key]).trim() !== ""
-    ) {
-      return String(player[key]).trim();
-    }
-  }
-
-  return "";
-}
-
-function normalizeTeam(value) {
-  return String(value || "")
-    .trim()
-    .toUpperCase()
-    .replace(/\s+/g, " ");
-}
-
 function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, function(character) {
-    const replacements = {
+  return String(value ?? "").replace(/[&<>"']/g, function(char) {
+    const map = {
       "&": "&amp;",
       "<": "&lt;",
       ">": "&gt;",
       '"': "&quot;",
       "'": "&#39;"
     };
-
-    return replacements[character];
+    return map[char];
   });
 }
 
-/* ======================================
-   LOAD PLAYERS
-====================================== */
-
-async function loadPlayers() {
-  statusBox.style.display = "block";
-  statusBox.textContent = "Loading players...";
-  playersContainer.innerHTML = "";
-
-  refreshButton.disabled = true;
-  refreshButton.textContent = "Loading...";
-
-  try {
-    const response = await fetch(API_URL, {
-      method: "GET",
-      cache: "no-store",
-      redirect: "follow"
-    });
-
-    if (!response.ok) {
-      throw new Error("HTTP error: " + response.status);
+function getValue(player, keys) {
+  for (const key of keys) {
+    if (
+      player[key] !== undefined &&
+      player[key] !== null &&
+      player[key] !== ""
+    ) {
+      return player[key];
     }
-
-    const result = await response.json();
-
-    console.log("KMPL API response:", result);
-
-    if (!result || result.success !== true) {
-      throw new Error(
-        result && result.error
-          ? result.error
-          : "API did not return success:true"
-      );
-    }
-
-    if (!Array.isArray(result.players)) {
-      throw new Error("API response does not contain a players array");
-    }
-
-    allPlayers = result.players;
-
-    statusBox.style.display = "none";
-    renderPlayers();
-
-  } catch (error) {
-    console.error("KMPL loading error:", error);
-
-    allPlayers = [];
-    playerCount.textContent = "0";
-    playersContainer.innerHTML = "";
-
-    statusBox.style.display = "block";
-    statusBox.textContent =
-      "Unable to load players: " + error.message;
-
-  } finally {
-    refreshButton.disabled = false;
-    refreshButton.textContent = "↻ Refresh";
   }
+  return "";
 }
 
-/* ======================================
-   FILTER AND DISPLAY PLAYERS
-====================================== */
+function normalizeStatus(player) {
+  const raw = getValue(player, [
+    "auctionStatus",
+    "auction_status",
+    "Auction Status",
+    "status"
+  ]);
+
+  const status = String(raw || "PENDING").trim().toUpperCase();
+
+  if (status === "SOLD") return "SOLD";
+  if (status === "UNSOLD") return "UNSOLD";
+
+  return "PENDING";
+}
+
+function formatPrice(value) {
+  if (value === "" || value === null || value === undefined) {
+    return "—";
+  }
+
+  const number = Number(value);
+
+  if (!Number.isFinite(number)) {
+    return escapeHTML(value);
+  }
+
+  return "₹" + number.toLocaleString("en-IN");
+}
 
 function renderPlayers() {
-  const selectedTeam = normalizeTeam(teamFilter.value);
-  const searchText = searchInput.value.trim().toLowerCase();
+  const search = searchInput.value.trim().toLowerCase();
+  const selectedTeam = teamFilter.value.trim().toLowerCase();
 
-  const filteredPlayers = allPlayers.filter(function(player) {
-    const name = getValue(player, [
-      "playerName",
-      "player_name",
-      "name",
-      "Player Name",
-      "Name"
-    ]);
+  const filtered = allPlayers.filter(function(player) {
+    const name = String(getValue(player, [
+      "name", "Name"
+    ])).toLowerCase();
 
-    const registration = getValue(player, [
+    const reg = String(getValue(player, [
       "registrationNumber",
       "registration_number",
       "Registration Number"
-    ]);
+    ])).toLowerCase();
 
-    const team = getValue(player, [
-      "teamName",
-      "team",
-      "team_name",
-      "Team Name",
-      "Team"
-    ]);
+    const previousTeam = String(getValue(player, [
+      "team", "previousTeam", "previous_team", "Previous Team"
+    ])).trim();
 
-    const matchesTeam =
-      !selectedTeam || normalizeTeam(team) === selectedTeam;
+    const soldTeam = String(getValue(player, [
+      "soldTeam", "sold_team", "Sold Team"
+    ])).trim();
 
-    const searchableText =
-      (name + " " + registration + " " + team).toLowerCase();
+    const status = normalizeStatus(player);
+
+    const teamForFilter =
+      status === "SOLD" && soldTeam ? soldTeam : previousTeam;
 
     const matchesSearch =
-      !searchText || searchableText.includes(searchText);
+      name.includes(search) || reg.includes(search);
 
-    return matchesTeam && matchesSearch;
+    const matchesTeam =
+      !selectedTeam ||
+      teamForFilter.toLowerCase() === selectedTeam;
+
+    return matchesSearch && matchesTeam;
   });
 
-  playerCount.textContent = filteredPlayers.length;
-  playersContainer.innerHTML = "";
+  document.getElementById("totalCount").textContent =
+    allPlayers.length;
 
-  if (filteredPlayers.length === 0) {
-    const empty = document.createElement("div");
-    empty.className = "empty";
-    empty.textContent = allPlayers.length
-      ? "No players match this filter. Team assignment may not be available in the API."
-      : "No registered players found.";
+  document.getElementById("soldCount").textContent =
+    allPlayers.filter(p => normalizeStatus(p) === "SOLD").length;
 
-    playersContainer.appendChild(empty);
+  document.getElementById("unsoldCount").textContent =
+    allPlayers.filter(p => normalizeStatus(p) === "UNSOLD").length;
+
+  playerGrid.innerHTML = "";
+
+  if (filtered.length === 0) {
+    message.style.display = "block";
+    message.textContent = allPlayers.length
+      ? "No matching players found."
+      : "No players found.";
     return;
   }
 
-  filteredPlayers.forEach(function(player, index) {
-    const name = getValue(player, [
-      "playerName",
-      "player_name",
-      "name",
-      "Player Name",
-      "Name"
-    ]) || "Unnamed Player";
+  message.style.display = "none";
 
-    const registration = getValue(player, [
+  filtered.forEach(function(player) {
+    const name = getValue(player, ["name", "Name"]) || "Unnamed Player";
+
+    const reg = getValue(player, [
       "registrationNumber",
       "registration_number",
       "Registration Number"
-    ]) || "Not available";
+    ]) || "—";
 
-    const role = getValue(player, [
-      "role",
-      "playerRole",
-      "position",
-      "Role"
-    ]) || "Not specified";
+    const role = getValue(player, ["role", "Role"]) || "—";
 
-    const team = getValue(player, [
-      "teamName",
-      "team",
-      "team_name",
-      "Team Name",
-      "Team"
-    ]) || "Previous team not specified";
+    const previousTeam = getValue(player, [
+      "team", "previousTeam", "previous_team", "Previous Team"
+    ]) || "—";
+
+    const soldTeam = getValue(player, [
+      "soldTeam", "sold_team", "Sold Team"
+    ]);
+
+    const soldPrice = getValue(player, [
+      "soldPrice", "sold_price", "Sold Price"
+    ]);
+
+    const status = normalizeStatus(player);
+
+    let statusClass = "status-pending";
+    let statusLabel = "PENDING";
+
+    if (status === "SOLD") {
+      statusClass = "status-sold";
+      statusLabel = "SOLD";
+    } else if (status === "UNSOLD") {
+      statusClass = "status-unsold";
+      statusLabel = "UNSOLD";
+    }
+
+    const auctionTeam =
+      status === "SOLD" && soldTeam ? soldTeam : "—";
+
+    const price =
+      status === "SOLD" ? formatPrice(soldPrice) : "—";
 
     const card = document.createElement("article");
     card.className = "player-card";
 
-    const number = document.createElement("div");
-    number.className = "player-number";
-    number.textContent = "PLAYER " + (index + 1);
+    card.innerHTML = `
+      <div class="player-name">${escapeHTML(name)}</div>
 
-    const playerName = document.createElement("div");
-    playerName.className = "player-name";
-    playerName.textContent = name;
+      <div class="reg-number">
+        REG NO: ${escapeHTML(reg)}
+      </div>
 
-    const registrationLine = document.createElement("div");
-    registrationLine.className = "player-detail";
-    registrationLine.textContent = "Registration: " + registration;
+      <div class="detail">
+        <strong>Role:</strong> ${escapeHTML(role)}
+      </div>
 
-    const teamLine = document.createElement("div");
-    teamLine.className = "player-detail";
+      <div class="detail">
+        <strong>Previous Team:</strong>
+        ${escapeHTML(previousTeam)}
+      </div>
 
-    const teamLabel = document.createElement("span");
-    teamLabel.className = "team-name";
-    teamLabel.textContent = team;
+      <div class="auction-box">
+        <div class="auction-heading">AUCTION RESULT</div>
 
-    teamLine.appendChild(teamLabel);
+        <div class="detail">
+          <strong>Auction Team:</strong>
+          ${escapeHTML(auctionTeam)}
+        </div>
 
-    const roleLine = document.createElement("div");
-    roleLine.className = "player-detail";
-    roleLine.textContent = "Role: " + role;
+        <div class="detail">
+          <strong>Sold Price:</strong>
+          ${price}
+        </div>
 
-    card.appendChild(number);
-    card.appendChild(playerName);
-    card.appendChild(registrationLine);
-    card.appendChild(teamLine);
-    card.appendChild(roleLine);
+        <div class="detail">
+          <strong>Status:</strong><br>
+          <span class="status ${statusClass}">
+            ${statusLabel}
+          </span>
+        </div>
+      </div>
+    `;
 
-    playersContainer.appendChild(card);
+    playerGrid.appendChild(card);
   });
 }
 
-/* ======================================
-   EVENTS
-====================================== */
+async function loadPlayers() {
+  refreshButton.disabled = true;
+  refreshButton.textContent = "Loading...";
+  message.style.display = "block";
+  message.textContent = "Loading players...";
 
-teamFilter.addEventListener("change", renderPlayers);
+  try {
+    const response = await fetch(API_URL, {
+      method: "GET",
+      cache: "no-store"
+    });
+
+    if (!response.ok) {
+      throw new Error("HTTP " + response.status);
+    }
+
+    const result = await response.json();
+
+    if (result.success !== true || !Array.isArray(result.players)) {
+      throw new Error(result.message || "Invalid API response");
+    }
+
+    allPlayers = result.players;
+    renderPlayers();
+
+  } catch (error) {
+    console.error("KMPL player loading error:", error);
+
+    playerGrid.innerHTML = "";
+    message.style.display = "block";
+    message.textContent =
+      "Players load ചെയ്യാൻ കഴിഞ്ഞില്ല. Internet, Apps Script deployment എന്നിവ പരിശോധിച്ച് Refresh അമർത്തുക.";
+  } finally {
+    refreshButton.disabled = false;
+    refreshButton.textContent = "↻ Refresh Players";
+  }
+}
+
 searchInput.addEventListener("input", renderPlayers);
+teamFilter.addEventListener("change", renderPlayers);
 refreshButton.addEventListener("click", loadPlayers);
 
-/* ======================================
-   START
-====================================== */
-
-initializeTeams();
 loadPlayers();
-
 </script>
+
 </body>
 </html>
