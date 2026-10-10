@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,312 +7,259 @@
 <title>KMPL Season 05 - Player Cards</title>
 
 <style>
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#101010;
+  color:white;
 }
 
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: #101010;
-  color: white;
+.topbar{
+  text-align:center;
+  padding:22px 15px;
+  background:linear-gradient(135deg,#080f1c,#18395c);
+  border-bottom:3px solid #ffd700;
 }
 
-.topbar {
-  text-align: center;
-  padding: 22px 15px;
-  background: linear-gradient(135deg, #080f1c, #18395c);
-  border-bottom: 3px solid #ffd700;
+.topbar h1{
+  margin:0;
+  color:#ffd700;
+  font-size:28px;
 }
 
-.topbar h1 {
-  margin: 0;
-  color: #ffd700;
-  font-size: 28px;
+.topbar p{
+  margin:8px 0 0;
+  color:#ddd;
+  font-size:13px;
 }
 
-.topbar p {
-  margin: 8px 0 0;
-  color: #ddd;
-  font-size: 13px;
+.controls{
+  max-width:900px;
+  margin:auto;
+  padding:15px;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
 }
 
-.controls {
-  max-width: 900px;
-  margin: auto;
-  padding: 15px;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
+.controls input,.controls select,.controls button{
+  width:100%;
+  padding:12px;
+  border-radius:8px;
+  font-size:15px;
 }
 
-.controls input,
-.controls select,
-.controls button {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  font-size: 15px;
+.controls input,.controls select{
+  color:white;
+  background:#222;
+  border:1px solid #555;
 }
 
-.controls input,
-.controls select {
-  color: white;
-  background: #222;
-  border: 1px solid #555;
+.controls button{
+  border:none;
+  background:#ffd700;
+  color:#111;
+  font-weight:bold;
+  cursor:pointer;
 }
 
-.controls button {
-  border: none;
-  background: #ffd700;
-  color: #111;
-  font-weight: bold;
-  cursor: pointer;
+.controls button:disabled{opacity:.6;cursor:wait}
+
+#loading{
+  text-align:center;
+  padding:25px 15px;
+  color:#ffd700;
+  line-height:1.7;
 }
 
-#loading {
-  text-align: center;
-  padding: 25px 15px;
-  color: #ffd700;
-  line-height: 1.7;
+#summary{
+  max-width:900px;
+  margin:0 auto;
+  padding:0 15px 15px;
+  color:#ddd;
+  text-align:center;
 }
 
-#summary {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 0 15px 15px;
-  color: #ddd;
-  text-align: center;
+#summary strong{color:#ffd700}
+
+#playersContainer{padding:0 12px 30px}
+
+.player-card{
+  width:210mm;
+  min-height:297mm;
+  margin:20px auto;
+  padding:16mm;
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(145deg,#071426,#0d3d68,#071426);
+  border:5px solid #ffd700;
+  border-radius:10px;
+  page-break-after:always;
+  break-after:page;
 }
 
-#summary strong {
-  color: #ffd700;
+.card-header{text-align:center}
+
+.card-header h1{
+  margin:0;
+  color:#ffd700;
+  font-size:30px;
+  font-weight:900;
 }
 
-#playersContainer {
-  padding: 0 12px 30px;
+.card-header h2{
+  margin:8px 0 0;
+  font-size:18px;
 }
 
-.player-card {
-  width: 210mm;
-  min-height: 297mm;
-  margin: 20px auto;
-  padding: 16mm;
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(145deg, #071426, #0d3d68, #071426);
-  border: 5px solid #ffd700;
-  border-radius: 10px;
-  page-break-after: always;
-  break-after: page;
+.card-header p{
+  margin:7px 0 18px;
+  color:#d8e7f5;
 }
 
-.card-header {
-  text-align: center;
+.photo-wrap{
+  width:145mm;
+  height:110mm;
+  max-width:100%;
+  margin:0 auto 18px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
 }
 
-.card-header h1 {
-  margin: 0;
-  color: #ffd700;
-  font-size: 30px;
-  font-weight: 900;
+.photo-wrap img{
+  max-width:100%;
+  max-height:100%;
+  width:auto;
+  height:auto;
+  object-fit:contain;
+  border:4px solid #ffd700;
+  border-radius:12px;
+  background:#222;
+  box-shadow:0 8px 30px rgba(0,0,0,.5);
 }
 
-.card-header h2 {
-  margin: 8px 0 0;
-  font-size: 18px;
+.photo-fallback{
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  border:2px dashed #ffd700;
+  border-radius:12px;
+  background:rgba(0,0,0,.2);
+  color:#ddd;
+  text-align:center;
 }
 
-.card-header p {
-  margin: 7px 0 18px;
-  color: #d8e7f5;
+.photo-fallback .person{font-size:60px}
+.photo-fallback small{color:#ffd700;padding:0 8px}
+
+.player-name{
+  text-align:center;
+  margin:12px 0;
+  font-size:30px;
+  font-weight:900;
+  text-transform:uppercase;
+  overflow-wrap:anywhere;
 }
 
-.photo-wrap {
-  width: 145mm;
-  height: 110mm;
-  max-width: 100%;
-  margin: 0 auto 18px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
+.registration{
+  text-align:center;
+  color:#ffd700;
+  font-size:17px;
+  font-weight:bold;
+  margin-bottom:20px;
 }
 
-.photo-wrap img {
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  border: 4px solid #ffd700;
-  border-radius: 12px;
-  background: #222;
-  box-shadow: 0 8px 30px rgba(0,0,0,.5);
+.details{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
 }
 
-.photo-fallback {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  border: 2px dashed #ffd700;
-  border-radius: 12px;
-  background: rgba(0,0,0,.2);
-  color: #ddd;
-  text-align: center;
+.detail{
+  min-height:60px;
+  padding:12px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:9px;
+  overflow-wrap:anywhere;
 }
 
-.photo-fallback .person {
-  font-size: 60px;
+.detail-label{
+  color:#b9cde0;
+  font-size:11px;
+  text-transform:uppercase;
+  margin-bottom:6px;
 }
 
-.photo-fallback small {
-  color: #ffd700;
+.detail-value{font-size:16px;font-weight:bold}
+
+.card-footer{
+  position:absolute;
+  bottom:8mm;
+  left:0;
+  right:0;
+  text-align:center;
+  color:#b8c9d8;
+  font-size:12px;
 }
 
-.player-name {
-  text-align: center;
-  margin: 12px 0;
-  font-size: 30px;
-  font-weight: 900;
-  text-transform: uppercase;
-  overflow-wrap: anywhere;
+.empty{
+  max-width:700px;
+  margin:20px auto;
+  padding:25px;
+  border-radius:10px;
+  background:#222;
+  text-align:center;
+  color:#ddd;
 }
 
-.registration {
-  text-align: center;
-  color: #ffd700;
-  font-size: 17px;
-  font-weight: bold;
-  margin-bottom: 20px;
+@media(min-width:650px){
+  .controls{grid-template-columns:1fr 1fr}
 }
 
-.details {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.detail {
-  min-height: 60px;
-  padding: 12px;
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.16);
-  border-radius: 9px;
-  overflow-wrap: anywhere;
-}
-
-.detail-label {
-  color: #b9cde0;
-  font-size: 11px;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-
-.detail-value {
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.card-footer {
-  position: absolute;
-  bottom: 8mm;
-  left: 0;
-  right: 0;
-  text-align: center;
-  color: #b8c9d8;
-  font-size: 12px;
-}
-
-.empty {
-  max-width: 700px;
-  margin: 20px auto;
-  padding: 25px;
-  border-radius: 10px;
-  background: #222;
-  text-align: center;
-  color: #ddd;
-}
-
-@media (min-width: 650px) {
-  .controls {
-    grid-template-columns: 1fr 1fr;
+@media screen and (max-width:700px){
+  .player-card{
+    width:100%;
+    min-height:0;
+    padding:22px;
+    margin:12px auto;
+    border-width:3px;
   }
 
-  .controls button {
-    width: 100%;
-  }
+  .photo-wrap{width:100%;height:320px}
+  .card-header h1{font-size:25px}
+  .card-header h2{font-size:14px}
+  .player-name{font-size:25px}
+  .details{grid-template-columns:1fr}
+  .card-footer{position:static;margin-top:25px}
 }
 
-@media screen and (max-width: 700px) {
-  .player-card {
-    width: 100%;
-    min-height: 0;
-    padding: 22px;
-    margin: 12px auto;
-    border-width: 3px;
+@media print{
+  @page{size:A4;margin:0}
+  body{background:white}
+
+  .topbar,.controls,#loading,#summary{
+    display:none!important;
   }
 
-  .photo-wrap {
-    width: 100%;
-    height: 320px;
-  }
+  #playersContainer{padding:0}
 
-  .card-header h1 {
-    font-size: 25px;
-  }
-
-  .card-header h2 {
-    font-size: 14px;
-  }
-
-  .player-name {
-    font-size: 25px;
-  }
-
-  .details {
-    grid-template-columns: 1fr;
-  }
-
-  .card-footer {
-    position: static;
-    margin-top: 25px;
-  }
-}
-
-@media print {
-  @page {
-    size: A4;
-    margin: 0;
-  }
-
-  body {
-    background: white;
-  }
-
-  .topbar,
-  .controls,
-  #loading,
-  #summary {
-    display: none !important;
-  }
-
-  #playersContainer {
-    padding: 0;
-  }
-
-  .player-card {
-    width: 210mm;
-    height: 297mm;
-    min-height: 297mm;
-    margin: 0;
-    border-radius: 0;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+  .player-card{
+    width:210mm;
+    height:297mm;
+    min-height:297mm;
+    margin:0;
+    border-radius:0;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
   }
 }
 </style>
@@ -327,24 +273,15 @@ body {
 </header>
 
 <div class="controls">
-  <input
-    id="searchInput"
-    type="search"
-    placeholder="Search player or team..."
-    autocomplete="off"
-  >
+  <input id="searchInput" type="search"
+    placeholder="Search player or team..." autocomplete="off">
 
   <select id="teamFilter">
     <option value="">All Teams</option>
   </select>
 
-  <button id="refreshButton" type="button">
-    🔄 REFRESH PLAYERS
-  </button>
-
-  <button id="printButton" type="button">
-    🖨️ PRINT / SAVE AS PDF
-  </button>
+  <button id="refreshButton" type="button">🔄 REFRESH PLAYERS</button>
+  <button id="printButton" type="button">🖨️ PRINT / SAVE AS PDF</button>
 </div>
 
 <div id="summary">
@@ -361,11 +298,11 @@ body {
 "use strict";
 
 /* =========================================
-   GOOGLE APPS SCRIPT CONFIGURATION
+   KMPL GOOGLE APPS SCRIPT API
 ========================================= */
 
 const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbx4_dUYrVPQEQjjWThl0q2vxYTt1SntdunMQbkN7LSV3t3JwiPhJgYTVkJQMJiI8PduSA/exec";
+"https://script.google.com/macros/s/AKfycbx4_dUYrVPQEQjjWThl0q2vxYTt1SntdunMQbkN7LSV3t3JwiPhJgYTVkJQMJiI8PduSA/exec";
 
 const API_URL = SCRIPT_URL + "?action=publicPlayers";
 
@@ -379,18 +316,17 @@ const playerCount = document.getElementById("playerCount");
 const refreshButton = document.getElementById("refreshButton");
 
 /* =========================================
-   SAFE FIELD HELPERS
+   FIELD HELPERS
 ========================================= */
 
 function getField(player, keys) {
-  for (const key of keys) {
-    const value = player && player[key];
+  if (!player) return "";
 
-    if (
-      value !== undefined &&
-      value !== null &&
-      String(value).trim() !== ""
-    ) {
+  for (const key of keys) {
+    const value = player[key];
+
+    if (value !== undefined && value !== null &&
+        String(value).trim() !== "") {
       return String(value).trim();
     }
   }
@@ -400,15 +336,54 @@ function getField(player, keys) {
 
 function escapeHtml(value) {
   return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 }
 
 function normalize(value) {
   return String(value || "").trim().toUpperCase();
+}
+
+/* =========================================
+   PHOTO FIELD DETECTION
+   Supports common API field names and
+   Sheet column J / array-based row data.
+========================================= */
+
+function getPhotoValue(player) {
+  const possibleKeys = [
+    "photo",
+    "Photo",
+    "photoUrl",
+    "photoURL",
+    "photo_url",
+    "photoURL ",
+    "imageUrl",
+    "imageURL",
+    "image_url",
+    "image",
+    "profilePhoto",
+    "profilePhotoUrl",
+    "playerPhoto",
+    "playerPhotoUrl",
+    "Photo URL",
+    "Photo Url",
+    "photo url",
+    "J"
+  ];
+
+  const found = getField(player, possibleKeys);
+  if (found) return found;
+
+  // If API returns a row as an array, column J is index 9.
+  if (Array.isArray(player) && player[9]) {
+    return String(player[9]).trim();
+  }
+
+  return "";
 }
 
 /* =========================================
@@ -422,13 +397,13 @@ async function loadPlayers() {
   refreshButton.disabled = true;
 
   try {
-    const response = await fetch(API_URL, {
-      method: "GET",
-      cache: "no-store"
-    });
+    const response = await fetch(
+      API_URL + "&_=" + Date.now(),
+      { method:"GET", cache:"no-store" }
+    );
 
     if (!response.ok) {
-      throw new Error("HTTP " + response.status);
+      throw new Error("HTTP error " + response.status);
     }
 
     const data = await response.json();
@@ -444,14 +419,14 @@ async function loadPlayers() {
     }
 
     if (!Array.isArray(data.players)) {
-      throw new Error("The API did not return a players array");
+      throw new Error("API did not return a players array");
     }
 
     allPlayers = data.players;
 
     if (allPlayers.length === 0) {
-      loading.textContent = "No registered players found.";
       playerCount.textContent = "0";
+      loading.textContent = "No registered players found.";
       return;
     }
 
@@ -459,13 +434,21 @@ async function loadPlayers() {
     loading.style.display = "none";
     renderPlayers();
 
+    // Diagnostic only: logs field names, not private player details.
+    if (allPlayers[0]) {
+      console.log(
+        "KMPL player fields:",
+        Array.isArray(allPlayers[0])
+          ? "Array row; photo column index 9"
+          : Object.keys(allPlayers[0])
+      );
+    }
+
   } catch (error) {
     console.error("KMPL loading error:", error);
-
     loading.style.display = "block";
     loading.textContent =
       "Unable to load players: " + error.message;
-
     playerCount.textContent = "0";
 
   } finally {
@@ -477,20 +460,23 @@ async function loadPlayers() {
    TEAM FILTER
 ========================================= */
 
+function getTeam(player) {
+  return getField(player, [
+    "team",
+    "Team",
+    "previousTeam",
+    "previous_team",
+    "Previous Team",
+    "previous team",
+    "I"
+  ]);
+}
+
 function initializeTeamFilter() {
   const selectedValue = teamFilter.value;
 
   const uniqueTeams = [
-    ...new Set(
-      allPlayers.map(function(player) {
-        return getField(player, [
-          "team",
-          "previousTeam",
-          "previous_team",
-          "Previous Team"
-        ]);
-      }).filter(Boolean)
-    )
+    ...new Set(allPlayers.map(getTeam).filter(Boolean))
   ].sort();
 
   teamFilter.innerHTML = '<option value="">All Teams</option>';
@@ -508,7 +494,7 @@ function initializeTeamFilter() {
 }
 
 /* =========================================
-   FILTER PLAYERS
+   RENDER PLAYER CARDS
 ========================================= */
 
 function renderPlayers() {
@@ -516,14 +502,8 @@ function renderPlayers() {
   const selectedTeam = normalize(teamFilter.value);
 
   const filteredPlayers = allPlayers.filter(function(player) {
-    const name = getField(player, ["name", "Name", "C"]);
-    const team = getField(player, [
-      "team",
-      "previousTeam",
-      "previous_team",
-      "Previous Team",
-      "I"
-    ]);
+    const name = getField(player, ["name","Name","C"]);
+    const team = getTeam(player);
 
     const matchesSearch =
       name.toLowerCase().includes(search) ||
@@ -545,41 +525,33 @@ function renderPlayers() {
   }
 
   filteredPlayers.forEach(function(player, index) {
-    const name = getField(player, ["name", "Name", "C"]) || "-";
+    const name =
+      getField(player, ["name","Name","C"]) || "-";
 
-    const registration = getField(player, [
-      "registrationNumber",
-      "registration_number",
-      "Registration Number",
-      "B"
-    ]) || "-";
+    const registration =
+      getField(player, [
+        "registrationNumber",
+        "registration_number",
+        "registrationNo",
+        "regNumber",
+        "Registration Number",
+        "B"
+      ]) || "-";
 
-    const role = getField(player, ["role", "Role", "F"]) || "-";
+    const role =
+      getField(player, ["role","Role","F"]) || "-";
 
-    const place = getField(player, ["place", "Place", "E"]) || "-";
+    const place =
+      getField(player, ["place","Place","E"]) || "-";
 
-    const batting = getField(player, ["batting", "Batting", "G"]) || "-";
+    const batting =
+      getField(player, ["batting","Batting","battingStyle","G"]) || "-";
 
-    const bowling = getField(player, ["bowling", "Bowling", "H"]) || "-";
+    const bowling =
+      getField(player, ["bowling","Bowling","bowlingStyle","H"]) || "-";
 
-    const team = getField(player, [
-      "team",
-      "previousTeam",
-      "previous_team",
-      "Previous Team",
-      "I"
-    ]) || "-";
-
-    const photo = getField(player, [
-      "photo",
-      "photoUrl",
-      "photoURL",
-      "photo_url",
-      "imageUrl",
-      "imageURL",
-      "image",
-      "J"
-    ]);
+    const team = getTeam(player) || "-";
+    const photo = getPhotoValue(player);
 
     const card = document.createElement("section");
     card.className = "player-card";
@@ -595,7 +567,7 @@ function renderPlayers() {
         <div class="photo-fallback">
           <div class="person">👤</div>
           <div>PLAYER PHOTO</div>
-          <small>${photo ? "Loading photo..." : "No photo available"}</small>
+          <small>${photo ? "Loading photo..." : "No photo URL received from API"}</small>
         </div>
       </div>
 
@@ -606,11 +578,11 @@ function renderPlayers() {
       </div>
 
       <div class="details">
-        ${makeDetail("Place", place)}
-        ${makeDetail("Playing Role", role)}
-        ${makeDetail("Batting Style", batting)}
-        ${makeDetail("Bowling Style", bowling)}
-        ${makeDetail("Previous Team", team)}
+        ${makeDetail("Place",place)}
+        ${makeDetail("Playing Role",role)}
+        ${makeDetail("Batting Style",batting)}
+        ${makeDetail("Bowling Style",bowling)}
+        ${makeDetail("Previous Team",team)}
       </div>
 
       <div class="card-footer">
@@ -619,7 +591,6 @@ function renderPlayers() {
     `;
 
     container.appendChild(card);
-
     loadPlayerPhoto(photo, card.querySelector(".photo-wrap"));
   });
 }
@@ -634,7 +605,7 @@ function makeDetail(label, value) {
 }
 
 /* =========================================
-   GOOGLE DRIVE PHOTO URL
+   GOOGLE DRIVE PHOTO URL HANDLING
 ========================================= */
 
 function extractDriveId(value) {
@@ -642,6 +613,7 @@ function extractDriveId(value) {
 
   const text = String(value).trim();
 
+  // Plain Google Drive file ID
   if (/^[a-zA-Z0-9_-]{25,}$/.test(text)) {
     return text;
   }
@@ -650,7 +622,8 @@ function extractDriveId(value) {
     /\/file\/d\/([a-zA-Z0-9_-]+)/i,
     /\/thumbnail\?[^#]*\bid=([a-zA-Z0-9_-]+)/i,
     /\/uc\?[^#]*\bid=([a-zA-Z0-9_-]+)/i,
-    /[?&]id=([a-zA-Z0-9_-]{25,})/i
+    /[?&]id=([a-zA-Z0-9_-]{25,})/i,
+    /\/open\?[^#]*\bid=([a-zA-Z0-9_-]+)/i
   ];
 
   for (const pattern of patterns) {
@@ -667,24 +640,33 @@ function getPhotoCandidates(value) {
   const text = String(value).trim();
   const fileId = extractDriveId(text);
 
-  if (!fileId) {
-    return /^https?:\/\//i.test(text) ? [text] : [];
+  if (fileId) {
+    return [
+      "https://drive.google.com/thumbnail?id=" +
+        encodeURIComponent(fileId) + "&sz=w1000",
+
+      "https://drive.google.com/uc?export=view&id=" +
+        encodeURIComponent(fileId),
+
+      "https://drive.google.com/uc?id=" +
+        encodeURIComponent(fileId)
+    ];
   }
 
-  return [
-    "https://drive.google.com/thumbnail?id=" +
-      encodeURIComponent(fileId) + "&sz=w1000",
+  if (/^https?:\/\//i.test(text)) {
+    return [text];
+  }
 
-    "https://drive.google.com/uc?export=view&id=" +
-      encodeURIComponent(fileId)
-  ];
+  return [];
 }
 
 function loadPlayerPhoto(value, photoWrap) {
   const candidates = getPhotoCandidates(value);
   const fallback = photoWrap.querySelector(".photo-fallback");
 
-  if (candidates.length === 0) return;
+  if (candidates.length === 0) {
+    return;
+  }
 
   const image = document.createElement("img");
   image.alt = "Player photo";
@@ -706,8 +688,11 @@ function loadPlayerPhoto(value, photoWrap) {
       image.remove();
 
       if (fallback) {
-        fallback.querySelector("small").textContent =
-          "Photo unavailable or private";
+        const message = fallback.querySelector("small");
+        if (message) {
+          message.textContent =
+            "Photo unavailable. Check Drive sharing permissions.";
+        }
       }
     }
   };
@@ -722,7 +707,6 @@ function loadPlayerPhoto(value, photoWrap) {
 
 searchInput.addEventListener("input", renderPlayers);
 teamFilter.addEventListener("change", renderPlayers);
-
 refreshButton.addEventListener("click", loadPlayers);
 
 document.getElementById("printButton").addEventListener(
