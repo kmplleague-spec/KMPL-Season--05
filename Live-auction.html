@@ -1,239 +1,140 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#101010">
-<title>KMPL Season 05 | Live Auction</title>
-
+<title>KMPL Season 05 LIVE Auction</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#101010;color:white;font-family:Arial,sans-serif}
-header{text-align:center;padding:22px 12px;background:linear-gradient(135deg,#181818,#332900);border-bottom:2px solid #e6bd27}
-h1{margin:0;color:#ffd84d;font-size:28px}
-header p{color:#ddd;font-size:13px}
-.live{display:inline-block;background:#242424;border:1px solid #555;border-radius:30px;padding:8px 14px;font-size:12px}
-.dot{display:inline-block;width:9px;height:9px;background:#f33;border-radius:50%;margin-right:6px}
-.container{max-width:1000px;margin:auto;padding:14px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:15px}
-.stat{background:#1c1c1c;border:1px solid #333;border-radius:12px;text-align:center;padding:13px 4px}
-.stat strong{display:block;font-size:23px;color:#ffd84d}
-.stat span{display:block;font-size:10px;color:#bbb;margin-top:5px}
-.tools{display:flex;gap:8px;margin-bottom:12px}
-input{flex:1;min-width:0;padding:12px;background:#202020;color:white;border:1px solid #444;border-radius:9px}
-button{padding:12px;background:#e7bd27;color:#111;border:0;border-radius:9px;font-weight:bold}
-.status{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:12px;color:#aaa;margin:12px 0}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.player{overflow:hidden;background:#1c1c1c;border:1px solid #393939;border-radius:12px}
-.photo{width:100%;height:190px;object-fit:cover;background:#292929;display:block}
-.details{padding:11px}
-.reg{color:#ffd84d;font-size:11px}
-.name{font-size:17px;font-weight:bold;margin:7px 0}
-.info{font-size:12px;color:#ccc;line-height:1.8;overflow-wrap:anywhere}
-.info b{color:white}
-.badge{display:inline-block;margin-top:9px;padding:6px 9px;border-radius:6px;font-size:11px;font-weight:bold;background:#333}
-.sold{background:#12452b;color:#7bffb0}
-.unsold{background:#512222;color:#ffb0b0}
-.available{background:#393019;color:#ffe18b}
-.empty{grid-column:1/-1;text-align:center;padding:35px 10px;background:#1c1c1c;border-radius:12px;color:#bbb}
-footer{text-align:center;padding:25px;color:#888;font-size:12px}
-@media(max-width:420px){
- .container{padding:9px}
- .grid{gap:8px}
- .photo{height:145px}
- .details{padding:8px}
- .name{font-size:15px}
- .info{font-size:11px}
- .stat strong{font-size:20px}
-}
+body{margin:0;background:#101010;color:#fff;font-family:Arial,sans-serif}
+header{text-align:center;padding:22px 10px;background:#050505;border-bottom:2px solid #e6b800}
+header h1{margin:0;font-size:27px}
+header p{color:#bbb;margin:8px 0 0}
+main{max-width:850px;margin:auto;padding:16px}
+.card{background:#1d1d1d;border-radius:16px;padding:18px;margin-bottom:15px}
+.badge{display:inline-block;background:#e6b800;color:#111;font-weight:bold;padding:8px 14px;border-radius:20px}
+#status{margin-top:10px;color:#bbb}
+#photo{width:100%;max-height:360px;object-fit:contain;background:#080808;border-radius:12px}
+#name{font-size:28px;font-weight:bold;margin:14px 0 5px;overflow-wrap:anywhere}
+#bid{font-size:38px;color:#2ecc71;font-weight:bold;margin:12px 0}
+.details{color:#ccc;line-height:1.8;overflow-wrap:anywhere}
+h2{font-size:18px}
+.history{border-top:1px solid #383838;padding:10px 0;overflow-wrap:anywhere}
+.muted{color:#aaa}
 </style>
 </head>
-
 <body>
 <header>
   <h1>KMPL SEASON 05</h1>
-  <p>GOLDEN WINGS PRESENTS</p>
-  <div class="live"><span class="dot"></span>LIVE AUCTION UPDATES</div>
+  <p>PUBLIC LIVE AUCTION</p>
 </header>
-
-<main class="container">
-  <div class="stats">
-    <div class="stat"><strong id="total">0</strong><span>TOTAL PLAYERS</span></div>
-    <div class="stat"><strong id="sold">0</strong><span>SOLD PLAYERS</span></div>
-    <div class="stat"><strong id="remaining">0</strong><span>NOT SOLD</span></div>
+<main>
+  <div class="card">
+    <span class="badge" id="badge">CONNECTING...</span>
+    <div id="status">Connecting to auction server...</div>
   </div>
-
-  <div class="tools">
-    <input id="search" type="search" placeholder="Search player or team...">
-    <button id="refreshBtn" type="button">Refresh</button>
+  <div class="card">
+    <div id="round" class="muted">Auction round</div>
+    <img id="photo" alt="Player photo" style="display:none">
+    <div id="name">Waiting for auction...</div>
+    <div id="reg" class="muted"></div>
+    <div id="bid">₹1,000</div>
+    <div id="details" class="details"></div>
   </div>
-
-  <div class="status">
-    <span id="connection">Connecting...</span>
-    <span id="updated">Waiting for data</span>
+  <div class="card">
+    <h2>Recent Auction Results</h2>
+    <div id="history" class="muted">No results published yet.</div>
   </div>
-
-  <div class="grid" id="players">
-    <div class="empty">Loading KMPL players...</div>
-  </div>
+  <p class="muted" style="text-align:center">LIVE updates automatically. This page is view-only.</p>
 </main>
-
-<footer>
-  KMPL SEASON 05 · LIVE PLAYER UPDATES<br><br>
-  This page is for viewing only.
-</footer>
-
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbx4_dUYrVPQEQjjWThl0q2vxYTt1SntdunMQbkN7LSV3t3JwiPhJgYTVkJQMJiI8PduSA/exec?action=publicPlayers";
+const API_URL =
+"https://script.google.com/macros/s/AKfycbx4_dUYrVPQEQjjWThl0q2vxYTt1SntdunMQbkN7LSV3t3JwiPhJgYTVkJQMJiI8PduSA/exec";
 
-let allPlayers = [];
-let requestInProgress = false;
-
-const $ = id => document.getElementById(id);
-
-function safe(value) {
-  return String(value == null ? "" : value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
+function text(id,value){
+  document.getElementById(id).textContent = value || "-";
 }
-
-function getStatus(player) {
-  return String(player.auctionStatus || "Available").trim();
+function photoUrl(value){
+  if(!value) return "";
+  value=String(value).trim();
+  const m=value.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/)
+    || value.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if(m) return "https://drive.google.com/thumbnail?id="+encodeURIComponent(m[1])+"&sz=w1000";
+  return /^https?:\/\//i.test(value) ? value : "";
 }
-
-function isSold(player) {
-  return getStatus(player).toLowerCase() === "sold";
-}
-
-function isUnsold(player) {
-  return getStatus(player).toLowerCase() === "unsold";
-}
-
-function renderStats() {
-  const soldCount = allPlayers.filter(isSold).length;
-
-  $("total").textContent = allPlayers.length;
-  $("sold").textContent = soldCount;
-  $("remaining").textContent = allPlayers.length - soldCount;
-}
-
-function renderPlayers() {
-  const term = $("search").value.trim().toLowerCase();
-
-  const filtered = allPlayers.filter(p => {
-    const searchable = [
-      p.name,
-      p.registrationNumber,
-      p.team,
-      p.place,
-      p.role
-    ].join(" ").toLowerCase();
-
-    return searchable.includes(term);
-  });
-
-  if (!filtered.length) {
-    $("players").innerHTML =
-      '<div class="empty">No players found.</div>';
+function render(s){
+  if(!s){
+    text("badge","WAITING");
+    text("status","Waiting for Admin to publish LIVE...");
     return;
   }
 
-  $("players").innerHTML = filtered.map(p => {
-    const photo = p.photoUrl || p.photo || p.imageUrl || "";
-    const status = getStatus(p);
-    const sold = isSold(p);
-    const unsold = isUnsold(p);
+  const state=String(s.auctionStatus || "LIVE").toUpperCase();
+  text("badge",state);
+  text("status","Last update: "+(s.updatedAt || "Connected"));
+  text("round",s.round==="UNSOLD"?"UNSOLD ROUND":"KMPL SEASON 05 AUCTION");
 
-    const badgeClass = sold ? "sold" : unsold ? "unsold" : "available";
-    const badgeText = sold
-      ? "SOLD"
-      : unsold
-        ? "UNSOLD"
-        : status.toUpperCase();
+  text("name",s.name || (
+    state==="AUCTION COMPLETED" ? "Auction Completed" :
+    state==="ROUND COMPLETE" ? "Round Completed" :
+    "Waiting for next player"
+  ));
+  text("reg",s.registrationNumber || "");
+  text("bid","₹"+Number(s.currentBid || s.basePrice || 1000).toLocaleString("en-IN"));
 
-    const photoHTML = photo
-      ? '<img class="photo" src="' + safe(photo) +
-        '" alt="' + safe(p.name || "Player") +
-        '" loading="lazy" onerror="this.onerror=null;this.style.display=\'none\';">'
-      : '<div class="photo"></div>';
+  const details=[
+    "Place: "+(s.place||"-"),
+    "Role: "+(s.role||"-"),
+    "Batting: "+(s.battingStyle||"-"),
+    "Bowling: "+(s.bowlingStyle||"-"),
+    "Previous team: "+(s.previousTeam||"-"),
+    "Sold team: "+(s.soldTeam||"-")
+  ];
+  text("details",details.join("\n"));
 
-    const soldDetails = sold
-      ? '<div class="info"><b>Sold Price:</b> ' +
-        safe(p.soldPrice || "Not provided") +
-        '<br><b>Team:</b> ' +
-        safe(p.soldTeam || "Not provided") + '</div>'
-      : "";
+  const img=document.getElementById("photo");
+  const src=photoUrl(s.photo);
+  if(src && img.src!==src){
+    img.onerror=()=>{img.style.display="none"};
+    img.onload=()=>{img.style.display="block"};
+    img.src=src;
+  }else if(!src){
+    img.removeAttribute("src");
+    img.style.display="none";
+  }
 
-    return '<article class="player">' +
-      photoHTML +
-      '<div class="details">' +
-      '<div class="reg">' + safe(p.registrationNumber || "") + '</div>' +
-      '<div class="name">' + safe(p.name || "Unknown Player") + '</div>' +
-      '<div class="info">' +
-      '<b>Place:</b> ' + safe(p.place || "Not provided") + '<br>' +
-      '<b>Role:</b> ' + safe(p.role || "Not provided") + '<br>' +
-      '<b>Batting:</b> ' + safe(p.battingStyle || p.batting || "Not provided") + '<br>' +
-      '<b>Bowling:</b> ' + safe(p.bowlingStyle || p.bowling || "Not provided") +
-      '</div>' +
-      '<span class="badge ' + badgeClass + '">' + safe(badgeText) + '</span>' +
-      soldDetails +
-      '</div></article>';
-  }).join("");
-}
-
-async function loadPlayers() {
-  if (requestInProgress) return;
-  requestInProgress = true;
-
-  $("connection").textContent = "Updating...";
-  $("refreshBtn").disabled = true;
-
-  try {
-    const response = await fetch(API_URL, { cache: "no-store" });
-
-    if (!response.ok) {
-      throw new Error("HTTP " + response.status);
-    }
-
-    const data = await response.json();
-
-    if (!data.success || !Array.isArray(data.players)) {
-      throw new Error(data.message || "Invalid API response");
-    }
-
-    allPlayers = data.players;
-    renderStats();
-    renderPlayers();
-
-    $("connection").textContent = "Connected";
-    $("updated").textContent =
-      "Updated: " + new Date().toLocaleTimeString();
-
-  } catch (error) {
-    $("connection").textContent = "Connection failed";
-    $("updated").textContent = "Please retry";
-
-    if (allPlayers.length === 0) {
-      $("players").innerHTML =
-        '<div class="empty">Could not load players. Check your internet connection and API deployment, then tap Refresh.</div>';
-    }
-
-    console.error("KMPL API error:", error);
-
-  } finally {
-    requestInProgress = false;
-    $("refreshBtn").disabled = false;
+  const hist=document.getElementById("history");
+  hist.replaceChildren();
+  if(Array.isArray(s.history) && s.history.length){
+    s.history.forEach(item=>{
+      const div=document.createElement("div");
+      div.className="history";
+      const price=item.soldPrice ? " — ₹"+Number(item.soldPrice).toLocaleString("en-IN") : "";
+      div.textContent=(item.name||"Player")+" — "+(item.status||"")+
+        (item.soldTeam ? " — "+item.soldTeam : "")+price;
+      hist.appendChild(div);
+    });
+  }else{
+    hist.textContent="No results published yet.";
   }
 }
-
-$("search").addEventListener("input", renderPlayers);
-$("refreshBtn").addEventListener("click", loadPlayers);
-
-loadPlayers();
-setInterval(loadPlayers, 5000);
+async function refresh(){
+  try{
+    const response=await fetch(API_URL+"?action=liveState&_="+Date.now(),{
+      cache:"no-store"
+    });
+    if(!response.ok) throw new Error("HTTP "+response.status);
+    const data=await response.json();
+    if(data.success) render(data.state || null);
+    else throw new Error(data.message || "Unable to read LIVE state");
+  }catch(e){
+    text("badge","CONNECTION ERROR");
+    text("status",e.message+" — retrying...");
+  }
+}
+refresh();
+setInterval(refresh,3000);
 </script>
 </body>
 </html>
