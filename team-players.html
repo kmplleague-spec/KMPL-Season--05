@@ -15,7 +15,7 @@ body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   background: #101010;
-  color: #ffffff;
+  color: #fff;
 }
 
 .header {
@@ -33,7 +33,7 @@ body {
 
 .header p {
   margin: 8px 0 0;
-  color: #dddddd;
+  color: #ddd;
   font-size: 14px;
 }
 
@@ -75,8 +75,9 @@ button {
   cursor: pointer;
 }
 
-button:active {
-  transform: scale(0.99);
+button:disabled {
+  opacity: .6;
+  cursor: wait;
 }
 
 .summary {
@@ -101,6 +102,7 @@ button:active {
   padding: 25px 10px;
   color: #f5bd35;
   line-height: 1.7;
+  overflow-wrap: anywhere;
 }
 
 #players {
@@ -131,7 +133,7 @@ button:active {
 }
 
 .player-detail {
-  color: #cccccc;
+  color: #ccc;
   font-size: 13px;
   line-height: 1.8;
 }
@@ -147,13 +149,13 @@ button:active {
   padding: 25px;
   background: #1d1d1d;
   border-radius: 10px;
-  color: #cccccc;
+  color: #ccc;
 }
 
 .footer {
   text-align: center;
   padding: 22px 10px;
-  color: #888888;
+  color: #888;
   font-size: 12px;
 }
 
@@ -187,7 +189,7 @@ button:active {
     <input
       id="searchInput"
       type="search"
-      placeholder="Search player name..."
+      placeholder="Search player name or registration number..."
       autocomplete="off"
     >
 
@@ -217,11 +219,15 @@ button:active {
 "use strict";
 
 /* ======================================
-   KMPL SEASON 05 TEAM PLAYERS SETTINGS
+   GOOGLE APPS SCRIPT PUBLIC API
 ====================================== */
 
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbx4_dUYrVPQEQjjWThl0q2vxYTt1SntdunMQbkN7LSV3t3JwiPhJgYTVkJQMJiI8PduSA/exec";
+  "https://script.google.com/macros/s/AKfycbx4_dUYrVPQEQjjWThl0q2vxYTt1SntdunMQbkN7LSV3t3JwiPhJgYTVkJQMJiI8PduSA/exec?action=publicPlayers";
+
+/* ======================================
+   KMPL SEASON 05 TEAMS
+====================================== */
 
 const teams = [
   "VOLCANO VARANJOOR",
@@ -257,7 +263,12 @@ const refreshButton = document.getElementById("refreshButton");
 ====================================== */
 
 function initializeTeams() {
-  teamFilter.innerHTML = '<option value="">All Teams</option>';
+  teamFilter.innerHTML = "";
+
+  const allOption = document.createElement("option");
+  allOption.value = "";
+  allOption.textContent = "All Teams";
+  teamFilter.appendChild(allOption);
 
   teams.forEach(function(team) {
     const option = document.createElement("option");
@@ -270,7 +281,7 @@ function initializeTeams() {
 }
 
 /* ======================================
-   SAFE VALUE HELPERS
+   SAFE FIELD HELPERS
 ====================================== */
 
 function getValue(player, keys) {
@@ -295,60 +306,75 @@ function normalizeTeam(value) {
     .replace(/\s+/g, " ");
 }
 
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, function(character) {
+    const replacements = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    };
+
+    return replacements[character];
+  });
+}
+
 /* ======================================
-   LOAD PLAYERS FROM GOOGLE APPS SCRIPT
+   LOAD PLAYERS
 ====================================== */
 
 async function loadPlayers() {
   statusBox.style.display = "block";
   statusBox.textContent = "Loading players...";
   playersContainer.innerHTML = "";
+
   refreshButton.disabled = true;
   refreshButton.textContent = "Loading...";
 
   try {
     const response = await fetch(API_URL, {
       method: "GET",
-      redirect: "follow",
-      cache: "no-store"
+      cache: "no-store",
+      redirect: "follow"
     });
 
     if (!response.ok) {
-      throw new Error("Server returned HTTP " + response.status);
+      throw new Error("HTTP error: " + response.status);
     }
 
     const result = await response.json();
 
-    if (Array.isArray(result)) {
-      allPlayers = result;
-    } else if (result && result.success === true &&
-               Array.isArray(result.players)) {
-      allPlayers = result.players;
-    } else if (result && Array.isArray(result.players)) {
-      allPlayers = result.players;
-    } else {
+    console.log("KMPL API response:", result);
+
+    if (!result || result.success !== true) {
       throw new Error(
-        result && result.message
-          ? result.message
-          : "The API did not return a players list."
+        result && result.error
+          ? result.error
+          : "API did not return success:true"
       );
     }
+
+    if (!Array.isArray(result.players)) {
+      throw new Error("API response does not contain a players array");
+    }
+
+    allPlayers = result.players;
 
     statusBox.style.display = "none";
     renderPlayers();
 
   } catch (error) {
-    console.error("KMPL players loading error:", error);
+    console.error("KMPL loading error:", error);
 
     allPlayers = [];
     playerCount.textContent = "0";
     playersContainer.innerHTML = "";
 
     statusBox.style.display = "block";
-    statusBox.innerHTML =
-      "❌ Unable to load players.<br><br>" +
-      "Please check the Google Apps Script deployment and API response." +
-      "<br><br><small>" + escapeHTML(error.message) + "</small>";
+    statusBox.textContent =
+      "Unable to load players: " + error.message;
+
   } finally {
     refreshButton.disabled = false;
     refreshButton.textContent = "↻ Refresh";
@@ -356,7 +382,7 @@ async function loadPlayers() {
 }
 
 /* ======================================
-   DISPLAY PLAYERS
+   FILTER AND DISPLAY PLAYERS
 ====================================== */
 
 function renderPlayers() {
@@ -372,6 +398,12 @@ function renderPlayers() {
       "Name"
     ]);
 
+    const registration = getValue(player, [
+      "registrationNumber",
+      "registration_number",
+      "Registration Number"
+    ]);
+
     const team = getValue(player, [
       "teamName",
       "team",
@@ -383,10 +415,11 @@ function renderPlayers() {
     const matchesTeam =
       !selectedTeam || normalizeTeam(team) === selectedTeam;
 
+    const searchableText =
+      (name + " " + registration + " " + team).toLowerCase();
+
     const matchesSearch =
-      !searchText ||
-      name.toLowerCase().includes(searchText) ||
-      team.toLowerCase().includes(searchText);
+      !searchText || searchableText.includes(searchText);
 
     return matchesTeam && matchesSearch;
   });
@@ -395,8 +428,13 @@ function renderPlayers() {
   playersContainer.innerHTML = "";
 
   if (filteredPlayers.length === 0) {
-    playersContainer.innerHTML =
-      '<div class="empty">No players found.</div>';
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = allPlayers.length
+      ? "No players match this filter. Team assignment may not be available in the API."
+      : "No registered players found.";
+
+    playersContainer.appendChild(empty);
     return;
   }
 
@@ -409,26 +447,26 @@ function renderPlayers() {
       "Name"
     ]) || "Unnamed Player";
 
-    const team = getValue(player, [
-      "teamName",
-      "team",
-      "team_name",
-      "Team Name",
-      "Team"
-    ]) || "Team not specified";
+    const registration = getValue(player, [
+      "registrationNumber",
+      "registration_number",
+      "Registration Number"
+    ]) || "Not available";
 
     const role = getValue(player, [
       "role",
       "playerRole",
       "position",
       "Role"
-    ]);
+    ]) || "Not specified";
 
-    const status = getValue(player, [
-      "status",
-      "playerStatus",
-      "Status"
-    ]);
+    const team = getValue(player, [
+      "teamName",
+      "team",
+      "team_name",
+      "Team Name",
+      "Team"
+    ]) || "Previous team not specified";
 
     const card = document.createElement("article");
     card.className = "player-card";
@@ -441,6 +479,10 @@ function renderPlayers() {
     playerName.className = "player-name";
     playerName.textContent = name;
 
+    const registrationLine = document.createElement("div");
+    registrationLine.className = "player-detail";
+    registrationLine.textContent = "Registration: " + registration;
+
     const teamLine = document.createElement("div");
     teamLine.className = "player-detail";
 
@@ -450,43 +492,17 @@ function renderPlayers() {
 
     teamLine.appendChild(teamLabel);
 
+    const roleLine = document.createElement("div");
+    roleLine.className = "player-detail";
+    roleLine.textContent = "Role: " + role;
+
     card.appendChild(number);
     card.appendChild(playerName);
+    card.appendChild(registrationLine);
     card.appendChild(teamLine);
-
-    if (role) {
-      const roleLine = document.createElement("div");
-      roleLine.className = "player-detail";
-      roleLine.textContent = "Role: " + role;
-      card.appendChild(roleLine);
-    }
-
-    if (status) {
-      const statusLine = document.createElement("div");
-      statusLine.className = "player-detail";
-      statusLine.textContent = "Status: " + status;
-      card.appendChild(statusLine);
-    }
+    card.appendChild(roleLine);
 
     playersContainer.appendChild(card);
-  });
-}
-
-/* ======================================
-   ESCAPE ERROR TEXT
-====================================== */
-
-function escapeHTML(value) {
-  return String(value).replace(/[&<>"']/g, function(character) {
-    const replacements = {
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;"
-    };
-
-    return replacements[character];
   });
 }
 
@@ -499,7 +515,7 @@ searchInput.addEventListener("input", renderPlayers);
 refreshButton.addEventListener("click", loadPlayers);
 
 /* ======================================
-   START PAGE
+   START
 ====================================== */
 
 initializeTeams();
