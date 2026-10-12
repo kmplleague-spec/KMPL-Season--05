@@ -1,9 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>KMPL Season 05 - Player Cards</title>
 
 <style>
@@ -65,7 +65,10 @@ body{
   cursor:pointer;
 }
 
-.controls button:disabled{opacity:.6;cursor:wait}
+.controls button:disabled{
+  opacity:.6;
+  cursor:wait;
+}
 
 #loading{
   text-align:center;
@@ -83,7 +86,6 @@ body{
 }
 
 #summary strong{color:#ffd700}
-
 #playersContainer{padding:0 12px 30px}
 
 .player-card{
@@ -244,6 +246,7 @@ body{
 
 @media print{
   @page{size:A4;margin:0}
+
   body{background:white}
 
   .topbar,.controls,#loading,#summary{
@@ -280,8 +283,13 @@ body{
     <option value="">All Teams</option>
   </select>
 
-  <button id="refreshButton" type="button">🔄 REFRESH PLAYERS</button>
-  <button id="printButton" type="button">🖨️ PRINT / SAVE AS PDF</button>
+  <button id="refreshButton" type="button">
+    🔄 REFRESH PLAYERS
+  </button>
+
+  <button id="printButton" type="button">
+    🖨️ PRINT / SAVE AS PDF
+  </button>
 </div>
 
 <div id="summary">
@@ -325,8 +333,11 @@ function getField(player, keys) {
   for (const key of keys) {
     const value = player[key];
 
-    if (value !== undefined && value !== null &&
-        String(value).trim() !== "") {
+    if (
+      value !== undefined &&
+      value !== null &&
+      String(value).trim() !== ""
+    ) {
       return String(value).trim();
     }
   }
@@ -349,11 +360,17 @@ function normalize(value) {
 
 /* =========================================
    PHOTO FIELD DETECTION
-   Supports common API field names and
-   Sheet column J / array-based row data.
 ========================================= */
 
 function getPhotoValue(player) {
+  if (!player) return "";
+
+  // API array response: column J = index 9.
+  if (Array.isArray(player)) {
+    const value = player[9];
+    return value == null ? "" : String(value).trim();
+  }
+
   const possibleKeys = [
     "photo",
     "Photo",
@@ -372,15 +389,34 @@ function getPhotoValue(player) {
     "Photo URL",
     "Photo Url",
     "photo url",
+    "photoLink",
+    "imageLink",
+    "picture",
+    "avatar",
     "J"
   ];
 
-  const found = getField(player, possibleKeys);
-  if (found) return found;
+  for (const key of possibleKeys) {
+    const value = player[key];
 
-  // If API returns a row as an array, column J is index 9.
-  if (Array.isArray(player) && player[9]) {
-    return String(player[9]).trim();
+    if (value != null && String(value).trim() !== "") {
+      return String(value).trim();
+    }
+  }
+
+  // Fallback: ignore spaces and capitalization in field names.
+  for (const [key, value] of Object.entries(player)) {
+    const normalizedKey = key
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, "");
+
+    if (
+      /photo|image|picture|avatar/.test(normalizedKey) &&
+      value != null &&
+      String(value).trim() !== ""
+    ) {
+      return String(value).trim();
+    }
   }
 
   return "";
@@ -399,7 +435,10 @@ async function loadPlayers() {
   try {
     const response = await fetch(
       API_URL + "&_=" + Date.now(),
-      { method:"GET", cache:"no-store" }
+      {
+        method: "GET",
+        cache: "no-store"
+      }
     );
 
     if (!response.ok) {
@@ -424,25 +463,31 @@ async function loadPlayers() {
 
     allPlayers = data.players;
 
+    console.log("Total players received:", allPlayers.length);
+
     if (allPlayers.length === 0) {
       playerCount.textContent = "0";
       loading.textContent = "No registered players found.";
       return;
     }
 
+    // Diagnostic: log only the last two photo field values.
+    console.log(
+      "Last two player photo fields:",
+      allPlayers.slice(-2).map(function(player) {
+        return {
+          photo: getPhotoValue(player),
+          availableFields: Array.isArray(player)
+            ? "Array row"
+            : Object.keys(player)
+        };
+      })
+    );
+
     initializeTeamFilter();
+
     loading.style.display = "none";
     renderPlayers();
-
-    // Diagnostic only: logs field names, not private player details.
-    if (allPlayers[0]) {
-      console.log(
-        "KMPL player fields:",
-        Array.isArray(allPlayers[0])
-          ? "Array row; photo column index 9"
-          : Object.keys(allPlayers[0])
-      );
-    }
 
   } catch (error) {
     console.error("KMPL loading error:", error);
@@ -479,7 +524,8 @@ function initializeTeamFilter() {
     ...new Set(allPlayers.map(getTeam).filter(Boolean))
   ].sort();
 
-  teamFilter.innerHTML = '<option value="">All Teams</option>';
+  teamFilter.innerHTML =
+    '<option value="">All Teams</option>';
 
   uniqueTeams.forEach(function(team) {
     const option = document.createElement("option");
@@ -502,7 +548,7 @@ function renderPlayers() {
   const selectedTeam = normalize(teamFilter.value);
 
   const filteredPlayers = allPlayers.filter(function(player) {
-    const name = getField(player, ["name","Name","C"]);
+    const name = getField(player, ["name", "Name", "C"]);
     const team = getTeam(player);
 
     const matchesSearch =
@@ -526,7 +572,7 @@ function renderPlayers() {
 
   filteredPlayers.forEach(function(player, index) {
     const name =
-      getField(player, ["name","Name","C"]) || "-";
+      getField(player, ["name", "Name", "C"]) || "-";
 
     const registration =
       getField(player, [
@@ -539,16 +585,26 @@ function renderPlayers() {
       ]) || "-";
 
     const role =
-      getField(player, ["role","Role","F"]) || "-";
+      getField(player, ["role", "Role", "F"]) || "-";
 
     const place =
-      getField(player, ["place","Place","E"]) || "-";
+      getField(player, ["place", "Place", "E"]) || "-";
 
     const batting =
-      getField(player, ["batting","Batting","battingStyle","G"]) || "-";
+      getField(player, [
+        "batting",
+        "Batting",
+        "battingStyle",
+        "G"
+      ]) || "-";
 
     const bowling =
-      getField(player, ["bowling","Bowling","bowlingStyle","H"]) || "-";
+      getField(player, [
+        "bowling",
+        "Bowling",
+        "bowlingStyle",
+        "H"
+      ]) || "-";
 
     const team = getTeam(player) || "-";
     const photo = getPhotoValue(player);
@@ -567,7 +623,11 @@ function renderPlayers() {
         <div class="photo-fallback">
           <div class="person">👤</div>
           <div>PLAYER PHOTO</div>
-          <small>${photo ? "Loading photo..." : "No photo URL received from API"}</small>
+          <small>${
+            photo
+              ? "Loading photo..."
+              : "No photo URL received from API"
+          }</small>
         </div>
       </div>
 
@@ -578,11 +638,11 @@ function renderPlayers() {
       </div>
 
       <div class="details">
-        ${makeDetail("Place",place)}
-        ${makeDetail("Playing Role",role)}
-        ${makeDetail("Batting Style",batting)}
-        ${makeDetail("Bowling Style",bowling)}
-        ${makeDetail("Previous Team",team)}
+        ${makeDetail("Place", place)}
+        ${makeDetail("Playing Role", role)}
+        ${makeDetail("Batting Style", batting)}
+        ${makeDetail("Bowling Style", bowling)}
+        ${makeDetail("Previous Team", team)}
       </div>
 
       <div class="card-footer">
@@ -591,7 +651,11 @@ function renderPlayers() {
     `;
 
     container.appendChild(card);
-    loadPlayerPhoto(photo, card.querySelector(".photo-wrap"));
+
+    loadPlayerPhoto(
+      photo,
+      card.querySelector(".photo-wrap")
+    );
   });
 }
 
@@ -613,7 +677,7 @@ function extractDriveId(value) {
 
   const text = String(value).trim();
 
-  // Plain Google Drive file ID
+  // Plain Drive file ID.
   if (/^[a-zA-Z0-9_-]{25,}$/.test(text)) {
     return text;
   }
@@ -689,11 +753,16 @@ function loadPlayerPhoto(value, photoWrap) {
 
       if (fallback) {
         const message = fallback.querySelector("small");
+
         if (message) {
           message.textContent =
             "Photo unavailable. Check Drive sharing permissions.";
         }
       }
+
+      console.error(
+        "KMPL photo failed to load. Check URL and sharing permissions."
+      );
     }
   };
 
@@ -706,7 +775,9 @@ function loadPlayerPhoto(value, photoWrap) {
 ========================================= */
 
 searchInput.addEventListener("input", renderPlayers);
+
 teamFilter.addEventListener("change", renderPlayers);
+
 refreshButton.addEventListener("click", loadPlayers);
 
 document.getElementById("printButton").addEventListener(
