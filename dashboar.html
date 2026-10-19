@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101820">
+<title>KMPL Season 05 | League Dashboard</title>
+
+<style>
+*{box-sizing:border-box}
+:root{
+  --bg:#101820;--panel:#192531;--gold:#f2c66d;
+  --text:#fff;--muted:#aebdca;--border:#30404d;
+}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+}
+header{
+  padding:24px 16px;text-align:center;
+  background:linear-gradient(135deg,#182733,#080c11);
+  border-bottom:2px solid var(--gold);
+}
+.logo{
+  width:64px;height:64px;border:2px solid var(--gold);
+  border-radius:50%;display:grid;place-items:center;
+  margin:auto auto 12px;color:var(--gold);
+  font-weight:bold;font-size:21px;
+}
+h1{font-size:27px;margin:8px 0;color:var(--gold)}
+header p{margin:6px 0;color:var(--muted);font-size:13px}
+.container{max-width:1100px;margin:auto;padding:18px}
+.section-title{font-size:18px;margin:22px 0 12px}
+.stats,.menu{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.card{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:13px;padding:16px;
+}
+.stat-label{font-size:13px;color:var(--muted)}
+.stat-number{font-size:26px;font-weight:bold;margin-top:9px}
+.menu a{
+  display:block;text-decoration:none;color:white;
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:13px;padding:17px 14px;min-height:94px;
+  transition:.2s;
+}
+.menu a:hover{border-color:var(--gold);transform:translateY(-2px)}
+.menu .emoji{font-size:25px;display:block;margin-bottom:10px}
+.menu strong{font-size:15px}
+.menu small{display:block;color:var(--muted);margin-top:6px}
+.notice{
+  margin-top:18px;padding:13px;border-radius:10px;
+  background:#182733;color:var(--muted);font-size:13px;
+  line-height:1.6;overflow-wrap:anywhere;
+}
+.status{color:var(--gold)}
+footer{text-align:center;color:var(--muted);padding:25px 12px;font-size:12px}
+@media(min-width:650px){
+ .stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .menu{grid-template-columns:repeat(3,minmax(0,1fr))}
+ h1{font-size:34px}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="logo">KMPL</div>
+  <h1>KMPL SEASON 05</h1>
+  <p>KIZHAKAN MEGALA PREMIER LEAGUE</p>
+  <p>LEAGUE MANAGEMENT SYSTEM</p>
+</header>
+
+<main class="container">
+  <h2 class="section-title">🏆 League Overview</h2>
+
+  <div class="stats">
+    <div class="card">
+      <div class="stat-label">Teams</div>
+      <div class="stat-number" id="teamCount">—</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Registered Players</div>
+      <div class="stat-number" id="playerCount">—</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Matches Played</div>
+      <div class="stat-number" id="matchCount">—</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">League Status</div>
+      <div class="stat-number" style="font-size:17px">Season 05</div>
+    </div>
+  </div>
+
+  <h2 class="section-title">📋 League Management</h2>
+
+  <div class="menu">
+    <a href="admin.html">
+      <span class="emoji">⚙️</span>
+      <strong>Admin Panel</strong>
+      <small>Registration management</small>
+    </a>
+
+    <a href="player-list.html">
+      <span class="emoji">🏏</span>
+      <strong>Players</strong>
+      <small>Player list and profiles</small>
+    </a>
+
+    <a href="team-players.html">
+      <span class="emoji">👥</span>
+      <strong>Teams & Squads</strong>
+      <small>Team player details</small>
+    </a>
+
+    <a href="auction.html">
+      <span class="emoji">🔨</span>
+      <strong>Player Auction</strong>
+      <small>Open auction control</small>
+    </a>
+
+    <a href="Live-auction.html">
+      <span class="emoji">📡</span>
+      <strong>Auction Live</strong>
+      <small>Live auction display</small>
+    </a>
+
+    <a href="fixtures.html">
+      <span class="emoji">📅</span>
+      <strong>Fixtures</strong>
+      <small>Match schedule</small>
+    </a>
+
+    <a href="live-score.html">
+      <span class="emoji">🔴</span>
+      <strong>Live Score</strong>
+      <small>Live match updates</small>
+    </a>
+
+    <a href="points-table.html">
+      <span class="emoji">🏆</span>
+      <strong>Points Table</strong>
+      <small>Standings and NRR</small>
+    </a>
+
+    <a href="results.html">
+      <span class="emoji">📊</span>
+      <strong>Match Results</strong>
+      <small>Completed match results</small>
+    </a>
+  </div>
+
+  <div class="notice">
+    <strong class="status">SYSTEM STATUS</strong>
+    <p id="apiStatus">Dashboard ready. API connection requires configuration.</p>
+    നിലവിലുള്ള പേജുകൾ തുറക്കാൻ മുകളിലെ ലിങ്കുകൾ ഉപയോഗിക്കുക.
+    Fixtures, Live Score, Points Table, Results എന്നിവയുടെ പേജുകൾ
+    അടുത്ത ഘട്ടങ്ങളിൽ നിർമ്മിച്ച് Google Sheets-മായി ബന്ധിപ്പിക്കണം.
+  </div>
+</main>
+
+<footer>
+  GOLDEN WINGS PRESENTS · KMPL SEASON 05
+</footer>
+
+<script>
+/*
+  അടുത്ത ഘട്ടത്തിൽ ഇവിടെ നിലവിലുള്ള Apps Script Web App URL
+  ചേർത്ത് യഥാർത്ഥ കണക്കുകൾ ബന്ധിപ്പിക്കാം.
+
+  നിലവിലെ API URL അല്ലെങ്കിൽ response format അറിയാതെ
+  തെറ്റായ endpoint ഉപയോഗിക്കാതിരിക്കാനാണ് ഇത് ഒഴിവാക്കിയത്.
+*/
+
+document.getElementById("teamCount").textContent = "—";
+document.getElementById("playerCount").textContent = "—";
+document.getElementById("matchCount").textContent = "—";
+</script>
+</body>
+</html>
