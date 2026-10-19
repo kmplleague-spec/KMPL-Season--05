@@ -1,185 +1,548 @@
 
 <!DOCTYPE html>
-<html lang="ml">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#101820">
-<title>KMPL Season 05 | League Dashboard</title>
+<meta name="theme-color" content="#080b12">
+
+<title>KMPL Season 05 | Dashboard</title>
 
 <style>
-*{box-sizing:border-box}
 :root{
-  --bg:#101820;--panel:#192531;--gold:#f2c66d;
-  --text:#fff;--muted:#aebdca;--border:#30404d;
+  --bg:#080b12;
+  --card:#111827;
+  --card2:#151e2d;
+  --gold:#f5c451;
+  --gold2:#ffe29a;
+  --white:#ffffff;
+  --muted:#aab4c5;
+  --green:#36d399;
+  --red:#fb7185;
+  --border:rgba(255,255,255,.09);
 }
+
+*{box-sizing:border-box}
+
 body{
-  margin:0;background:var(--bg);color:var(--text);
+  margin:0;
+  background:var(--bg);
+  color:var(--white);
   font-family:Arial,Helvetica,sans-serif;
 }
-header{
-  padding:24px 16px;text-align:center;
-  background:linear-gradient(135deg,#182733,#080c11);
-  border-bottom:2px solid var(--gold);
+
+a{
+  color:inherit;
+  text-decoration:none;
 }
+
+button{
+  font:inherit;
+  cursor:pointer;
+}
+
+.header{
+  padding:24px 18px;
+  text-align:center;
+  background:
+    radial-gradient(ellipse at top,#293044 0%,#080b12 72%);
+  border-bottom:1px solid var(--border);
+}
+
 .logo{
-  width:64px;height:64px;border:2px solid var(--gold);
-  border-radius:50%;display:grid;place-items:center;
-  margin:auto auto 12px;color:var(--gold);
-  font-weight:bold;font-size:21px;
+  width:65px;
+  height:65px;
+  margin:0 auto 12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:18px;
+  background:linear-gradient(135deg,var(--gold2),#b78012);
+  color:#111;
+  font-weight:900;
+  font-size:21px;
+  box-shadow:0 5px 25px #f5c45125;
 }
-h1{font-size:27px;margin:8px 0;color:var(--gold)}
-header p{margin:6px 0;color:var(--muted);font-size:13px}
-.container{max-width:1100px;margin:auto;padding:18px}
-.section-title{font-size:18px;margin:22px 0 12px}
-.stats,.menu{
-  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+
+.header h1{
+  margin:0;
+  font-size:clamp(24px,5vw,38px);
+  letter-spacing:1px;
+}
+
+.header h1 span{
+  color:var(--gold);
+}
+
+.subtitle{
+  color:var(--muted);
+  margin:9px 0 14px;
+  font-size:13px;
+  letter-spacing:2px;
+}
+
+.status{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  background:#ffffff08;
+  border:1px solid var(--border);
+  border-radius:30px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+.dot{
+  width:8px;
+  height:8px;
+  background:#888;
+  border-radius:50%;
+}
+
+.dot.online{background:var(--green)}
+.dot.offline{background:var(--red)}
+
+.container{
+  width:min(1150px,100%);
+  margin:auto;
+  padding:22px 15px 40px;
+}
+
+.section-title{
+  margin:12px 0 15px;
+  font-size:17px;
+  font-weight:800;
+}
+
+.section-title span{
+  color:var(--gold);
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
   gap:12px;
 }
-.card{
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:13px;padding:16px;
+
+.stat{
+  min-width:0;
+  padding:17px 14px;
+  background:linear-gradient(145deg,var(--card2),var(--card));
+  border:1px solid var(--border);
+  border-radius:15px;
 }
-.stat-label{font-size:13px;color:var(--muted)}
-.stat-number{font-size:26px;font-weight:bold;margin-top:9px}
-.menu a{
-  display:block;text-decoration:none;color:white;
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:13px;padding:17px 14px;min-height:94px;
-  transition:.2s;
+
+.stat-label{
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.5;
 }
-.menu a:hover{border-color:var(--gold);transform:translateY(-2px)}
-.menu .emoji{font-size:25px;display:block;margin-bottom:10px}
-.menu strong{font-size:15px}
-.menu small{display:block;color:var(--muted);margin-top:6px}
+
+.stat-number{
+  font-size:clamp(23px,4vw,34px);
+  font-weight:900;
+  margin-top:9px;
+  color:var(--gold);
+  overflow-wrap:anywhere;
+}
+
+.stat-note{
+  font-size:11px;
+  margin-top:5px;
+  color:var(--muted);
+}
+
+.toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin:22px 0;
+}
+
+.updated{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.refresh{
+  border:0;
+  border-radius:9px;
+  padding:10px 15px;
+  background:var(--gold);
+  color:#16120a;
+  font-weight:800;
+}
+
+.refresh:disabled{
+  opacity:.6;
+  cursor:wait;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+}
+
+.nav-card{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  min-width:0;
+  padding:17px;
+  background:linear-gradient(145deg,#172033,#101622);
+  border:1px solid var(--border);
+  border-radius:15px;
+  transition:transform .18s,border-color .18s;
+}
+
+.nav-card:hover{
+  transform:translateY(-3px);
+  border-color:#f5c45170;
+}
+
+.nav-icon{
+  width:48px;
+  height:48px;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:13px;
+  background:#f5c45117;
+  font-size:23px;
+}
+
+.nav-text{
+  flex:1;
+  min-width:0;
+}
+
+.nav-text h3{
+  margin:0 0 6px;
+  font-size:14px;
+}
+
+.nav-text p{
+  margin:0;
+  font-size:11px;
+  line-height:1.5;
+  color:var(--muted);
+}
+
+.arrow{
+  color:var(--gold);
+  font-size:20px;
+}
+
 .notice{
-  margin-top:18px;padding:13px;border-radius:10px;
-  background:#182733;color:var(--muted);font-size:13px;
-  line-height:1.6;overflow-wrap:anywhere;
+  display:none;
+  margin:15px 0;
+  padding:13px;
+  border-radius:10px;
+  background:#35151b;
+  border:1px solid #78313c;
+  color:#ffc3cb;
+  font-size:13px;
+  overflow-wrap:anywhere;
 }
-.status{color:var(--gold)}
-footer{text-align:center;color:var(--muted);padding:25px 12px;font-size:12px}
-@media(min-width:650px){
- .stats{grid-template-columns:repeat(4,minmax(0,1fr))}
- .menu{grid-template-columns:repeat(3,minmax(0,1fr))}
- h1{font-size:34px}
+
+.notice.show{display:block}
+
+.footer{
+  text-align:center;
+  padding:25px 10px;
+  border-top:1px solid var(--border);
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.8;
+}
+
+.footer strong{color:var(--gold)}
+
+@media(max-width:800px){
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+@media(max-width:500px){
+  .container{padding:17px 12px 30px}
+  .grid{grid-template-columns:1fr}
+  .stat{padding:14px}
+  .nav-card{padding:15px}
+  .header{padding:22px 12px}
 }
 </style>
 </head>
 
 <body>
-<header>
+
+<header class="header">
   <div class="logo">KMPL</div>
-  <h1>KMPL SEASON 05</h1>
-  <p>KIZHAKAN MEGALA PREMIER LEAGUE</p>
-  <p>LEAGUE MANAGEMENT SYSTEM</p>
+  <h1>KMPL <span>SEASON 05</span></h1>
+  <p class="subtitle">LEAGUE MANAGEMENT DASHBOARD</p>
+
+  <div class="status">
+    <span class="dot" id="statusDot"></span>
+    <span id="apiStatus">Connecting to KMPL API...</span>
+  </div>
 </header>
 
 <main class="container">
-  <h2 class="section-title">🏆 League Overview</h2>
 
-  <div class="stats">
-    <div class="card">
-      <div class="stat-label">Teams</div>
-      <div class="stat-number" id="teamCount">—</div>
+  <h2 class="section-title">TOURNAMENT <span>OVERVIEW</span></h2>
+
+  <section class="stats">
+
+    <div class="stat">
+      <div class="stat-label">TOTAL REGISTERED PLAYERS</div>
+      <div class="stat-number" id="totalPlayers">—</div>
+      <div class="stat-note">Google Sheets data</div>
     </div>
-    <div class="card">
-      <div class="stat-label">Registered Players</div>
-      <div class="stat-number" id="playerCount">—</div>
+
+    <div class="stat">
+      <div class="stat-label">AVAILABLE PLAYERS</div>
+      <div class="stat-number" id="availablePlayers">—</div>
+      <div class="stat-note">Available for auction</div>
     </div>
-    <div class="card">
-      <div class="stat-label">Matches Played</div>
-      <div class="stat-number" id="matchCount">—</div>
+
+    <div class="stat">
+      <div class="stat-label">SOLD PLAYERS</div>
+      <div class="stat-number" id="soldPlayers">—</div>
+      <div class="stat-note">Auction status: SOLD</div>
     </div>
-    <div class="card">
-      <div class="stat-label">League Status</div>
-      <div class="stat-number" style="font-size:17px">Season 05</div>
+
+    <div class="stat">
+      <div class="stat-label">UNSOLD PLAYERS</div>
+      <div class="stat-number" id="unsoldPlayers">—</div>
+      <div class="stat-note">Auction status: UNSOLD</div>
     </div>
+
+  </section>
+
+  <div class="toolbar">
+    <div class="updated" id="lastUpdated">
+      Waiting for API data...
+    </div>
+    <button class="refresh" id="refreshButton"
+      onclick="loadKMPLDashboard()">
+      ↻ Refresh Data
+    </button>
   </div>
 
-  <h2 class="section-title">📋 League Management</h2>
+  <div class="notice" id="errorNotice"></div>
 
-  <div class="menu">
-    <a href="admin.html">
-      <span class="emoji">⚙️</span>
-      <strong>Admin Panel</strong>
-      <small>Registration management</small>
+  <h2 class="section-title">LEAGUE <span>MANAGEMENT</span></h2>
+
+  <section class="grid">
+
+    <a class="nav-card" href="admin.html">
+      <div class="nav-icon">⚙️</div>
+      <div class="nav-text">
+        <h3>Admin Panel</h3>
+        <p>Manage registered players</p>
+      </div>
+      <span class="arrow">›</span>
     </a>
 
-    <a href="player-list.html">
-      <span class="emoji">🏏</span>
-      <strong>Players</strong>
-      <small>Player list and profiles</small>
+    <a class="nav-card" href="player-list.html">
+      <div class="nav-icon">🏏</div>
+      <div class="nav-text">
+        <h3>Player List</h3>
+        <p>View registered player profiles</p>
+      </div>
+      <span class="arrow">›</span>
     </a>
 
-    <a href="team-players.html">
-      <span class="emoji">👥</span>
-      <strong>Teams & Squads</strong>
-      <small>Team player details</small>
+    <a class="nav-card" href="team-players.html">
+      <div class="nav-icon">👥</div>
+      <div class="nav-text">
+        <h3>Team Players</h3>
+        <p>View team squad details</p>
+      </div>
+      <span class="arrow">›</span>
     </a>
 
-    <a href="auction.html">
-      <span class="emoji">🔨</span>
-      <strong>Player Auction</strong>
-      <small>Open auction control</small>
+    <a class="nav-card" href="auction.html">
+      <div class="nav-icon">🔨</div>
+      <div class="nav-text">
+        <h3>Player Auction</h3>
+        <p>Manage the player auction</p>
+      </div>
+      <span class="arrow">›</span>
     </a>
 
-    <a href="Live-auction.html">
-      <span class="emoji">📡</span>
-      <strong>Auction Live</strong>
-      <small>Live auction display</small>
+    <a class="nav-card" href="Live-auction.html">
+      <div class="nav-icon">📡</div>
+      <div class="nav-text">
+        <h3>Live Auction</h3>
+        <p>Watch auction live on mobile</p>
+      </div>
+      <span class="arrow">›</span>
     </a>
 
-    <a href="fixtures.html">
-      <span class="emoji">📅</span>
-      <strong>Fixtures</strong>
-      <small>Match schedule</small>
+    <a class="nav-card" href="fixtures.html">
+      <div class="nav-icon">📅</div>
+      <div class="nav-text">
+        <h3>Fixtures</h3>
+        <p>Match schedule and fixtures</p>
+      </div>
+      <span class="arrow">›</span>
     </a>
 
-    <a href="live-score.html">
-      <span class="emoji">🔴</span>
-      <strong>Live Score</strong>
-      <small>Live match updates</small>
+    <a class="nav-card" href="live-score.html">
+      <div class="nav-icon">🏆</div>
+      <div class="nav-text">
+        <h3>Live Score</h3>
+        <p>Match scores and updates</p>
+      </div>
+      <span class="arrow">›</span>
     </a>
 
-    <a href="points-table.html">
-      <span class="emoji">🏆</span>
-      <strong>Points Table</strong>
-      <small>Standings and NRR</small>
+    <a class="nav-card" href="points-table.html">
+      <div class="nav-icon">📊</div>
+      <div class="nav-text">
+        <h3>Points Table</h3>
+        <p>Standings and team points</p>
+      </div>
+      <span class="arrow">›</span>
     </a>
 
-    <a href="results.html">
-      <span class="emoji">📊</span>
-      <strong>Match Results</strong>
-      <small>Completed match results</small>
+    <a class="nav-card" href="results.html">
+      <div class="nav-icon">🥇</div>
+      <div class="nav-text">
+        <h3>Match Results</h3>
+        <p>Completed match results</p>
+      </div>
+      <span class="arrow">›</span>
     </a>
-  </div>
 
-  <div class="notice">
-    <strong class="status">SYSTEM STATUS</strong>
-    <p id="apiStatus">Dashboard ready. API connection requires configuration.</p>
-    നിലവിലുള്ള പേജുകൾ തുറക്കാൻ മുകളിലെ ലിങ്കുകൾ ഉപയോഗിക്കുക.
-    Fixtures, Live Score, Points Table, Results എന്നിവയുടെ പേജുകൾ
-    അടുത്ത ഘട്ടങ്ങളിൽ നിർമ്മിച്ച് Google Sheets-മായി ബന്ധിപ്പിക്കണം.
-  </div>
+  </section>
+
 </main>
 
-<footer>
-  GOLDEN WINGS PRESENTS · KMPL SEASON 05
+<footer class="footer">
+  <strong>GOLDEN WINGS PRESENTS</strong><br>
+  KMPL SEASON 05<br>
+  KIZHAKAN MEGALA PREMIER LEAGUE
 </footer>
 
 <script>
+"use strict";
+
 /*
-  അടുത്ത ഘട്ടത്തിൽ ഇവിടെ നിലവിലുള്ള Apps Script Web App URL
-  ചേർത്ത് യഥാർത്ഥ കണക്കുകൾ ബന്ധിപ്പിക്കാം.
-
-  നിലവിലെ API URL അല്ലെങ്കിൽ response format അറിയാതെ
-  തെറ്റായ endpoint ഉപയോഗിക്കാതിരിക്കാനാണ് ഇത് ഒഴിവാക്കിയത്.
+  KMPL Season 05 Apps Script Web App.
+  If this deployment changes, update KMPL_API.
 */
+const KMPL_API =
+  "https://script.google.com/macros/s/AKfycbx4_dUYrVPQEQjjWThl0q2vxYTt1SntdunMQbkN7LSV3t3JwiPhJgYTVkJQMJiI8PduSA/exec";
 
-document.getElementById("teamCount").textContent = "—";
-document.getElementById("playerCount").textContent = "—";
-document.getElementById("matchCount").textContent = "—";
+function setApiStatus(message, online) {
+  document.getElementById("apiStatus").textContent = message;
+
+  const dot = document.getElementById("statusDot");
+  dot.classList.remove("online", "offline");
+  dot.classList.add(online ? "online" : "offline");
+}
+
+function showError(message) {
+  const box = document.getElementById("errorNotice");
+  box.textContent = message;
+  box.classList.add("show");
+}
+
+function hideError() {
+  const box = document.getElementById("errorNotice");
+  box.textContent = "";
+  box.classList.remove("show");
+}
+
+async function loadKMPLDashboard() {
+  const button = document.getElementById("refreshButton");
+  button.disabled = true;
+  button.textContent = "Loading...";
+  hideError();
+
+  try {
+    const url = KMPL_API + "?action=publicPlayers&_=" + Date.now();
+
+    const response = await fetch(url, {
+      method: "GET",
+      redirect: "follow",
+      cache: "no-store"
+    });
+
+    if (!response.ok) {
+      throw new Error("HTTP error " + response.status);
+    }
+
+    const data = await response.json();
+
+    if (!data.success) {
+      throw new Error(data.message || "API returned success:false");
+    }
+
+    const players = Array.isArray(data.players)
+      ? data.players
+      : [];
+
+    const sold = players.filter(player =>
+      String(player.auctionStatus || "").trim().toUpperCase() === "SOLD"
+    );
+
+    const unsold = players.filter(player =>
+      String(player.auctionStatus || "").trim().toUpperCase() === "UNSOLD"
+    );
+
+    const available = players.filter(player => {
+      const status = String(
+        player.auctionStatus || "AVAILABLE"
+      ).trim().toUpperCase();
+
+      return status === "AVAILABLE" || status === "";
+    });
+
+    document.getElementById("totalPlayers").textContent =
+      players.length;
+
+    document.getElementById("availablePlayers").textContent =
+      available.length;
+
+    document.getElementById("soldPlayers").textContent =
+      sold.length;
+
+    document.getElementById("unsoldPlayers").textContent =
+      unsold.length;
+
+    setApiStatus("API CONNECTED", true);
+
+    document.getElementById("lastUpdated").textContent =
+      "Last updated: " + new Date().toLocaleString();
+
+  } catch (error) {
+    console.error("KMPL Dashboard API error:", error);
+
+    setApiStatus("API CONNECTION FAILED", false);
+
+    showError(
+      "Player data could not be loaded. Check the Web App URL, " +
+      "deployment access and internet connection. Details: " +
+      error.message
+    );
+
+    document.getElementById("lastUpdated").textContent =
+      "Unable to refresh data.";
+  } finally {
+    button.disabled = false;
+    button.textContent = "↻ Refresh Data";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadKMPLDashboard);
 </script>
+
 </body>
 </html>
