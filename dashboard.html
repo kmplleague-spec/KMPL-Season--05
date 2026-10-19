@@ -15,7 +15,7 @@
   --bg:#090e19;
   --panel:#121b2b;
   --panel2:#182438;
-  --text:#ffffff;
+  --text:#fff;
   --muted:#aab6c8;
   --border:rgba(245,196,81,.22);
 }
@@ -44,7 +44,7 @@ body{
 .header p{
   margin:10px 0 0;
   color:var(--muted);
-  font-size:13px;
+  font-size:12px;
   letter-spacing:2px;
 }
 
@@ -66,35 +66,6 @@ body{
 
 .status strong{color:var(--gold)}
 
-.stats-grid{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:14px;
-  margin-bottom:32px;
-}
-
-.stat-card{
-  background:linear-gradient(145deg,var(--panel2),var(--panel));
-  border:1px solid var(--border);
-  border-radius:15px;
-  padding:20px 14px;
-  text-align:center;
-}
-
-.stat-card h3{
-  margin:0 0 12px;
-  color:var(--muted);
-  font-size:12px;
-  text-transform:uppercase;
-  line-height:1.5;
-}
-
-.stat-card .number{
-  color:var(--gold);
-  font-size:32px;
-  font-weight:900;
-}
-
 .section-title{
   margin:30px 0 8px;
   font-size:23px;
@@ -110,6 +81,37 @@ body{
   margin:0 0 18px;
 }
 
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+  margin-bottom:32px;
+}
+
+.stat-card{
+  background:linear-gradient(145deg,var(--panel2),var(--panel));
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:20px 14px;
+  text-align:center;
+  min-width:0;
+}
+
+.stat-card h3{
+  margin:0 0 12px;
+  color:var(--muted);
+  font-size:12px;
+  text-transform:uppercase;
+  line-height:1.5;
+}
+
+.number{
+  color:var(--gold);
+  font-size:30px;
+  font-weight:900;
+  overflow-wrap:anywhere;
+}
+
 .teams-grid{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
@@ -122,16 +124,11 @@ body{
   align-items:center;
   gap:12px;
   min-height:82px;
-  padding:16px;
+  padding:15px;
   background:linear-gradient(145deg,var(--panel2),var(--panel));
   border:1px solid var(--border);
   border-radius:14px;
-  transition:transform .2s,border-color .2s;
-}
-
-.team-card:hover{
-  transform:translateY(-2px);
-  border-color:var(--gold);
+  min-width:0;
 }
 
 .team-number{
@@ -156,11 +153,10 @@ body{
 
 .pending-team{
   border:1px dashed var(--gold);
-  background:linear-gradient(145deg,#292316,#151a25);
 }
 
 .pending-team .team-number{
-  background:#333333;
+  background:#333;
   color:var(--gold);
   border:1px solid var(--gold);
 }
@@ -170,7 +166,14 @@ body{
   margin-top:5px;
   font-size:10px;
   color:var(--gold);
-  font-weight:600;
+}
+
+.team-details{
+  margin-top:5px;
+  font-size:12px;
+  line-height:1.7;
+  color:var(--muted);
+  overflow-wrap:anywhere;
 }
 
 .links-grid{
@@ -187,13 +190,9 @@ body{
   background:linear-gradient(145deg,var(--panel2),var(--panel));
   border:1px solid var(--border);
   border-radius:14px;
-  transition:transform .2s,border-color .2s;
 }
 
-.nav-card:hover{
-  transform:translateY(-2px);
-  border-color:var(--gold);
-}
+.nav-card:hover{border-color:var(--gold)}
 
 .nav-icon{
   font-size:25px;
@@ -214,9 +213,8 @@ body{
 }
 
 .refresh-button{
-  display:inline-block;
-  margin-top:12px;
-  padding:10px 16px;
+  margin-top:15px;
+  padding:11px 18px;
   border:0;
   border-radius:8px;
   background:var(--gold);
@@ -236,29 +234,16 @@ body{
 .footer strong{color:var(--gold)}
 
 @media(max-width:800px){
-  .stats-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
-
-  .teams-grid,.links-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
+  .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .teams-grid,.links-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
 @media(max-width:480px){
   .container{padding:16px 12px 30px}
-
   .stats-grid{gap:9px}
-
-  .stat-card{padding:17px 9px}
-
-  .stat-card .number{font-size:27px}
-
-  .teams-grid,.links-grid{
-    grid-template-columns:1fr;
-    gap:10px;
-  }
-
+  .stat-card{padding:16px 8px}
+  .number{font-size:25px}
+  .teams-grid,.links-grid{grid-template-columns:1fr;gap:10px}
   .section-title{font-size:21px}
 }
 </style>
@@ -278,16 +263,11 @@ body{
     API STATUS: <strong>CONNECTING...</strong>
   </div>
 
-  <h2 class="section-title">
-    TOURNAMENT <span>OVERVIEW</span>
-  </h2>
-
-  <p class="section-subtitle">
-    KMPL Season 05 registration and auction statistics
-  </p>
+  <!-- PLAYER STATISTICS -->
+  <h2 class="section-title">PLAYER <span>OVERVIEW</span></h2>
+  <p class="section-subtitle">Registration and auction status</p>
 
   <div class="stats-grid">
-
     <div class="stat-card">
       <h3>Total Registered Players</h3>
       <div class="number" id="totalPlayers">--</div>
@@ -307,93 +287,55 @@ body{
       <h3>Unsold Players</h3>
       <div class="number" id="unsoldPlayers">--</div>
     </div>
-
   </div>
 
-  <h2 class="section-title">
-    OFFICIAL <span>TEAMS</span>
-  </h2>
+  <!-- AUCTION OVERVIEW -->
+  <h2 class="section-title">AUCTION <span>OVERVIEW</span></h2>
+  <p class="section-subtitle">KMPL Season 05 · Auction statistics</p>
 
-  <p class="section-subtitle">
-    KMPL SEASON 05 · 16 TEAM SLOTS
-  </p>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h3>Total Sold Amount</h3>
+      <div class="number" id="totalSoldAmount">--</div>
+    </div>
+
+    <div class="stat-card">
+      <h3>Highest Bid</h3>
+      <div class="number" id="highestBid">--</div>
+    </div>
+
+    <div class="stat-card">
+      <h3>Teams Purchased</h3>
+      <div class="number" id="teamsPurchased">--</div>
+    </div>
+
+    <div class="stat-card">
+      <h3>Players Remaining</h3>
+      <div class="number" id="playersRemaining">--</div>
+    </div>
+  </div>
+
+  <!-- OFFICIAL TEAMS -->
+  <h2 class="section-title">OFFICIAL <span>TEAMS</span></h2>
+  <p class="section-subtitle">KMPL SEASON 05 · 16 TEAM SLOTS</p>
 
   <div class="teams-grid">
 
-    <div class="team-card">
-      <div class="team-number">01</div>
-      <div class="team-name">VOLCANO VARANJOOR</div>
-    </div>
-
-    <div class="team-card">
-      <div class="team-number">02</div>
-      <div class="team-name">SUPER STRIKERS ERUMAKULAM</div>
-    </div>
-
-    <div class="team-card">
-      <div class="team-number">03</div>
-      <div class="team-name">DRAGON BOOSTER - Sat</div>
-    </div>
-
-    <div class="team-card">
-      <div class="team-number">04</div>
-      <div class="team-name">CHAMPIONS ASAD - Sun</div>
-    </div>
-
-    <div class="team-card">
-      <div class="team-number">05</div>
-      <div class="team-name">RSA NILESHWARAM</div>
-    </div>
-
-    <div class="team-card">
-      <div class="team-number">06</div>
-      <div class="team-name">RAJEEVIJI KALLIOT</div>
-    </div>
-
-    <div class="team-card">
-      <div class="team-number">07</div>
-      <div class="team-name">WINDIES MARIKULAM</div>
-    </div>
-
-    <div class="team-card">
-      <div class="team-number">08</div>
-      <div class="team-name">KIWIS KASARAGOD</div>
-    </div>
-
-    <div class="team-card">
-      <div class="team-number">09</div>
-      <div class="team-name">ACADEMY BOYS BANDHADUKA</div>
-    </div>
-
-    <div class="team-card">
-      <div class="team-number">10</div>
-      <div class="team-name">FC CHEMBENCHERRY</div>
-    </div>
-
-    <div class="team-card">
-      <div class="team-number">11</div>
-      <div class="team-name">GMC THAIRA</div>
-    </div>
-
-    <div class="team-card">
-      <div class="team-number">12</div>
-      <div class="team-name">OPTICS PERIYA</div>
-    </div>
-
-    <div class="team-card">
-      <div class="team-number">13</div>
-      <div class="team-name">MARX KONNAKKAD</div>
-    </div>
-
-    <div class="team-card">
-      <div class="team-number">14</div>
-      <div class="team-name">KALLAI BROTHERS</div>
-    </div>
-
-    <div class="team-card">
-      <div class="team-number">15</div>
-      <div class="team-name">RAM BROTHERS PERIYA</div>
-    </div>
+    <div class="team-card"><div class="team-number">01</div><div class="team-name">VOLCANO VARANJOOR</div></div>
+    <div class="team-card"><div class="team-number">02</div><div class="team-name">SUPER STRIKERS ERUMAKULAM</div></div>
+    <div class="team-card"><div class="team-number">03</div><div class="team-name">DRAGON BOOSTER - Sat</div></div>
+    <div class="team-card"><div class="team-number">04</div><div class="team-name">CHAMPIONS ASAD - Sun</div></div>
+    <div class="team-card"><div class="team-number">05</div><div class="team-name">RSA NILESHWARAM</div></div>
+    <div class="team-card"><div class="team-number">06</div><div class="team-name">RAJEEVIJI KALLIOT</div></div>
+    <div class="team-card"><div class="team-number">07</div><div class="team-name">WINDIES MARIKULAM</div></div>
+    <div class="team-card"><div class="team-number">08</div><div class="team-name">KIWIS KASARAGOD</div></div>
+    <div class="team-card"><div class="team-number">09</div><div class="team-name">ACADEMY BOYS BANDHADUKA</div></div>
+    <div class="team-card"><div class="team-number">10</div><div class="team-name">FC CHEMBENCHERRY</div></div>
+    <div class="team-card"><div class="team-number">11</div><div class="team-name">GMC THAIRA</div></div>
+    <div class="team-card"><div class="team-number">12</div><div class="team-name">OPTICS PERIYA</div></div>
+    <div class="team-card"><div class="team-number">13</div><div class="team-name">MARX KONNAKKAD</div></div>
+    <div class="team-card"><div class="team-number">14</div><div class="team-name">KALLAI BROTHERS</div></div>
+    <div class="team-card"><div class="team-number">15</div><div class="team-name">RAM BROTHERS PERIYA</div></div>
 
     <div class="team-card pending-team">
       <div class="team-number">16</div>
@@ -405,13 +347,16 @@ body{
 
   </div>
 
-  <h2 class="section-title">
-    LEAGUE <span>MANAGEMENT</span>
-  </h2>
+  <!-- TEAM AUCTION SUMMARY -->
+  <h2 class="section-title">TEAM <span>AUCTION SUMMARY</span></h2>
+  <p class="section-subtitle">Purchases recorded in player data</p>
 
-  <p class="section-subtitle">
-    Quick access to KMPL Season 05 pages
-  </p>
+  <div id="teamAuctionSummary" class="teams-grid">
+    <p class="section-subtitle">Loading auction data...</p>
+  </div>
+
+  <!-- NAVIGATION -->
+  <h2 class="section-title">LEAGUE <span>MANAGEMENT</span></h2>
 
   <div class="links-grid">
 
@@ -448,12 +393,12 @@ body{
     <a class="nav-card" href="index.html">
       <div class="nav-icon">📝</div>
       <h3>Registration</h3>
-      <p>Open the player registration page.</p>
+      <p>Open player registration.</p>
     </a>
 
   </div>
 
-  <div style="text-align:center;margin-top:22px">
+  <div style="text-align:center">
     <button class="refresh-button" onclick="loadDashboard()">
       ↻ Refresh Dashboard
     </button>
@@ -478,10 +423,32 @@ function setApiStatus(message){
 
 function getStatus(player){
   return String(
-    player.auctionStatus ||
-    player.status ||
-    ""
+    player.auctionStatus || player.status || ""
   ).trim().toLowerCase();
+}
+
+function amountValue(value){
+  if(typeof value === "number") return value;
+
+  const cleaned = String(value || "")
+    .replace(/,/g, "")
+    .replace(/[^\d.-]/g, "");
+
+  return Number(cleaned) || 0;
+}
+
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g, character => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  })[character]);
+}
+
+function formatRupees(value){
+  return "₹" + Number(value || 0).toLocaleString("en-IN");
 }
 
 async function loadDashboard(){
@@ -513,14 +480,16 @@ async function loadDashboard(){
 
     const total = players.length;
 
-    const sold = players.filter(player =>
+    const soldList = players.filter(player =>
       getStatus(player) === "sold"
-    ).length;
+    );
 
-    const unsold = players.filter(player =>
+    const unsoldList = players.filter(player =>
       getStatus(player) === "unsold"
-    ).length;
+    );
 
+    const sold = soldList.length;
+    const unsold = unsoldList.length;
     const available = players.filter(player => {
       const status = getStatus(player);
       return status !== "sold" && status !== "unsold";
@@ -531,6 +500,67 @@ async function loadDashboard(){
     document.getElementById("soldPlayers").textContent = sold;
     document.getElementById("unsoldPlayers").textContent = unsold;
 
+    // Auction amounts from sold player records
+    const totalAmount = soldList.reduce((sum, player) =>
+      sum + amountValue(player.soldPrice), 0
+    );
+
+    const highestAmount = soldList.reduce((highest, player) =>
+      Math.max(highest, amountValue(player.soldPrice)), 0
+    );
+
+    const teamTotals = {};
+
+    soldList.forEach(player => {
+      const team = String(player.soldTeam || "").trim();
+
+      if(!team) return;
+
+      if(!teamTotals[team]){
+        teamTotals[team] = {count:0, amount:0};
+      }
+
+      teamTotals[team].count++;
+      teamTotals[team].amount += amountValue(player.soldPrice);
+    });
+
+    document.getElementById("totalSoldAmount").textContent =
+      formatRupees(totalAmount);
+
+    document.getElementById("highestBid").textContent =
+      formatRupees(highestAmount);
+
+    document.getElementById("teamsPurchased").textContent =
+      Object.keys(teamTotals).length;
+
+    document.getElementById("playersRemaining").textContent =
+      available;
+
+    // Render team purchase summary safely
+    const summary = document.getElementById("teamAuctionSummary");
+
+    const teamNames = Object.keys(teamTotals).sort((a,b) =>
+      a.localeCompare(b)
+    );
+
+    if(teamNames.length === 0){
+      summary.innerHTML =
+        '<p class="section-subtitle">No sold players recorded yet.</p>';
+    }else{
+      summary.innerHTML = teamNames.map((team,index) => `
+        <div class="team-card">
+          <div class="team-number">${index + 1}</div>
+          <div>
+            <div class="team-name">${escapeHTML(team)}</div>
+            <div class="team-details">
+              Players purchased: ${teamTotals[team].count}<br>
+              Total spent: ${formatRupees(teamTotals[team].amount)}
+            </div>
+          </div>
+        </div>
+      `).join("");
+    }
+
     setApiStatus("CONNECTED");
 
   }catch(error){
@@ -538,10 +568,21 @@ async function loadDashboard(){
 
     setApiStatus("CONNECTION FAILED");
 
-    document.getElementById("totalPlayers").textContent = "--";
-    document.getElementById("availablePlayers").textContent = "--";
-    document.getElementById("soldPlayers").textContent = "--";
-    document.getElementById("unsoldPlayers").textContent = "--";
+    [
+      "totalPlayers",
+      "availablePlayers",
+      "soldPlayers",
+      "unsoldPlayers",
+      "totalSoldAmount",
+      "highestBid",
+      "teamsPurchased",
+      "playersRemaining"
+    ].forEach(id => {
+      document.getElementById(id).textContent = "--";
+    });
+
+    document.getElementById("teamAuctionSummary").innerHTML =
+      '<p class="section-subtitle">Could not load auction information. Check the API connection.</p>';
   }
 }
 
