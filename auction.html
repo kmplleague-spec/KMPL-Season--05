@@ -76,12 +76,14 @@ button{font-size:12px;padding:10px 4px;margin:3px 0}
 </head>
 
 <body>
+
 <div class="header">
   <h1>KMPL SEASON 05</h1>
   <p>PLAYER AUCTION</p>
 </div>
 
 <div class="container">
+
   <div id="roundBox" class="round-box">
     <div id="roundTitle" class="round-title">FIRST AUCTION ROUND</div>
     <div id="roundCount" class="round-count">Loading players...</div>
@@ -90,7 +92,9 @@ button{font-size:12px;padding:10px 4px;margin:3px 0}
   <div id="loading" class="loading">Loading players...</div>
 
   <div id="auctionCard" class="card" style="display:none">
+
     <div class="player-layout">
+
       <div class="photo-box">
         <img id="playerPhoto" alt="Player Photo"
              referrerpolicy="no-referrer" style="display:none">
@@ -98,6 +102,7 @@ button{font-size:12px;padding:10px 4px;margin:3px 0}
       </div>
 
       <div class="player-info">
+
         <div id="playerReg" class="reg"></div>
         <div id="playerName" class="player-name"></div>
         <div id="playerPlace" class="place"></div>
@@ -110,6 +115,7 @@ button{font-size:12px;padding:10px 4px;margin:3px 0}
         </div>
 
         <div class="auction-box">
+
           <div class="base">Base Price: ₹1,000</div>
           <div class="bid-label">CURRENT BID</div>
           <div id="currentBid" class="current-bid">₹1,000</div>
@@ -123,6 +129,7 @@ button{font-size:12px;padding:10px 4px;margin:3px 0}
           </div>
 
           <div id="auctionStatus" class="status"></div>
+
         </div>
       </div>
     </div>
@@ -133,6 +140,7 @@ button{font-size:12px;padding:10px 4px;margin:3px 0}
       <br>
       <button class="fullscreen" onclick="toggleFullscreen()">⛶ FULL SCREEN</button>
     </div>
+
   </div>
 
   <div id="syncBox" style="display:none">
@@ -154,31 +162,42 @@ button{font-size:12px;padding:10px 4px;margin:3px 0}
      target="_blank" rel="noopener">
      Open Public LIVE Page
   </a>
+
 </div>
+
+
+<!-- SOLD TEAM MODAL -->
 
 <div id="soldModal" class="modal">
   <div class="modal-box">
     <h2>Select Winning Team</h2>
+
     <button class="team" onclick="confirmSold('VOLCANO VARANJOOR')">VOLCANO VARANJOOR</button>
-    <button class="team" onclick="confirmSold('DRAGON BOOSTER')">DRAGON BOOSTER</button>
-    <button class="team" onclick="confirmSold('RAJEEVIJI KALLIOT')">RAJEEVIJI KALLIOT</button>
-    <button class="team" onclick="confirmSold('ACADEMY BOYS BANDHADUKA')">ACADEMY BOYS BANDHADUKA</button>
     <button class="team" onclick="confirmSold('SUPER STRIKERS ERUMAKULAM')">SUPER STRIKERS ERUMAKULAM</button>
-    <button class="team" onclick="confirmSold('CHAMPIONS AZAD')">CHAMPIONS AZAD</button>
+    <button class="team" onclick="confirmSold('DRAGON BOOSTER')">DRAGON BOOSTER</button>
+    <button class="team" onclick="confirmSold('CHAMPIONS ASAD')">CHAMPIONS ASAD</button>
     <button class="team" onclick="confirmSold('RSA NILESHWARAM')">RSA NILESHWARAM</button>
+    <button class="team" onclick="confirmSold('RAJEEVIJI KALLIOT')">RAJEEVIJI KALLIOT</button>
     <button class="team" onclick="confirmSold('WINDIES MARIKULAM')">WINDIES MARIKULAM</button>
     <button class="team" onclick="confirmSold('KIWIS KASARAGOD')">KIWIS KASARAGOD</button>
-    <button class="team" onclick="confirmSold('FC CHEMBENCHERY')">FC CHEMBENCHERY</button>
+    <button class="team" onclick="confirmSold('ACADEMY BOYS BANDHADUKA')">ACADEMY BOYS BANDHADUKA</button>
+    <button class="team" onclick="confirmSold('FC CHEMBENCHERRY')">FC CHEMBENCHERRY</button>
     <button class="team" onclick="confirmSold('GMC THAIRA')">GMC THAIRA</button>
     <button class="team" onclick="confirmSold('OPTICS PERIYA')">OPTICS PERIYA</button>
     <button class="team" onclick="confirmSold('MARX KONNAKKAD')">MARX KONNAKKAD</button>
     <button class="team" onclick="confirmSold('KALLAI BROTHERS')">KALLAI BROTHERS</button>
     <button class="team" onclick="confirmSold('RAM BROTHERS PERIYA')">RAM BROTHERS PERIYA</button>
+    <button class="team" onclick="confirmSold('PENDING NAME')">TEAM 16 - PENDING NAME</button>
+
     <button class="cancel" onclick="closeSoldModal()">CANCEL</button>
   </div>
 </div>
 
+
 <script>
+
+/* ================= CONFIGURATION ================= */
+
 const API_URL =
 "https://script.google.com/macros/s/AKfycbx4_dUYrVPQEQjjWThl0q2vxYTt1SntdunMQbkN7LSV3t3JwiPhJgYTVkJQMJiI8PduSA/exec";
 
@@ -197,27 +216,82 @@ let photoSources = [];
 let photoSourceIndex = 0;
 let currentPhotoToken = 0;
 let auctionHistory = [];
-let livePublishSequence = 0;
 
-/* SHUFFLE */
+
+/* ================= SHUFFLE ================= */
+
 function shufflePlayers(array) {
   const shuffled = array.slice();
+
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
+
   return shuffled;
 }
 
-/* PHOTO HANDLING */
+
+/* ================= PLAYER FIELD HELPERS ================= */
+
+function getRegistrationNumber(p) {
+  if (!p) return "";
+
+  return p.registrationNumber ||
+         p.registrationNo ||
+         p.regNumber ||
+         p.regNo ||
+         p["Registration Number"] || "";
+}
+
+function getPlayerName(p) {
+  return p.name || p.playerName || p["Name"] || "";
+}
+
+function normalizeStatus(p) {
+  return String(
+    p.auctionStatus ||
+    p.status ||
+    p["Auction Status"] ||
+    ""
+  ).trim().toUpperCase();
+}
+
+function getPlayerPhotoValue(p) {
+  if (!p) return "";
+
+  const fields = [
+    p.photo, p.photoUrl, p.photoURL, p.photo_url,
+    p.image, p.imageUrl, p.imageURL, p.image_url,
+    p.photoLink, p.photo_link, p.profilePhoto,
+    p.profilePhotoUrl, p.profile_photo,
+    p["Photo"], p["J"], p["Player Photo"]
+  ];
+
+  return fields.find(v =>
+    v &&
+    String(v).trim() !== "" &&
+    String(v).trim() !== "-" &&
+    String(v).trim().toLowerCase() !== "null"
+  ) || "";
+}
+
+
+/* ================= PHOTO HANDLING ================= */
+
 function getPhotoUrls(value) {
   if (!value) return [];
+
   value = String(value).trim();
 
-  if (!value || ["-", "null", "undefined"].includes(value.toLowerCase())) return [];
+  if (!value || ["-", "null", "undefined"].includes(value.toLowerCase())) {
+    return [];
+  }
+
   if (value.startsWith("data:image/")) return [value];
 
   let id = "";
+
   const patterns = [
     /drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/,
     /drive\.google\.com\/thumbnail\?[^#]*id=([a-zA-Z0-9_-]+)/,
@@ -228,6 +302,7 @@ function getPhotoUrls(value) {
 
   for (const pattern of patterns) {
     const match = value.match(pattern);
+
     if (match) {
       id = match[1];
       break;
@@ -235,7 +310,9 @@ function getPhotoUrls(value) {
   }
 
   if (!id && /^[a-zA-Z0-9_-]{20,}$/.test(value) &&
-      !/^https?:\/\//i.test(value)) id = value;
+      !/^https?:\/\//i.test(value)) {
+    id = value;
+  }
 
   if (id) {
     return [
@@ -247,6 +324,7 @@ function getPhotoUrls(value) {
   }
 
   if (/^https?:\/\//i.test(value)) return [value];
+
   return [];
 }
 
@@ -258,6 +336,7 @@ function showPhotoFallback(message) {
   img.onload = null;
   img.onerror = null;
   img.removeAttribute("src");
+
   fallback.textContent = message;
   fallback.style.display = "flex";
 }
@@ -266,8 +345,10 @@ function tryNextPhoto(token) {
   if (token !== currentPhotoToken) return;
 
   photoSourceIndex++;
+
   if (photoSourceIndex < photoSources.length) {
-    document.getElementById("playerPhoto").src = photoSources[photoSourceIndex];
+    document.getElementById("playerPhoto").src =
+      photoSources[photoSourceIndex];
   } else {
     showPhotoFallback("PHOTO NOT AVAILABLE");
   }
@@ -276,12 +357,14 @@ function tryNextPhoto(token) {
 function loadPlayerPhoto(value) {
   const img = document.getElementById("playerPhoto");
   const fallback = document.getElementById("photoFallback");
+
   const token = ++currentPhotoToken;
 
   img.onload = null;
   img.onerror = null;
   img.style.display = "none";
   img.removeAttribute("src");
+
   fallback.style.display = "none";
 
   photoSources = getPhotoUrls(value);
@@ -294,10 +377,12 @@ function loadPlayerPhoto(value) {
 
   fallback.textContent = "LOADING PHOTO...";
   fallback.style.display = "flex";
+
   img.referrerPolicy = "no-referrer";
 
   img.onload = function() {
     if (token !== currentPhotoToken) return;
+
     img.style.display = "block";
     fallback.style.display = "none";
   };
@@ -310,40 +395,10 @@ function loadPlayerPhoto(value) {
   img.src = photoSources[0];
 }
 
-/* PLAYER FIELDS */
-function getPlayerPhotoValue(p) {
-  if (!p) return "";
-  const fields = [
-    p.photo, p.photoUrl, p.photoURL, p.photo_url,
-    p.image, p.imageUrl, p.imageURL, p.image_url,
-    p.photoLink, p.photo_link, p.profilePhoto,
-    p.profilePhotoUrl, p.profile_photo,
-    p["Photo"], p["J"], p["Player Photo"]
-  ];
 
-  return fields.find(v =>
-    v && String(v).trim() !== "" &&
-    String(v).trim() !== "-" &&
-    String(v).trim().toLowerCase() !== "null"
-  ) || "";
-}
+/* ================= LIVE STATE ================= */
 
-function normalizeStatus(p) {
-  return String(p.auctionStatus || p.status || p["Auction Status"] || "")
-    .trim().toUpperCase();
-}
-
-function getRegistrationNumber(p) {
-  if (!p) return "";
-  return p.registrationNumber ||
-         p.registrationNo ||
-         p.regNumber ||
-         p["Registration Number"] || "";
-}
-
-/* PUBLISH CURRENT AUCTION STATE TO GOOGLE APPS SCRIPT */
 async function publishLiveState(status = "LIVE", playerOverride, teamName = "") {
-  const sequence = ++livePublishSequence;
 
   const p = playerOverride === undefined
     ? (players[currentIndex] || null)
@@ -354,20 +409,31 @@ async function publishLiveState(status = "LIVE", playerOverride, teamName = "") 
   const state = {
     action: "liveState",
     password: PASSWORD,
+
     registrationNumber: getRegistrationNumber(player),
-    name: player.name || player.playerName || player["Name"] || "",
+    name: getPlayerName(player),
     place: player.place || player.location || player["Place"] || "",
     role: player.role || player.playingRole || player["Role"] || "",
-    battingStyle: player.battingStyle || player.batting || player["Batting Style"] || "",
-    bowlingStyle: player.bowlingStyle || player.bowling || player["Bowling Style"] || "",
-    previousTeam: player.previousTeam || player.team || player["Previous Team"] || "",
+
+    battingStyle:
+      player.battingStyle || player.batting || player["Batting Style"] || "",
+
+    bowlingStyle:
+      player.bowlingStyle || player.bowling || player["Bowling Style"] || "",
+
+    previousTeam:
+      player.previousTeam || player.team || player["Previous Team"] || "",
+
     photo: getPlayerPhotoValue(player),
+
     currentBid: currentBid,
     basePrice: BASE_PRICE,
     highestBidder: teamName,
     soldTeam: teamName,
+
     auctionStatus: status,
     round: auctionRound,
+
     timer: "",
     timerLabel: "",
     history: auctionHistory.slice(0, 8)
@@ -376,7 +442,9 @@ async function publishLiveState(status = "LIVE", playerOverride, teamName = "") 
   try {
     const response = await fetch(API_URL, {
       method: "POST",
-      headers: {"Content-Type": "text/plain;charset=utf-8"},
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
       body: JSON.stringify(state)
     });
 
@@ -387,46 +455,81 @@ async function publishLiveState(status = "LIVE", playerOverride, teamName = "") 
     }
 
     return result;
+
   } catch (error) {
     console.error("LIVE publish error:", error);
     return null;
   }
 }
 
-/* LOAD PLAYERS */
+
+/* ================= LOAD PLAYERS ================= */
+
 async function loadPlayers() {
+
   try {
+
     document.getElementById("loading").style.display = "block";
     document.getElementById("loading").innerText = "Loading players...";
+
     document.getElementById("auctionCard").style.display = "none";
     document.getElementById("syncBox").style.display = "none";
     document.getElementById("completedBox").style.display = "none";
 
+    /*
+      IMPORTANT:
+      adminPlayers returns Auction Status, Sold Price and Sold Team.
+      These fields are required to separate SOLD and UNSOLD players.
+    */
+
     const response = await fetch(
-      API_URL + "?password=" + encodeURIComponent(PASSWORD) + "&_=" + Date.now(),
+      API_URL +
+      "?action=adminPlayers&password=" +
+      encodeURIComponent(PASSWORD) +
+      "&_=" + Date.now(),
       {cache:"no-store"}
     );
 
-    if (!response.ok) throw new Error("HTTP " + response.status);
+    if (!response.ok) {
+      throw new Error("HTTP " + response.status);
+    }
 
     const data = await response.json();
-    if (!data.success) throw new Error(data.message || data.error || "Unable to load players");
 
-    allPlayers = Array.isArray(data.players) ? data.players : [];
+    if (!data.success) {
+      throw new Error(data.message || data.error || "Unable to load players");
+    }
 
-    const eligiblePlayers = allPlayers.filter(p => {
+    if (!Array.isArray(data.players)) {
+      throw new Error("Player data is missing from API response");
+    }
+
+    allPlayers = data.players;
+
+    /*
+      First round:
+      Exclude SOLD and UNSOLD players.
+      Only AVAILABLE / blank status players will be selected.
+    */
+
+    const eligiblePlayers = allPlayers.filter(function(p) {
       const status = normalizeStatus(p);
+
       return status !== "SOLD" && status !== "UNSOLD";
     });
 
     players = shufflePlayers(eligiblePlayers);
-    unsoldPlayers = allPlayers.filter(p => normalizeStatus(p) === "UNSOLD");
+
+    unsoldPlayers = allPlayers.filter(function(p) {
+      return normalizeStatus(p) === "UNSOLD";
+    });
 
     console.log("Total players:", allPlayers.length);
     console.log("Eligible players:", eligiblePlayers.length);
     console.log("Unsold players:", unsoldPlayers.length);
 
     document.getElementById("loading").style.display = "none";
+
     updateRoundDisplay();
 
     if (!players.length) {
@@ -435,87 +538,126 @@ async function loadPlayers() {
     }
 
     currentIndex = 0;
+
     document.getElementById("auctionCard").style.display = "block";
+
     showPlayer();
 
   } catch (error) {
+
     console.error("Player loading error:", error);
+
     document.getElementById("loading").style.display = "block";
+
     document.getElementById("loading").innerText =
       "Unable to load players: " + error.message;
   }
 }
 
+
+/* ================= ROUND DISPLAY ================= */
+
 function updateRoundDisplay() {
+
   document.getElementById("roundTitle").innerText =
-    auctionRound === "FIRST" ? "FIRST AUCTION ROUND" : "UNSOLD AUCTION ROUND";
+    auctionRound === "FIRST"
+      ? "FIRST AUCTION ROUND"
+      : "UNSOLD AUCTION ROUND";
 
   document.getElementById("roundCount").innerText =
     players.length + " PLAYERS REMAINING";
 }
 
+
+/* ================= SHOW PLAYER ================= */
+
 function showPlayer() {
+
   if (!players.length || currentIndex < 0) {
     showFirstRoundComplete();
     return;
   }
 
   const p = players[currentIndex];
+
   if (!p) return;
 
   document.getElementById("playerName").innerText =
-    p.name || p.playerName || p["Name"] || "-";
-  document.getElementById("playerReg").innerText = getRegistrationNumber(p);
+    getPlayerName(p) || "-";
+
+  document.getElementById("playerReg").innerText =
+    getRegistrationNumber(p);
+
   document.getElementById("playerPlace").innerText =
     p.place || p.location || p["Place"] || "-";
+
   document.getElementById("playerRole").innerText =
     p.role || p.playingRole || p["Role"] || "-";
+
   document.getElementById("playerBatting").innerText =
     p.battingStyle || p.batting || p["Batting Style"] || "-";
+
   document.getElementById("playerBowling").innerText =
     p.bowlingStyle || p.bowling || p["Bowling Style"] || "-";
+
   document.getElementById("playerTeam").innerText =
     p.previousTeam || p.team || p["Previous Team"] || "-";
 
   loadPlayerPhoto(getPlayerPhotoValue(p));
 
   currentBid = BASE_PRICE;
+
   document.getElementById("auctionStatus").innerText = "";
+
   updateBidDisplay();
   updateRoundDisplay();
 
-  // Publishes the selected player and initial bid.
   publishLiveState("LIVE", p);
 }
 
-/* BID CONTROLS */
+
+/* ================= BID CONTROLS ================= */
+
 function updateBidDisplay() {
   document.getElementById("currentBid").innerText =
     "₹" + currentBid.toLocaleString("en-IN");
 }
 
 function increaseBid() {
+
   if (isSaving || !players[currentIndex]) return;
+
   currentBid += BID_INCREMENT;
+
   updateBidDisplay();
+
   publishLiveState("LIVE");
 }
 
 function decreaseBid() {
+
   if (isSaving || !players[currentIndex]) return;
 
   if (currentBid > BASE_PRICE) {
+
     currentBid -= BID_INCREMENT;
+
     updateBidDisplay();
+
     publishLiveState("LIVE");
+
   } else {
     alert("Bid cannot go below ₹1,000");
   }
 }
 
-/* SAVE AUCTION RESULT TO SHEET */
+
+/* ================= SOLD MODAL ================= */
+
 function openSoldModal() {
+
   if (!players[currentIndex] || isSaving) return;
+
   document.getElementById("soldModal").style.display = "flex";
 }
 
@@ -523,74 +665,100 @@ function closeSoldModal() {
   document.getElementById("soldModal").style.display = "none";
 }
 
+
+/* ================= SAVE AUCTION ================= */
+
 async function saveAuction(player, status, soldPrice, soldTeam) {
+
   const registrationNumber = getRegistrationNumber(player);
-  if (!registrationNumber) throw new Error("Player registration number is missing");
+
+  if (!registrationNumber) {
+    throw new Error("Player registration number is missing");
+  }
 
   const response = await fetch(API_URL, {
-    method:"POST",
-    headers:{"Content-Type":"text/plain;charset=utf-8"},
-    body:JSON.stringify({
-      action:"auction",
-      registrationNumber,
-      status,
-      auctionStatus:status,
-      soldPrice,
-      soldTeam,
-      password:PASSWORD
+
+    method: "POST",
+
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+
+    body: JSON.stringify({
+      action: "auction",
+      registrationNumber: registrationNumber,
+      status: status,
+      auctionStatus: status,
+      soldPrice: soldPrice,
+      soldTeam: soldTeam,
+      password: PASSWORD
     })
+
   });
 
-  if (!response.ok) throw new Error("HTTP " + response.status);
+  if (!response.ok) {
+    throw new Error("HTTP " + response.status);
+  }
 
   const result = await response.json();
+
   if (!result.success) {
     throw new Error(result.message || result.error || "Save failed");
   }
+
   return result;
 }
 
-/* SOLD */
+
+/* ================= SOLD ================= */
+
 async function confirmSold(teamName) {
+
   if (isSaving) return;
 
   const p = players[currentIndex];
+
   if (!p) return;
 
   const confirmed = confirm(
-    "Confirm SOLD?\n\nPlayer: " + (p.name || p.playerName || "Player") +
-    "\nTeam: " + teamName +
-    "\nPrice: ₹" + currentBid.toLocaleString("en-IN")
+    "Confirm SOLD?\n\n" +
+    "Player: " + getPlayerName(p) + "\n" +
+    "Team: " + teamName + "\n" +
+    "Price: ₹" + currentBid.toLocaleString("en-IN")
   );
 
   if (!confirmed) return;
 
   closeSoldModal();
+
   isSaving = true;
+
   document.getElementById("auctionStatus").innerText = "Saving SOLD...";
 
   try {
-    // Keep existing Sheet-save operation.
+
     await saveAuction(p, "SOLD", currentBid, teamName);
 
     p.auctionStatus = "SOLD";
+    p.status = "SOLD";
     p.soldPrice = currentBid;
     p.soldTeam = teamName;
 
     auctionHistory.unshift({
-      name: p.name || p.playerName || "Player",
+      name: getPlayerName(p),
       status: "SOLD",
       soldPrice: currentBid,
       soldTeam: teamName,
       time: new Date().toLocaleTimeString()
     });
 
-    // Publish result before moving to the next player.
     await publishLiveState("SOLD", p, teamName);
 
     players.splice(currentIndex, 1);
 
-    if (currentIndex >= players.length) currentIndex = players.length - 1;
+    if (currentIndex >= players.length) {
+      currentIndex = players.length - 1;
+    }
 
     if (!players.length) {
       showFirstRoundComplete();
@@ -600,36 +768,49 @@ async function confirmSold(teamName) {
     }
 
   } catch (error) {
+
     console.error("SOLD save error:", error);
-    document.getElementById("auctionStatus").innerText = "Error saving SOLD";
+
+    document.getElementById("auctionStatus").innerText =
+      "Error saving SOLD";
+
     alert("Unable to save SOLD result: " + error.message);
+
   } finally {
     isSaving = false;
   }
 }
 
-/* UNSOLD */
+
+/* ================= UNSOLD ================= */
+
 async function markUnsold() {
+
   if (isSaving) return;
 
   const p = players[currentIndex];
+
   if (!p) return;
 
-  if (!confirm("Mark " + (p.name || "this player") + " as UNSOLD?")) return;
+  if (!confirm("Mark " + getPlayerName(p) + " as UNSOLD?")) {
+    return;
+  }
 
   isSaving = true;
+
   document.getElementById("auctionStatus").innerText = "Saving UNSOLD...";
 
   try {
-    // Keep existing Sheet-save operation.
+
     await saveAuction(p, "UNSOLD", "", "");
 
     p.auctionStatus = "UNSOLD";
+    p.status = "UNSOLD";
     p.soldPrice = "";
     p.soldTeam = "";
 
     auctionHistory.unshift({
-      name: p.name || p.playerName || "Player",
+      name: getPlayerName(p),
       status: "UNSOLD",
       soldPrice: 0,
       soldTeam: "",
@@ -639,12 +820,18 @@ async function markUnsold() {
     await publishLiveState("UNSOLD", p);
 
     const reg = getRegistrationNumber(p);
-    if (!unsoldPlayers.some(x => getRegistrationNumber(x) === reg)) {
+
+    if (!unsoldPlayers.some(function(x) {
+      return getRegistrationNumber(x) === reg;
+    })) {
       unsoldPlayers.push(p);
     }
 
     players.splice(currentIndex, 1);
-    if (currentIndex >= players.length) currentIndex = players.length - 1;
+
+    if (currentIndex >= players.length) {
+      currentIndex = players.length - 1;
+    }
 
     if (!players.length) {
       showFirstRoundComplete();
@@ -654,90 +841,144 @@ async function markUnsold() {
     }
 
   } catch (error) {
+
     console.error("UNSOLD save error:", error);
-    document.getElementById("auctionStatus").innerText = "Error saving UNSOLD";
+
+    document.getElementById("auctionStatus").innerText =
+      "Error saving UNSOLD";
+
     alert("Unable to save UNSOLD result: " + error.message);
+
   } finally {
     isSaving = false;
   }
 }
 
-/* AUCTION ROUNDS */
+
+/* ================= FIRST ROUND COMPLETE ================= */
+
 function showFirstRoundComplete() {
+
   document.getElementById("loading").style.display = "none";
+
   document.getElementById("auctionCard").style.display = "none";
+
   document.getElementById("syncBox").style.display = "block";
+
   document.getElementById("completedBox").style.display = "none";
 
   document.getElementById("unsoldSummary").innerText =
     "UNSOLD PLAYERS: " + unsoldPlayers.length;
 
   updateRoundDisplay();
+
   publishLiveState("ROUND COMPLETE", null);
 }
 
+
+/* ================= SYNC UNSOLD ROUND ================= */
+
 function syncUnsoldPlayers() {
+
   if (!unsoldPlayers.length) {
+
     alert("There are no UNSOLD players.");
+
     document.getElementById("syncBox").style.display = "none";
+
     document.getElementById("completedBox").style.display = "block";
-    document.getElementById("roundTitle").innerText = "AUCTION COMPLETED";
-    document.getElementById("roundCount").innerText = "All players processed";
+
+    document.getElementById("roundTitle").innerText =
+      "AUCTION COMPLETED";
+
+    document.getElementById("roundCount").innerText =
+      "All players processed";
+
     publishLiveState("AUCTION COMPLETED", null);
+
     return;
   }
 
   auctionRound = "UNSOLD";
+
   players = shufflePlayers(unsoldPlayers);
+
   currentIndex = 0;
 
   document.getElementById("syncBox").style.display = "none";
+
   document.getElementById("completedBox").style.display = "none";
+
   document.getElementById("auctionCard").style.display = "block";
 
   updateRoundDisplay();
+
   showPlayer();
 }
 
-/* NAVIGATION */
+
+/* ================= NAVIGATION ================= */
+
 function nextPlayer() {
+
   if (isSaving) return;
 
   if (currentIndex < players.length - 1) {
+
     currentIndex++;
+
     showPlayer();
+
   } else {
     alert("This is the last remaining player.");
   }
 }
 
 function previousPlayer() {
+
   if (isSaving) return;
 
   if (currentIndex > 0) {
+
     currentIndex--;
+
     showPlayer();
+
   } else {
     alert("This is the first player.");
   }
 }
 
-/* FULL SCREEN */
+
+/* ================= FULL SCREEN ================= */
+
 async function toggleFullscreen() {
+
   try {
+
     if (!document.fullscreenElement) {
+
       await document.documentElement.requestFullscreen();
+
     } else {
+
       await document.exitFullscreen();
+
     }
+
   } catch (error) {
+
     console.error("Fullscreen error:", error);
+
     alert("Fullscreen is not supported in this browser.");
   }
 }
 
-/* START */
+
+/* ================= START AUCTION ================= */
+
 loadPlayers();
+
 </script>
 </body>
 </html>
