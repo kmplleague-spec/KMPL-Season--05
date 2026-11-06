@@ -182,11 +182,17 @@ button:disabled{
 }
 
 .bid-btn{
-  width:100%;
   background:#e0b83f;
   color:#111;
-  font-size:18px;
-  margin:5px 0 12px;
+  flex:1;
+  font-size:17px;
+}
+
+.decrease-btn{
+  background:#d18a35;
+  color:#111;
+  flex:1;
+  font-size:17px;
 }
 
 .sold-btn{
@@ -231,7 +237,7 @@ button:disabled{
   margin:20px 0 10px;
 }
 
-select,input{
+select{
   width:100%;
   padding:12px;
   border-radius:8px;
@@ -240,10 +246,6 @@ select,input{
   color:white;
   font-size:14px;
   margin:7px 0;
-}
-
-.team-select{
-  margin-top:12px;
 }
 
 .message{
@@ -256,13 +258,8 @@ select,input{
   overflow-wrap:anywhere;
 }
 
-.error{
-  color:#ff7777;
-}
-
-.success{
-  color:#64df91;
-}
+.error{color:#ff7777}
+.success{color:#64df91}
 
 .modal{
   display:none;
@@ -295,9 +292,7 @@ select,input{
   margin-top:12px;
 }
 
-.modal-actions button{
-  flex:1;
-}
+.modal-actions button{flex:1}
 
 .small{
   font-size:12px;
@@ -312,6 +307,7 @@ select,input{
   .player-name{font-size:23px}
   .bid-amount{font-size:29px}
   .container{padding:10px}
+  .action-row button{padding:11px 7px;font-size:13px}
 }
 </style>
 </head>
@@ -389,12 +385,25 @@ select,input{
       <div class="base-price">BASE PRICE: ₹1,000 | BID INCREMENT: ₹1,000</div>
     </div>
 
-    <button class="bid-btn" id="bidButton" onclick="increaseBid()" disabled>
-      + ₹1,000 BID
-    </button>
+    <!-- BID INCREASE AND DECREASE -->
+    <div class="action-row">
+      <button class="decrease-btn"
+        id="decreaseBidButton"
+        onclick="decreaseBid()"
+        disabled>
+        − ₹1,000 BID
+      </button>
+
+      <button class="bid-btn"
+        id="bidButton"
+        onclick="increaseBid()"
+        disabled>
+        + ₹1,000 BID
+      </button>
+    </div>
 
     <div class="section-title">SELECT TEAM</div>
-    <select id="teamSelect" class="team-select">
+    <select id="teamSelect">
       <option value="">Select Team</option>
     </select>
 
@@ -431,7 +440,6 @@ select,input{
 
 </div>
 
-<!-- SOLD TEAM CONFIRMATION -->
 <div class="modal" id="soldModal">
   <div class="modal-box">
     <h2>Confirm SOLD</h2>
@@ -447,10 +455,10 @@ select,input{
 </div>
 
 <script>
-/* =====================================================
-   KMPL SEASON 05 - AUCTION SYSTEM
-   API FIX: action=adminplayers
-   ===================================================== */
+
+/* ==========================================
+   KMPL SEASON 05 AUCTION
+   ========================================== */
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycbx4_dUYrVPQEQjjWThl0q2vxYTt1SntdunMQbkN7LSV3t3JwiPhJgYTVkJQMJiI8PduSA/exec";
@@ -470,7 +478,7 @@ const TEAMS = [
   "WINDIES MARIKKALAM",
   "KIWIS KASARAGOD",
   "ACADEMY BOYS BANDHADUKA",
-  "FC CHEMBANCHERY",
+  "FC CHEMBANCHERRY",
   "GMC THAIRA",
   "OPTICS PERIYA",
   "MARX KONNAKKAD",
@@ -489,11 +497,10 @@ let currentRound = "FIRST";
 let currentPlayer = null;
 let isSaving = false;
 
-/* -----------------------------
-   INITIAL SETUP
------------------------------ */
+/* TEAM SETUP */
 
 function setupTeams(){
+
   const select = document.getElementById("teamSelect");
 
   select.innerHTML = '<option value="">Select Team</option>';
@@ -506,19 +513,28 @@ function setupTeams(){
   });
 }
 
+/* MESSAGE */
+
 function setMessage(message,type=""){
+
   const box = document.getElementById("message");
+
   box.textContent = message;
   box.className = "message " + type;
 }
 
 function setConnection(message,success){
+
   const el = document.getElementById("connectionStatus");
+
   el.textContent = message;
   el.style.color = success ? "#64df91" : "#ff7777";
 }
 
+/* PLAYER STATUS */
+
 function normalizeStatus(player){
+
   return String(
     player.auctionStatus ||
     player.status ||
@@ -527,6 +543,7 @@ function normalizeStatus(player){
 }
 
 function getRegNo(player){
+
   return player.registrationNumber ||
          player.regNo ||
          player.registrationNo ||
@@ -534,9 +551,7 @@ function getRegNo(player){
          "";
 }
 
-/* -----------------------------
-   LOAD PLAYERS - IMPORTANT FIX
------------------------------ */
+/* LOAD PLAYERS */
 
 async function loadPlayers(){
 
@@ -553,8 +568,6 @@ async function loadPlayers(){
       "?action=adminplayers" +
       "&password=" + encodeURIComponent(PASSWORD) +
       "&_=" + Date.now();
-
-    console.log("KMPL API URL:",apiRequestUrl);
 
     const response = await fetch(apiRequestUrl,{
       method:"GET",
@@ -587,6 +600,7 @@ async function loadPlayers(){
     prepareAuctionPlayers();
 
     setConnection("API Connected",true);
+
     setMessage(
       "Successfully loaded " + allPlayers.length +
       " players from Google Sheets.",
@@ -620,13 +634,12 @@ async function loadPlayers(){
   }
 }
 
-/* -----------------------------
-   PREPARE RANDOM AUCTION LIST
------------------------------ */
+/* RANDOM PLAYER ORDER */
 
 function prepareAuctionPlayers(){
 
   const available = allPlayers.filter(player=>{
+
     const status = normalizeStatus(player);
 
     return status !== "SOLD" &&
@@ -646,19 +659,20 @@ function prepareAuctionPlayers(){
 }
 
 function shuffleArray(array){
+
   const result = [...array];
 
   for(let i=result.length-1;i>0;i--){
+
     const j = Math.floor(Math.random()*(i+1));
+
     [result[i],result[j]] = [result[j],result[i]];
   }
 
   return result;
 }
 
-/* -----------------------------
-   SHOW PLAYER
------------------------------ */
+/* SHOW PLAYER */
 
 function showPlayer(){
 
@@ -672,7 +686,7 @@ function showPlayer(){
   }
 
   if(currentIndex >= auctionPlayers.length){
-    currentIndex = auctionPlayers.length - 1;
+    currentIndex = auctionPlayers.length-1;
   }
 
   currentPlayer = auctionPlayers[currentIndex];
@@ -714,8 +728,11 @@ function showPlayer(){
   document.getElementById("teamSelect").value = "";
 
   document.getElementById("bidButton").disabled = false;
+  document.getElementById("decreaseBidButton").disabled = false;
   document.getElementById("soldButton").disabled = false;
   document.getElementById("unsoldButton").disabled = false;
+
+  updateDecreaseButton();
 
   setMessage(
     "Player " + (currentIndex+1) +
@@ -740,7 +757,8 @@ function showNoPlayers(){
   document.getElementById("playerPhoto").style.display = "none";
   document.getElementById("photoFallback").style.display = "flex";
 
-  document.getElementById("currentBid").textContent = formatRupees(0);
+  document.getElementById("currentBid").textContent =
+    formatRupees(0);
 
   disableAuctionButtons();
 
@@ -748,14 +766,14 @@ function showNoPlayers(){
 }
 
 function disableAuctionButtons(){
+
   document.getElementById("bidButton").disabled = true;
+  document.getElementById("decreaseBidButton").disabled = true;
   document.getElementById("soldButton").disabled = true;
   document.getElementById("unsoldButton").disabled = true;
 }
 
-/* -----------------------------
-   PLAYER PHOTO
------------------------------ */
+/* PLAYER PHOTO */
 
 function getPhotoCandidates(player){
 
@@ -769,9 +787,6 @@ function getPhotoCandidates(player){
 
   const value = String(photo).trim();
 
-  if(!value) return [];
-
-  // If the Sheet contains only a filename, it is not a usable image URL.
   if(!/^https?:\/\//i.test(value)){
     return [];
   }
@@ -793,6 +808,7 @@ function getPhotoCandidates(player){
   }
 
   if(fileId){
+
     candidates.push(
       "https://drive.google.com/thumbnail?id=" +
       fileId + "&sz=w1000"
@@ -851,9 +867,22 @@ function loadPlayerPhoto(player){
   tryNext();
 }
 
-/* -----------------------------
-   BID CONTROL
------------------------------ */
+/* BID CONTROL */
+
+function formatRupees(amount){
+
+  return "₹" + Number(amount || 0).toLocaleString("en-IN");
+}
+
+function updateDecreaseButton(){
+
+  const button = document.getElementById("decreaseBidButton");
+
+  button.disabled =
+    !currentPlayer ||
+    isSaving ||
+    currentBid <= BASE_PRICE;
+}
 
 function increaseBid(){
 
@@ -863,16 +892,39 @@ function increaseBid(){
 
   document.getElementById("currentBid").textContent =
     formatRupees(currentBid);
+
+  updateDecreaseButton();
 }
 
-function formatRupees(amount){
+function decreaseBid(){
 
-  return "₹" + Number(amount || 0).toLocaleString("en-IN");
+  if(!currentPlayer || isSaving) return;
+
+  if(currentBid <= BASE_PRICE){
+
+    currentBid = BASE_PRICE;
+
+    document.getElementById("currentBid").textContent =
+      formatRupees(currentBid);
+
+    updateDecreaseButton();
+
+    return;
+  }
+
+  currentBid -= BID_INCREMENT;
+
+  if(currentBid < BASE_PRICE){
+    currentBid = BASE_PRICE;
+  }
+
+  document.getElementById("currentBid").textContent =
+    formatRupees(currentBid);
+
+  updateDecreaseButton();
 }
 
-/* -----------------------------
-   SOLD PROCESS
------------------------------ */
+/* SOLD PROCESS */
 
 function markSold(){
 
@@ -898,6 +950,7 @@ function markSold(){
 }
 
 function closeSoldModal(){
+
   document.getElementById("soldModal").style.display = "none";
 }
 
@@ -917,9 +970,7 @@ async function confirmSold(){
   await saveAuctionResult("SOLD",currentBid,team);
 }
 
-/* -----------------------------
-   UNSOLD PROCESS
------------------------------ */
+/* UNSOLD PROCESS */
 
 async function markUnsold(){
 
@@ -935,9 +986,7 @@ async function markUnsold(){
   await saveAuctionResult("UNSOLD",0,"");
 }
 
-/* -----------------------------
-   SAVE AUCTION RESULT
------------------------------ */
+/* SAVE AUCTION RESULT */
 
 async function saveAuctionResult(status,price,team){
 
@@ -952,9 +1001,12 @@ async function saveAuctionResult(status,price,team){
   const registrationNumber = getRegNo(currentPlayer);
 
   if(!registrationNumber){
+
     isSaving = false;
     showPlayer();
+
     setMessage("Player registration number is missing.","error");
+
     return;
   }
 
@@ -987,7 +1039,6 @@ async function saveAuctionResult(status,price,team){
       throw new Error(result.message || "Could not save auction result");
     }
 
-    // Update local player record.
     currentPlayer.auctionStatus = status;
     currentPlayer.status = status;
     currentPlayer.soldPrice = price;
@@ -1007,11 +1058,10 @@ async function saveAuctionResult(status,price,team){
       "success"
     );
 
-    // Remove current player from current round.
     auctionPlayers.splice(currentIndex,1);
 
     if(currentIndex >= auctionPlayers.length){
-      currentIndex = auctionPlayers.length - 1;
+      currentIndex = auctionPlayers.length-1;
     }
 
     if(auctionPlayers.length > 0){
@@ -1034,6 +1084,7 @@ async function saveAuctionResult(status,price,team){
       document.getElementById("bidButton").disabled = false;
       document.getElementById("soldButton").disabled = false;
       document.getElementById("unsoldButton").disabled = false;
+      updateDecreaseButton();
     }
 
   }finally{
@@ -1041,18 +1092,19 @@ async function saveAuctionResult(status,price,team){
   }
 }
 
-/* -----------------------------
-   PLAYER NAVIGATION
------------------------------ */
+/* NAVIGATION */
 
 function nextPlayer(){
 
   if(!auctionPlayers.length) return;
 
   if(currentIndex < auctionPlayers.length-1){
+
     currentIndex++;
     showPlayer();
+
   }else{
+
     setMessage("This is the last player in this round.");
   }
 }
@@ -1062,16 +1114,17 @@ function previousPlayer(){
   if(!auctionPlayers.length) return;
 
   if(currentIndex > 0){
+
     currentIndex--;
     showPlayer();
+
   }else{
+
     setMessage("This is the first player in this round.");
   }
 }
 
-/* -----------------------------
-   UNSOLD ROUND
------------------------------ */
+/* UNSOLD ROUND */
 
 function syncUnsold(){
 
@@ -1121,9 +1174,7 @@ function startUnsoldRound(){
   );
 }
 
-/* -----------------------------
-   UPDATE STATISTICS
------------------------------ */
+/* STATISTICS */
 
 function updateStats(){
 
@@ -1145,9 +1196,7 @@ function updateStats(){
     unsold;
 }
 
-/* -----------------------------
-   FULL SCREEN
------------------------------ */
+/* FULL SCREEN */
 
 function toggleFullscreen(){
 
@@ -1164,9 +1213,7 @@ function toggleFullscreen(){
   }
 }
 
-/* -----------------------------
-   START
------------------------------ */
+/* START SYSTEM */
 
 setupTeams();
 loadPlayers();
